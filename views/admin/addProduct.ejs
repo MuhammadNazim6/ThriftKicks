@@ -1,0 +1,173 @@
+<%- include('../layouts/header.ejs')%>
+
+
+  <div class="mt-n3">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+      data-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page"><a class="text-dark"
+                href="/admin/products">Products</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="addProduct">Add-Product</li>
+          </ol>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+
+          </div>
+          <ul class="navbar-nav  justify-content-end">
+
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0">
+                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fa fa-bell cursor-pointer"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+
+
+
+              </ul>
+            </li>
+            <li class="nav-item d-flex align-items-center">
+              <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">Sign In</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+  </div>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">Add Product</h6>
+            </div>
+          </div>
+          <!--                 -->
+
+
+
+          <div class="container mt-5">
+            <h1>Add Product</h1>
+            <form action="/admin/products/addProduct" method="post" enctype="multipart/form-data">
+              <!-- Product Name -->
+              <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <input type="text" class="form-control bg-light" id="productName" name="productName" required>
+              </div>
+
+              <!-- Description -->
+              <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control bg-light" id="description" name="description" rows="3"
+                  required></textarea>
+              </div>
+
+              <!-- Size-->
+              <label for="size">Select Size:</label>
+              <select id="size" name="size" class="form-control bg-light">
+                <option value="UK-4">UK-4</option>
+                <option value="UK-5">UK-5</option>
+                <option value="UK-5.5">UK-5.5</option>
+                <option value="UK-6.5">UK-6.5</option>
+                <option value="UK-7.5">UK-7.5</option>
+                <option value="UK-8">UK-8</option>
+                <option value="UK-9">UK-9</option>
+                <option value="UK-9.5">UK-9.5</option>
+                <option value="UK-10">UK-10</option>
+              </select>
+
+              <!--Actual Price -->
+              <div class="form-group">
+                <label for="actualPrice">Price:</label>
+                <input type="number" class="form-control bg-light" id="actualPrice" name="actualPrice" required>
+              </div>
+
+              <!-- Offer Price -->
+              <div class="form-group">
+                <label for="offerPrice">Price:</label>
+                <input type="number" class="form-control bg-light" id="offerPrice" name="offerPrice" required>
+              </div>
+
+
+              <!-- Image Upload -->
+
+              <div class="form-group">
+                <label for="image">Product Image:</label>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" multiple
+                    required>
+                  <label class="custom-file-label" for="image">Choose file</label>
+                </div>
+              </div>
+
+
+              <!-- stock Updates-->
+              <label for="stock">Select Size:</label>
+              <select id="stock" name="stock" class="form-control bg-light">
+                <option value="Out of Stock">Out of Stock</option>
+                <option value="In Stock">In Stock</option> 
+                <option value="Limited Stock" >Limited Stock</option> 
+              </select>
+
+
+              <!-- Category -->
+              <div class="form-group">
+                <label class="mt-2" for="category">Category:</label>
+                <select class="form-control bg-light" id="category" name="category" required>
+                  <% if (category && category.length> 0) { %>
+                    <% category.forEach((cat, index)=> { %>
+                      <option value="<%=cat._id%>">
+                        <%= cat.categoryName %>
+                      </option>
+                      <% }); %>
+                        <% } else { %>
+                          <option value="" disabled selected>No categories available</option>
+                          <% } %>
+                </select>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary">Add Product</button>
+            </form>
+
+            <% if(typeof smessage !=='undefined' ){ %>
+              <div class="alert alert-success text-center" role="alert">
+                <%= smessage %>
+              </div>
+              <% } %>
+
+                <% if(typeof fmessage !=='undefined' ){ %>
+                  <div class="alert alert-danger text-center" role="alert">
+                    <%= fmessage %>
+                  </div>
+                  <% } %>
+
+
+          </div>
+
+
+          <%- include('../layouts/footer.ejs')%>

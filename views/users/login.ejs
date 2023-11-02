@@ -1,0 +1,79 @@
+<%- include('../layouts/header.ejs')%>
+
+  <section class="overflow-hidden bodyoflogin">
+
+
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+      <div class="row gx-lg-5 align-items-center mb-5">
+        <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+         
+                        <a class="navbar-brand logo-size" href="/home"><img src="assets/logos/thriftedkicks.png" alt="Thriffy" /></a>
+                
+          <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+            The best offer <br />
+            <span style="color: hsl(218, 81%, 75%)">for your business</span>
+          </h1>
+          <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+            Welcome back to Thrift Shoes Ecommerce! Please log in to access your account and enjoy a personalized
+            shopping experience.
+          </p>
+        </div>
+
+        <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+          <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+          <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+          <div class="card bg-glass">
+            <div class="card-body px-4 py-5 px-md-5">
+              <form form action="/login" method="post">
+
+                <% if (typeof message !=='undefined' ) { %>
+
+                  <p class="alert alert-danger text-light mb-3">
+                    <%= message %>
+                  </p>
+                  <% } %>
+
+                    <!-- Email input -->
+
+                    <div class="form-outline mb-4">
+                      <input class="form-control bg-light" type="email" id="email" name="email" required />
+
+
+                      <label class="form-label text-black" for="email">Email address</label>
+                    </div>
+
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                      <input class="form-control bg-light" type="password" id="password" name="password" required />
+
+                      <label class="form-label text-black" for="password">Password</label>
+                    </div>
+
+                    <!-- Submit button -->
+
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-dark" type="submit">Login</button>
+                    </div>
+
+            </div>
+            </form>
+
+            <div class="d-flex justify-content-center align-items-center mt-3">
+              <span class="text-black txt-lg">New user?
+                <a class="text-hover-effect text-decoration-underline" href="/register"> Signup here</a></span>
+            </div>
+            <div> &nbsp</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <!-- Section: Design Block -->
+
+
+
+
+  <%- include('../layouts/footer.ejs')%>

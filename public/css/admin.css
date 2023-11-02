@@ -1,0 +1,31 @@
+
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Linefont:wght@100&family=Montserrat&family=Poppins:wght@200&family=Roboto+Slab:wght@300&family=Vollkorn&display=swap');
+
+*{
+  font-family: Montserrat;
+}
+
+.custom-button{
+  width: 120px;
+}
+
+.product-view{
+  height:120px;
+  width:120px;
+}
+
+.description-size{
+  width: 350px;
+}
+
+.logo-size{
+  height:200px;
+  width: 200px;
+}
+
+.msgHeight{
+  height: 50px;
+}
+

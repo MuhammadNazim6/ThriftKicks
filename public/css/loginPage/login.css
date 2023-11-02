@@ -1,0 +1,32 @@
+.bodyoflogin {
+  background-image: url('/assets/jordan-shoes.webp');
+  background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100%;
+}
+.full-screen-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+}
+
+
+.bg-glass {
+  background-color: hsla(0, 0%, 90%, 0.5) !important;
+  backdrop-filter: saturate(200%) blur(25px);
+  border-radius: 30px;
+}
+.text-hover-effect {
+  transition: color 0.3s; /* Smooth color transition on hover */
+}
+
+.text-hover-effect:hover {
+  color: blue;
+}
+
+.txt-lg{
+  font-size: 1.1rem;
+}
