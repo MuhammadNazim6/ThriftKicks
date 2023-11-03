@@ -21,8 +21,8 @@
 }
 
 .logo-size{
-  height:200px;
-  width: 200px;
+  height:250px;
+  width: 250px;
 }
 
 .msgHeight{
@@ -86,3 +86,4 @@
 .magnifier, .viewer {
   display: none;
 } 
+

@@ -166,6 +166,24 @@
 
   <div class="border-radius-xl mx-2 mx-md-3 position-relative" style="background-image: url('../assets/img/vr-bg.jpg'); background-size: cover;">
 
+
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-8">
+          <form class="form-inline my-2 my-lg-0">
+            <div class="input-group border" style= "height: 41px;">
+              <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
+                style="width: 600px;">
+              <div class="input-group-append">
+                <button class="btn btn-primary " type="submit">Search</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
     <main class="main-content border-radius-lg h-100">
       <div class="container-fluid">
         <table class="table table-bordered table-striped table-hover">
@@ -184,19 +202,19 @@
     <td class="text-dark"><%= products[i].size %></td>
     <!-- <td class="text-dark"><%= products[i].category_id %></td>  -->
     <td class="text-dark"><img class="product-view" src="<%= products[i].image.path1 %>"></td>
-
+ 
     
      <td>
       <a href="/admin/products/editproduct?id=<%=products[i]._id %>"
                     ><button class="btn btn-dark">Edit</button></a>
 
 
-                    <!-- <button data-user-id="<%= products[i]._id %>" data-state="<% if(products[i].isBlocked === true){%>blocked<% } else { %>unblocked<% } %>"
-                      class="btn blockUserButton
-                      <%  if(products[i].isBlocked === true){%> btn-success <% } else { %> btn-danger <% } %> mx-3 
+                    <button data-product-id="<%= products[i]._id %>" data-state="<% if(products[i].is_listed === true){%>listed<% } else { %>unlisted<% } %>"
+                      class="btn unlistButton custom-button
+                      <%  if(products[i].is_listed === true){%> btn-danger <% } else { %> btn-success <% } %> mx-3 
                       ">
-                      <%  if(products[i].isBlocked === true){%> Unblock <% } else { %> Block <% } %>
-                    </button> -->
+                      <%  if(products[i].is_listed === true){%> Unlist <% } else { %> List <% } %>
+                    </button>
 
 
                
@@ -296,6 +314,57 @@
     </div>
   </div>
 
+  <script>
+    document
+      .querySelectorAll(".unlistButton").forEach(function (button) {
+        button.addEventListener("click", function () {
+          const prodId = this.getAttribute("data-product-id");
+          const currentState = this.getAttribute("data-state");
+          let url;
+          if (currentState === "listed") {
+            url = `/admin/api/unlist/${prodId}`;
 
+          } else {
+            url = `/admin/api/list/${prodId}`;
+
+          }
+          // Send an AJAX request to block the user.
+          fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Failed to block user");
+              }
+            })
+            .then((data) => {
+              // Handle a successful response, e.g., display a success message or update the UI.
+              console.log(data.message);
+              if (currentState === "blocked") {
+                this.textContent = "Block";
+                this.setAttribute("data-state", "unblocked");
+                this.classList.remove("btn-success");
+                this.classList.add("btn-danger");
+              } else {
+                this.textContent = "Unblock";
+                this.setAttribute("data-state", "blocked");
+                this.classList.remove("btn-danger");
+                this.classList.add("btn-success");
+              }
+
+            })
+            .catch((error) => {
+              // Handle errors, e.g., display an error message.
+              console.error(error);
+            });
+        });
+      });
+
+  </script>
   
   <%- include('../layouts/footer.ejs')%>

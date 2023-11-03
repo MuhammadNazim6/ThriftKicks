@@ -35,6 +35,9 @@ admin_route.post("/users/edit-user", authAdmin.isLogin, adminController.updateUs
 admin_route.post("/api/block-user/:userId", adminController.blockUser)
 admin_route.post("/api/unblock-user/:userId", adminController.unblockUser)
 
+admin_route.post('/api/unlist/:prodId',adminController.unlistProduct)
+admin_route.post('/api/list/:prodId',adminController.listProduct)
+
 admin_route.get('/products',authAdmin.isLogin,adminController.loadProducts)
 
 admin_route.get('/products/addProduct',authAdmin.isLogin,adminController.loadAddProduct)
@@ -50,6 +53,6 @@ admin_route.post('/products/addCategory',adminController.addCategory)
 // admin_route.post('/test',adminController.categoryByProduct);
 
 admin_route.get('/products/editProduct',authAdmin.isLogin,adminController.loadEditProduct)
-admin_route.post('/products/editProduct',adminController.updateProduct)
+admin_route.post('/products/editProduct',upload.array('image',3),adminController.updateProduct)
 
 module.exports = admin_route; 

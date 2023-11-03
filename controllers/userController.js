@@ -158,17 +158,55 @@ const verifyLogin = async (req, res) => {
 // loading home
 const loadHome = async (req, res) => {
   try {
-    const products = await Product.find()
+    var search = "";
+    if (req.query.search) {
+      search = req.query.search;
+    }
+    //pagination
+    var page = 1;
+    if (req.query.page) {
+      page = req.query.page;
+    }
+    const limit = 4;
+
+    const products = await Product.find({
+      $or: [
+        { productName: { $regex: ".*" + search + ".*", $options: "i" } },
+        { description: { $regex: ".*" + search + ".*", $options: "i" } },
+        { size: { $regex: ".*" + search + ".*", $options: "i" } },
+      ],
+    })
+    .limit(limit * 1)
+    .skip((page - 1) * limit )
+    .exec();
+
+    const count = await Product.find({
+      $or: [
+        { productName: { $regex: ".*" + search + ".*", $options: "i" } },
+        { description: { $regex: ".*" + search + ".*", $options: "i" } },
+        { size: { $regex: ".*" + search + ".*", $options: "i" } },
+      ],
+    }).countDocuments();
+
+
     if (req.session.user_id) {
 
       const userData = await User.findById({ _id: req.session.user_id });
-      res.render("users/home", { user: userData, products:products } )
+      res.render("users/home", { 
+        user: userData,
+         products:products ,
+         totalPages:Math.ceil(count/limit),
+        currentPage : page })
+
     } else {
-      res.render("users/home",{ products:products});
+      res.render("users/home",{ products:products,
+        totalPages:Math.ceil(count/limit),
+        currentPage : page
+      });
     }
   } catch (error) {
     console.log(error.message);
-  }
+  } 
 };
 
 //load user account details
@@ -194,11 +232,25 @@ const userLogout = async (req, res) => {
 // shop loading
 const loadShop = async (req, res) => {
   try {
+    var search = "";
+    if (req.query.search) {
+      search = req.query.search;
+    }
+    const products = await Product.find({
+
+      $or: [
+        { productName: { $regex: ".*" + search + ".*", $options: "i" } },
+        { description: { $regex: ".*" + search + ".*", $options: "i" } },
+        { size: { $regex: ".*" + search + ".*", $options: "i" } },
+        
+      ],
+    })
+
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id });
-      res.render("users/shop", { user: userData });
+      res.render("users/shop", { user: userData ,products:products});
     } else {
-      res.render("users/shop");
+      res.render("users/shop",{products:products});
     }
   } catch (error) {
     console.log(error.message);

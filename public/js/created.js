@@ -60,3 +60,5 @@ button3.addEventListener('click',function(){
 //   var zoomInstance = $element.zoom(3);
 //   zoomInstance.setZoom(20);
 // });
+
+

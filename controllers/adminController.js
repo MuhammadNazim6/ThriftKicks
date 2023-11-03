@@ -96,7 +96,7 @@ const logout = async (req, res) => {
 
 //dashboard function
 const admDashboard = async (req, res) => {
-  try {
+  try { 
     var search = "";
     if (req.query.search) {
       search = req.query.search;
@@ -228,10 +228,14 @@ const loadAddProduct = async (req, res) => {
 //adding products
 const addProduct = async (req, res) => {
   try {
+    
+
     const filePaths = req.files.map(file => file.path);
+
     const Path1 = "\\Images\\" + path.basename(filePaths[0]);
     const Path2 = "\\Images\\" + path.basename(filePaths[1]);
     const Path3 = "\\Images\\" + path.basename(filePaths[2]);
+    
 
     const product = new Product({
       productName: req.body.productName,
@@ -249,6 +253,7 @@ const addProduct = async (req, res) => {
       offerPrice: req.body.offerPrice,
       stock: req.body.stock,
     });
+   
     const newProduct = await product.save();
     const categoryFull = await Category.find();
     if (newProduct) {
@@ -338,9 +343,12 @@ const loadEditProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    await Product.findByIdAndUpdate(
-
-      { _id: req.body.id },
+    const filePaths = req.files.map(file => file.path);
+    const Path1 = "\\Images\\" + path.basename(filePaths[0]);
+    const Path2 = "\\Images\\" + path.basename(filePaths[1]);
+    const Path3 = "\\Images\\" + path.basename(filePaths[2]);
+    await Product.findByIdAndUpdate({ _id: req.body.id },
+      
       {
         $set: {
           productName: req.body.productName,
@@ -348,6 +356,13 @@ const updateProduct = async (req, res) => {
           size: req.body.size,
           actualPrice: req.body.actualPrice,
           stock: req.body.stock,
+          image: {
+            contentType: 'image/png',
+            path1: Path1,
+            path2: Path2,
+            path3: Path3
+    
+          },
 
         },
       }

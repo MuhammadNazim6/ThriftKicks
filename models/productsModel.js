@@ -53,6 +53,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     
   },
+  is_listed: {
+    type: Boolean,
+    default: true,
+  }
 
 });
 
