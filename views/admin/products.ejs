@@ -75,20 +75,13 @@
             <span class="nav-link-text ms-1">Profile</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">login</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
+       
         <li class="nav-item">
           <a class="nav-link text-white " href="/logout">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">assignment</i>
             </div>
-            <span class="nav-link-text ms-1">Log out</span>
+            <span class="nav-link-text ms-1">Logout</span>
           </a>
         </li>
       </ul>
@@ -209,7 +202,7 @@
                     ><button class="btn btn-dark">Edit</button></a>
 
 
-                    <button data-product-id="<%= products[i]._id %>" data-state="<% if(products[i].is_listed === true){%>listed<% } else { %>unlisted<% } %>"
+                    <button data-product-id="<%= products[i]._id %>" data-state="<% if(products[i].is_listed === true){%>listed<%} else {%>unlisted<%} %>"
                       class="btn unlistButton custom-button
                       <%  if(products[i].is_listed === true){%> btn-danger <% } else { %> btn-success <% } %> mx-3 
                       ">
@@ -315,56 +308,53 @@
   </div>
 
   <script>
-    document
-      .querySelectorAll(".unlistButton").forEach(function (button) {
-        button.addEventListener("click", function () {
-          const prodId = this.getAttribute("data-product-id");
-          const currentState = this.getAttribute("data-state");
-          let url;
-          if (currentState === "listed") {
-            url = `/admin/api/unlist/${prodId}`;
-
-          } else {
-            url = `/admin/api/list/${prodId}`;
-
-          }
-          // Send an AJAX request to block the user.
-          fetch(url, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+    document.querySelectorAll(".unlistButton").forEach(function (button) {
+      button.addEventListener("click", function () {
+        const prodId = this.getAttribute("data-product-id");
+        const currentState = this.getAttribute("data-state");
+        let url;
+        if (currentState === "listed") {
+          url = `/admin/api/unlist/${prodId}`;
+        } else {
+          url = `/admin/api/list/${prodId}`;
+        }
+  
+        // Send an AJAX request to toggle the product state.
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Failed to toggle product state");
+            }
           })
-            .then((response) => {
-              if (response.ok) {
-                return response.json();
-              } else {
-                throw new Error("Failed to block user");
-              }
-            })
-            .then((data) => {
-              // Handle a successful response, e.g., display a success message or update the UI.
-              console.log(data.message);
-              if (currentState === "blocked") {
-                this.textContent = "Block";
-                this.setAttribute("data-state", "unblocked");
-                this.classList.remove("btn-success");
-                this.classList.add("btn-danger");
-              } else {
-                this.textContent = "Unblock";
-                this.setAttribute("data-state", "blocked");
-                this.classList.remove("btn-danger");
-                this.classList.add("btn-success");
-              }
-
-            })
-            .catch((error) => {
-              // Handle errors, e.g., display an error message.
-              console.error(error);
-            });
-        });
+          .then((data) => {
+            // Handle a successful response, e.g., display a success message or update the UI.
+            console.log(data.message);
+            if (currentState === "listed") {
+              this.textContent = "List"; // Changed from "list" to "List"
+              this.setAttribute("data-state", "unlisted");
+              this.classList.remove("btn-danger");
+              this.classList.add("btn-success");
+            } else {
+              this.textContent = "Unlist"; // Changed from "List" to "Unlist"
+              this.setAttribute("data-state", "listed");
+              this.classList.remove("btn-success");
+              this.classList.add("btn-danger");
+            }
+          })
+          .catch((error) => {
+            // Handle errors, e.g., display an error message.
+            console.error(error);
+          });
       });
-
+    });
   </script>
+  
   
   <%- include('../layouts/footer.ejs')%>

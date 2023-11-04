@@ -1,8 +1,8 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const user_route = express();
-const path = require("path");
-const auth = require("../middleware/auth");
+const path = require("path")
+const auth = require("../middleware/auth")
 
 user_route.get("/register", auth.isLogout, userController.loadRegister);
 user_route.post("/register", userController.insertUser);

@@ -9,19 +9,6 @@ const bcrypt = require("bcrypt")
 const path = require('path')
 
 
-
-
-// const load = async (req,res)=>{
-//   res.render('admin/test')
-// }
-
-// const categoryByProduct = async (req,res)=>{
-//   const productData = await Product.find({_id:'65416848a43ee5b5ac829f1f'})
-//   console.log(productData);
-// }
-
-
-
 // for encrypted password
 const securePassword = async (password) => {
   try {
@@ -160,7 +147,6 @@ const blockUser = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
     user.isBlocked = true;
 
     await user.save();
@@ -205,8 +191,6 @@ const loadProducts = async (req, res) => {
         { size: { $regex: ".*" + search + ".*", $options: "i" } },
       ],
     });
-
-
 
     res.render("admin/products", { products: fullProducts });
   } catch (error) {
@@ -297,6 +281,12 @@ const loadAddCategory = async (req, res) => {
 const addCategory = async (req, res) => {
   try {
     let checkCategory = req.body.categoryName;
+    if(checkCategory.includes(" ") || /^[0-9]+$/.test(checkCategory)){
+      res.render("admin/addCategory", {
+        fmessage: "Enter a valid Category Name by adding - instead of space",
+      });
+    }
+
     let casedCategory = checkCategory.charAt(0).toUpperCase() + checkCategory.slice(1).toLowerCase();
 
     const existCategory = await Category.findOne({ categoryName: casedCategory })
@@ -375,6 +365,43 @@ const updateProduct = async (req, res) => {
 }
 
 
+//unlist products
+const unlistProduct = async (req,res,next)=>{
+    try {
+    const prodId = req.params.prodId;
+    const product = await Product.findOne({_id:prodId})
+
+    if (!product) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    product.is_listed = false;
+    product.save();
+    res.json({ message: "Product Unlisted successfully" });
+    next();
+    } catch (error) {
+      console.log(error.message);
+    }
+}
+
+
+//list products
+const listProduct = async (req,res,next)=>{
+  try {
+  const prodId = req.params.prodId;
+  const product = await Product.findOne({_id:prodId})
+
+  if (!product) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  product.is_listed = true;
+  product.save();
+
+  res.json({ message: "Product Listed successfully" });
+  next();
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 module.exports = {
   loadAdminLogin,
   verifyLogin,
@@ -392,5 +419,7 @@ module.exports = {
   loadAddCategory,
   addCategory,
   loadEditProduct,
-  updateProduct
+  updateProduct,
+  unlistProduct,
+  listProduct
 };

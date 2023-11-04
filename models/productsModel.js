@@ -50,7 +50,7 @@ const productSchema = new mongoose.Schema({
   },
   ratings: [ratingSchema], // An array of the Rating subdocument
   stock: {
-    type: String,
+    type: Number,
     
   },
   is_listed: {

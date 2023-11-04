@@ -93,6 +93,7 @@
 
          <% if(product){  %>
           
+
             <div class="row">
               <div class="col-lg-3 col-md-3">
                   <ul class="nav nav-tabs" role="tablist">
@@ -119,6 +120,13 @@
                       </li>
                   </ul>
               </div>
+
+                          <!--w3 schoool-->
+<!-- <div class="img-zoom-container">
+    <img id="myimage" src="images/1698776105262.jpg" width="300" height="240" alt="Girl">
+    <div id="myresult" class="img-zoom-result"></div>
+  </div> -->
+
               <div class="col-lg-6 col-md-9">
                   <div class="tab-content zoom">
                       <div class="" id="tabs-1" role="tabpanel">
@@ -136,19 +144,6 @@
                       </div>
 
                   
-
-
-
-                      <!-- <div class="tab-pane" id="tabs-2" role="tabpanel">
-                          <div class="product__details__pic__item">
-                              <img src="<%= product.image.path2 %>" alt="">
-                          </div>
-                      </div>
-                      <div class="tab-pane" id="tabs-3" role="tabpanel">
-                          <div class="product__details__pic__item">
-                              <img src="<%= product.image.path3 %>" alt="">
-                          </div>
-                      </div> -->
                       <div class="tab-pane" id="tabs-4" role="tabpanel">
                           <div class="product__details__pic__item">
                               <img src="assets/shop-details/product-big-4.png" alt="">
@@ -163,6 +158,7 @@
 
         </div>
     </div>
+
 
 
 
@@ -184,19 +180,11 @@
                         <p><%= product.description %></p>
                         <div class="product__details__option">
                             <div class="product__details__option__size">
-                                <span>Size:  <%= product.size %></span>
-                                <!-- <label for="xxl">xxl
-                                    <input type="radio" id="xxl">
-                                </label>
-                                <label class="active" for="xl">xl
-                                    <input type="radio" id="xl">
-                                </label>
-                                <label for="l">l
-                                    <input type="radio" id="l">
-                                </label>
-                                <label for="sm">s
-                                    <input type="radio" id="sm">
-                                </label> -->
+                                <span>Size:<%= product.size %></span>
+                            </div>
+                            <div class="product__details__option__size">
+                                <span class="text-lg text-bold text-info"><%if((product.stock < 5) && (product.stock > 0)){%>Limited Stock<% }else if(product.stock === 0){%>Not In Stock<%}else{%>In Stock<%}%></span>
+
                             </div>
                             <!-- <div class="product__details__option__color">
                                 <span>Color:</span>
@@ -227,7 +215,7 @@
                         </div>
                         <div class="product__details__btns__option">
                             <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
-                            <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a>
+                            <!-- <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a> -->
                         </div>
                         <div class="product__details__last__option">
                             <h5><span>Guaranteed Safe Checkout</span></h5>
@@ -520,6 +508,49 @@
 </section> -->
 <!-- Related Section End -->
 
+
+
+
+
+<!-- <section class="header_part">
+    <h1> making</h1>
+</section>
+
+<section class="xzoom_part">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="xzoom_container">
+                    <img src="images/1698776105262.jpg" class="xzoom" id="xzoom-default" alt="">
+
+                    <div class="xzoom-thumbs">
+                        <a href="images/1698776105262.jpg" >
+                            <img src="images/1698776105262.jpg" alt="" class="xzoom-gallery" width="80" xpreview="images/1698776105262.jpg">
+
+                        </a>
+                        <a href="images/1698776105262.jpg" >
+                            <img src="images/1698776105262.jpg" alt="" class="xzoom-gallery" width="80" xpreview="images/1698776105262.jpg">
+
+                        </a>
+                        <a href="images/1698776105262.jpg" >
+                            <img src="images/1698776105262.jpg" alt="" class="xzoom-gallery" width="80" xpreview="images/1698776105262.jpg">
+
+                        </a>
+
+                        
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+
+
+
 <!-- Footer Section Begin -->
 <footer class="footer">
     <div class="container">
@@ -602,12 +633,9 @@
 <script>
 
 
-// var x = $('.zoomable-image').zoom(3);
-// x.setZoom(20);
-// var y = $('.zoomable-image').zoom(3);
-// y.setZoom(20);
-// var z = $('.zoomable-image').zoom(3);
-// z.setZoom(20);
+
+
+
 
 </script>
 

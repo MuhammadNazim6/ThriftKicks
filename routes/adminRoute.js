@@ -1,21 +1,8 @@
 const express = require("express")
 const adminController = require("../controllers/adminController")
 const admin_route = express()
-const path = require("path")
 const authAdmin = require("../middleware/authAdmin")
-const multer = require('multer')
-
-const storage = multer.diskStorage({
-  destination:(req,file,cb)=>{
-    cb(null, 'public/images')
-  },
-  filename: (req,file,cb)=>{
-  
-    cb(null,Date.now()+path.extname(file.originalname))
-  }
-  
-})
-const upload = multer({storage: storage})
+const upload = require('../multer.js')
 
 
 admin_route.get("/", authAdmin.isLogout, adminController.loadAdminLogin);
@@ -48,9 +35,6 @@ admin_route.get('/categories',authAdmin.isLogin,adminController.loadCategories)
 admin_route.get('/products/addCategory',authAdmin.isLogin,adminController.loadAddCategory)
 admin_route.post('/products/addCategory',adminController.addCategory)
 
-
-// admin_route.get('/test',adminController.load);
-// admin_route.post('/test',adminController.categoryByProduct);
 
 admin_route.get('/products/editProduct',authAdmin.isLogin,adminController.loadEditProduct)
 admin_route.post('/products/editProduct',upload.array('image',3),adminController.updateProduct)

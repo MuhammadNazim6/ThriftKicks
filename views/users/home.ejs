@@ -68,7 +68,7 @@
                                             <% if(typeof user !=='undefined' ) { %>
                                                 <a id="" href="/cart">Cart <img src="assets/icon/cart.png" alt="" /></a>
                                                 <% } else { %>
-                                                    <a id="cartButton">Cart <img src="assets/icon/cart.png"
+                                                    <a class="cartButton">Cart <img src="assets/icon/cart.png"
                                                             alt="" /></a>
                                                     <% } %>
                                         </li>
@@ -365,17 +365,5 @@
     <script src="/js/main.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
 
-
-
-    <!-- <script>
-        document.getElementById("cartButton").addEventListener("click", function () {
-
-            $(document).ready(function () {
-                $("#loginSignupModal").addClass("show");
-                $("#loginSignupModal").modal("show");
-            });
-           
-        });
-    </script> -->
 
     <%- include('../layouts/footer.ejs')%>

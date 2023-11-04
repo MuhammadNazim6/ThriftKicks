@@ -93,7 +93,7 @@ if(currentValue.password.length<6){
         // image:req.file.filename,
         password: spassword,
         is_admin: 0,
-      });
+      }); 
       //returning a promise
       const userData = await user.save(); //saving data to mongo db
 
@@ -170,6 +170,7 @@ const loadHome = async (req, res) => {
     const limit = 4;
 
     const products = await Product.find({
+      is_listed:true,
       $or: [
         { productName: { $regex: ".*" + search + ".*", $options: "i" } },
         { description: { $regex: ".*" + search + ".*", $options: "i" } },
@@ -180,7 +181,8 @@ const loadHome = async (req, res) => {
     .skip((page - 1) * limit )
     .exec();
 
-    const count = await Product.find({
+    const count = await Product.find({ 
+     
       $or: [
         { productName: { $regex: ".*" + search + ".*", $options: "i" } },
         { description: { $regex: ".*" + search + ".*", $options: "i" } },
@@ -236,8 +238,14 @@ const loadShop = async (req, res) => {
     if (req.query.search) {
       search = req.query.search;
     }
-    const products = await Product.find({
+    var page = 1;
+    if (req.query.page) {
+      page = req.query.page;
+    }
+    const limit = 6;
 
+    const products = await Product.find({
+      is_listed:true,
       $or: [
         { productName: { $regex: ".*" + search + ".*", $options: "i" } },
         { description: { $regex: ".*" + search + ".*", $options: "i" } },
@@ -245,17 +253,38 @@ const loadShop = async (req, res) => {
         
       ],
     })
+    .limit(limit * 1)
+    .skip((page - 1) * limit )
+    .exec();
+
+    const count = await Product.find({ 
+     
+      $or: [
+        { productName: { $regex: ".*" + search + ".*", $options: "i" } },
+        { description: { $regex: ".*" + search + ".*", $options: "i" } },
+        { size: { $regex: ".*" + search + ".*", $options: "i" } },
+      ],
+    }).countDocuments();
 
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id });
-      res.render("users/shop", { user: userData ,products:products});
+      res.render("users/shop", { user: userData ,
+        products:products,
+        totalPages:Math.ceil(count/limit),
+        currentPage : page 
+
+      });
     } else {
-      res.render("users/shop",{products:products});
+      res.render("users/shop",{products:products,
+        totalPages:Math.ceil(count/limit),
+        currentPage : page
+      });
     }
   } catch (error) {
     console.log(error.message);
   }
 };
+
 
 //loading shopping cart
 const loadcart = async (req, res) => {
