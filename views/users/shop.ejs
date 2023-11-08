@@ -172,25 +172,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
-                                    </div>
-                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__price">
-                                                <ul>
-                                                    <li><a href="#">$0.00 - $50.00</a></li>
-                                                    <li><a href="#">$50.00 - $100.00</a></li>
-                                                    <li><a href="#">$100.00 - $150.00</a></li>
-                                                    <li><a href="#">$150.00 - $200.00</a></li>
-                                                    <li><a href="#">$200.00 - $250.00</a></li>
-                                                    <li><a href="#">250.00+</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
+                             
                                 <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseFour">Size</a>
@@ -226,44 +208,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
-                                    </div>
-                                    <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__color">
-                                                <label class="c-1" for="sp-1">
-                                                    <input type="radio" id="sp-1">
-                                                </label>
-                                                <label class="c-2" for="sp-2">
-                                                    <input type="radio" id="sp-2">
-                                                </label>
-                                                <label class="c-3" for="sp-3">
-                                                    <input type="radio" id="sp-3">
-                                                </label>
-                                                <label class="c-4" for="sp-4">
-                                                    <input type="radio" id="sp-4">
-                                                </label>
-                                                <label class="c-5" for="sp-5">
-                                                    <input type="radio" id="sp-5">
-                                                </label>
-                                                <label class="c-6" for="sp-6">
-                                                    <input type="radio" id="sp-6">
-                                                </label>
-                                                <label class="c-7" for="sp-7">
-                                                    <input type="radio" id="sp-7">
-                                                </label>
-                                                <label class="c-8" for="sp-8">
-                                                    <input type="radio" id="sp-8">
-                                                </label>
-                                                <label class="c-9" for="sp-9">
-                                                    <input type="radio" id="sp-9">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                             
                                 <!-- <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
@@ -336,19 +281,33 @@
          
         
          <div class="col-lg-4" >
-            <a href="/productView?id=<%=products[i]._id %>">
+           
             
-         <div class="card m-3 " style="width: 18rem;">
-            <img src="<%= products[i].image.path1 %>" class="card-img-top" alt="<%= products[i].image.path1 %>">
-            <div class="card-body">
-                <h5><%= products[i].productName %> </h5>
-                <h4>₹<%= products[i].actualPrice %>/-</h4>
-                <h5><%= products[i].size %></h5>
-         <p class="card-text"><%= products[i].description %></p>
-            </div>
+            <div class="card m-3 " style="width: 15rem; height:30rem">
+                <a href="/productView?id=<%=products[i]._id %>">
+                    <img src="<%= products[i].image.path1 %>" class="card-image"
+                        alt="">
+                </a>
+                <div class="card-body">
+                    <h6>
+                        <a href="/productView?id=<%=products[i]._id %>">
+                            <%= products[i].productName %>
+                        </a>
+                    </h>
+                    <p class="card-text">
+                        <%= products[i].category_id.categoryName %>
+                    </p>
+                    <h5>₹<%= products[i].actualPrice %>/-</h5>
+                    <h5><%= products[i].size %></h5>
+                    <br>
+                    <button data-product-id="<%= products[i]._id %>"
+                        class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
+                        to Cart</button>
+                    <!-- <button class="btn btn-dark  buy-button cartButton">Buy Now</button> -->
+                    
+                </div>
           </div>
           
-        </a>
         </div>
  
   <%  }  %>
@@ -470,26 +429,49 @@
                 </div>
 
                 <!-- modal staring -->
-                <div class="modal-body">
+                <div class="modal-body text-center>
                     <p style="color: #fff">
                         Welcome to our website! To access Cart and other features, please log
                         in or sign up.
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button   type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    <!-- <button   type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         style="background-color: #000; color: #fff">
                         Close
-                    </button>
+                    </button> -->
                     <a href="/login" class="btn btn-primary">Login</a>
-                    <a href="/register" class="btn btn-success">Sign Up</a>
+                    <a href="/register" class="btn btn-info">Sign Up</a>
                 </div>
             </div>
         </div>
     </div>
 
 
+    <script>
+        document.querySelectorAll(".addtoCartButton").forEach(function (button) {
+            button.addEventListener("click", addtoCart)
+        })
 
+        async function addtoCart() {
+            const prodId = this.getAttribute("data-product-id");
+            // const dataToSend ={"name":"nazim"}
+            const response = await fetch(`/api/addtoCart/${prodId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // body: JSON.stringify(dataToSend)
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            console.log(data.message);
+
+        }
+
+    </script>
 
 
 

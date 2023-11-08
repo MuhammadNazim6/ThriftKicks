@@ -259,7 +259,7 @@ const loadShop = async (req, res) => {
     if (req.query.page) {
       page = req.query.page;
     }
-    const limit = 6;
+    const limit = 9;
 
     const products = await Product.find({
       is_listed: true,
@@ -269,6 +269,7 @@ const loadShop = async (req, res) => {
         { size: { $regex: ".*" + search + ".*", $options: "i" } },
       ],
     })
+      .populate("category_id")
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
@@ -305,15 +306,21 @@ const loadShop = async (req, res) => {
 const loadcart = async (req, res) => {
   try {
     const user_id = req.session.user_id;
+
     const userData = await User.findById({ _id: user_id });
     const cart = await Cart.findOne({ userId: user_id })
       .populate("userId")
-      .populate("productId");
+      .populate("products.productId");
 
-    res.render("users/shopping-cart", { user: userData });
-    // }else{
-    // res.render('users/shopping-cart',{data:"Login or Signup for Using Cart"});
-    // res.render('users/shopping-cart');
+    // console.log(cart.products[0].productId.productName);
+    // console.log(cart.products[1].productId.productName);
+    // console.log(cart.products[2].productId.productName);
+    // console.log(cart.products[0].productId.image.path1);
+    if (cart) {
+      res.render("users/shopping-cart", { user: userData, cart: cart });
+    } else {
+      res.render("users/shopping-cart", { user: userData });
+    }
   } catch (error) {
     console.log(error.message);
   }
@@ -324,13 +331,14 @@ const loadProductView = async (req, res) => {
     const product_id = req.query.id;
     const userId = req.session.user_id;
     const user = await User.findOne({ _id: userId });
-    const product = await Product.findOne({ _id: product_id});
+    const product = await Product.findOne({ _id: product_id });
 
-    res.render("users/productView", { product: product ,user:user});
+    res.render("users/productView", { product: product, user: user });
   } catch (error) {
     console.log(error.message);
   }
 };
+
 
 //add to cart
 const addtoCart = async (req, res) => {
@@ -343,7 +351,6 @@ const addtoCart = async (req, res) => {
     const quantity = req.body.quantity ?? 1;
 
     const cartExist = await Cart.findOne({ userId: user_id });
-    console.log(cartExist);
     //if No cart for user
     if (!cartExist) {
       const newCart = new Cart({
@@ -356,7 +363,7 @@ const addtoCart = async (req, res) => {
         ],
       });
       const cartAdded = await newCart.save();
-      console.log(cartAdded);
+      console.log("New cart added to user");
       res.json({
         message: "Created a new Cart and added to cart successfully",
       });
@@ -372,11 +379,11 @@ const addtoCart = async (req, res) => {
         console.log("Product found");
 
         const result = await Cart.updateOne(
-          { userId:user_id,"products.productId": product_id},
+          { userId: user_id, "products.productId": product_id },
           { $inc: { "products.$.quantity": 1 } } // Use "$" to identify the matched array element
         );
 
-        console.log( "Quantity incremented successfully");
+        console.log("Quantity incremented successfully");
 
         //if same product doesnt exist in the cart
       } else {
@@ -394,6 +401,20 @@ const addtoCart = async (req, res) => {
     console.log(error.message);
   }
 };
+
+//decrement quantity function
+const productDecrement = async (req,res)=>{
+  try {
+    const user_id = req.session.user_id;
+    const user = await User.findOne({ _id: user_id }); 
+    console.log("User name is " + user.firstname + " " + user.lastname);
+    const product_id = req.params.prodId;
+
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
 module.exports = {
   loadLogin,

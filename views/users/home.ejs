@@ -122,6 +122,63 @@
     </section>
     <!-- Hero Section End -->
 
+    <!-- <section class="product spad">
+            
+                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+                <% if(products.length>0){
+                    for(let i=0;i<products.length ;i++){ %>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <ul class="filter__controls">
+                                        <li class="active" data-filter="*"></li>
+                                        <li data-filter=".new-arrivals"></li>
+                                        <li data-filter=".hot-sales"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+                            <ul class="product__hover">
+
+                                <li><a href="/productView?id=<%=products[0]._id %>"><img src="<%= products[0].image.path1 %>" class="leftside"></a></li>
+                                
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><%= products[0].productName %></h6>
+
+                            <a href="#" class="add-cart"><%= products[0].category_id.categoryName %></a>
+                            
+                           
+                           
+                            <h5>₹<%= products[0].actualPrice %>/-</h5>
+                            <h6 class="text-md"><%= products[0].size %></h6>
+                            <div class="product__color__select">
+                               <br>
+                               <span><%= products[0].size %></span>
+                                
+                            </div>
+                            
+                        </div>
+                        <button data-product-id="<%= products[0]._id %>"
+                            class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
+                            to Cart</button>
+                            <button class="btn btn-dark  buy-button cartButton">Buy Now</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+           
+            
+                    <% } %>
+                        <% } %>
+              
+    </section> -->
+    <!-- Product Section End -->
+
 
     <!-- Product Section Start -->
     <div class="container">
@@ -152,35 +209,28 @@
                     <div class="col-lg-3">
 
 
-                        <div class="card m-3 " style="width: 18rem; height:40rem">
+                        <div class="card m-3 " style="width: 15rem; height:30rem">
                             <a href="/productView?id=<%=products[i]._id %>">
-                                <img src="<%= products[i].image.path1 %>" class="card-img-top"
-                                    alt="<%= products[i].image.path1 %>">
+                                <img src="<%= products[i].image.path1 %>" class="card-image"
+                                    alt="">
                             </a>
                             <div class="card-body">
-                                <h5>
+                                <h6>
                                     <a href="/productView?id=<%=products[i]._id %>">
                                         <%= products[i].productName %>
                                     </a>
-                                </h5>
+                                </h>
                                 <p class="card-text">
                                     <%= products[i].category_id.categoryName %>
                                 </p>
-                                <h4>₹<%= products[i].actualPrice %>/-</h4>
+                                <h5>₹<%= products[i].actualPrice %>/-</h5>
+                                <h5><%= products[i].size %></h5>
                                 <br>
                                 <button data-product-id="<%= products[i]._id %>"
                                     class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
                                     to Cart</button>
-                                <button class="btn btn-dark  buy-button cartButton">Buy Now</button>
+                                <!-- <button class="btn btn-dark  buy-button cartButton">Buy Now</button> -->
                                 
-                                <!-- <div class="product__details__cart__option">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </div>
-                                    <a href="#" class="primary-btn">add to cart</a>
-                                </div> -->
                             </div>
 
                         </div>
@@ -195,6 +245,8 @@
         </div>
 
     </div>
+
+    <!-- pagination -->
     <div class="container ">
         <div class="d-flex justify-content-center">
             <nav aria-label="Page navigation">
@@ -362,19 +414,19 @@
                 </div>
 
                 <!-- modal staring -->
-                <div class="modal-body">
+                <div class="modal-body text-center">
                     <p style="color: #fff">
                         Welcome to our website! To access Cart and other features, please log
                         in or sign up.
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         style="background-color: #000; color: #fff">
                         Close
-                    </button>
+                    </button> -->
                     <a href="/login" class="btn btn-primary">Login</a>
-                    <a href="/register" class="btn btn-success">Sign Up</a>
+                    <a href="/register" class="btn btn-info">Sign Up</a>
                 </div>
             </div>
         </div>

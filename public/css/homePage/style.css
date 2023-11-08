@@ -974,8 +974,11 @@ ol {
 
 .product__item__pic {
 	height: 260px;
-	position: relative;
+	/* position: relative; */
 	background-position: center center;
+}
+.leftside{
+	margin-left: -35px;
 }
 
 .product__item__pic .label {
@@ -994,8 +997,8 @@ ol {
 
 .product__item__pic .product__hover {
 	position: absolute;
-	right: -200px;
-	top: 20px;
+	right: 20px;
+	/* top: 20px; */
 	-webkit-transition: all, 0.8s;
 	-o-transition: all, 0.8s;
 	transition: all, 0.8s;

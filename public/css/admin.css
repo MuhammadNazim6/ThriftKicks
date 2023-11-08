@@ -13,7 +13,7 @@
 
 
 .addtocart-button{
-  width: 230px;
+  width: 200px;
   color: #212529;  
 
   background-color:#d2c814;
@@ -25,7 +25,7 @@
   border-color: #ece117;
 }
 .buy-button{
-  width: 230px;
+  width: 200px;
   color: #ffffff;
 }
 .buy-button:hover{
@@ -158,4 +158,15 @@
   /*set the size of the result div:*/
   width: 300px;
   height: 300px;
+}
+
+.cart_image{
+  height: 180px;
+  width: 180px;
+}
+.imaage{
+  border-radius: 10px;
+}
+.no_products_incart{
+  height: 250px;
 }
