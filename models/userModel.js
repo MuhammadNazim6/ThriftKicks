@@ -27,6 +27,7 @@ const addressSchema = new mongoose.Schema({
   },
 });
 
+
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -66,10 +67,48 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+
+
+const cartSchema = new mongoose.Schema({
+  userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+  },
+  products: [
+      {
+        productId: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'product', 
+              required: true
+          },
+          quantity: {
+              type: Number,
+              default: 1,
+              min: 1,
+              max: 10
+          }
+      }
+  ],
+  createdAt: {
+      type: Date,
+      default: Date.now,
+      required: true
+  },
+  updatedAt: {
+      type: Date,
+      default: Date.now,
+      required: true
+  }
+});
+
+
 const User = mongoose.model("User", userSchema);
 const Address = mongoose.model("Address", addressSchema);
+const Cart = mongoose.model("Cart",cartSchema)
 
 module.exports = {
   User,
   Address,
+  Cart
 };

@@ -11,6 +11,28 @@
   width: 120px;
 }
 
+
+.addtocart-button{
+  width: 230px;
+  color: #212529;  
+
+  background-color:#d2c814;
+  border-color: #d2c814;
+}
+.addtocart-button:hover{
+  color: #ffffff;
+  background-color:#ece117;
+  border-color: #ece117;
+}
+.buy-button{
+  width: 230px;
+  color: #ffffff;
+}
+.buy-button:hover{
+  color: #000000;
+
+}
+
 .product-view{
   height:120px;
   width:120px;

@@ -5,9 +5,9 @@ const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
 const Product = ProductsModel.Product;
 const Category = CategoryModel.Category;
-const bcrypt = require("bcrypt")
-const path = require('path')
-
+const bcrypt = require("bcrypt");
+const path = require("path");
+const { log } = require("util");
 
 // for encrypted password
 const securePassword = async (password) => {
@@ -83,7 +83,7 @@ const logout = async (req, res) => {
 
 //dashboard function
 const admDashboard = async (req, res) => {
-  try { 
+  try {
     var search = "";
     if (req.query.search) {
       search = req.query.search;
@@ -190,7 +190,9 @@ const loadProducts = async (req, res) => {
         { description: { $regex: ".*" + search + ".*", $options: "i" } },
         { size: { $regex: ".*" + search + ".*", $options: "i" } },
       ],
-    });
+    })
+      .populate("category_id")
+      .exec();
 
     res.render("admin/products", { products: fullProducts });
   } catch (error) {
@@ -212,14 +214,11 @@ const loadAddProduct = async (req, res) => {
 //adding products
 const addProduct = async (req, res) => {
   try {
-    
-
-    const filePaths = req.files.map(file => file.path);
+    const filePaths = req.files.map((file) => file.path);
 
     const Path1 = "\\Images\\" + path.basename(filePaths[0]);
     const Path2 = "\\Images\\" + path.basename(filePaths[1]);
     const Path3 = "\\Images\\" + path.basename(filePaths[2]);
-    
 
     const product = new Product({
       productName: req.body.productName,
@@ -227,28 +226,28 @@ const addProduct = async (req, res) => {
       actualPrice: req.body.actualPrice,
       size: req.body.size,
       image: {
-        contentType: 'image/png',
+        contentType: "image/png",
         path1: Path1,
         path2: Path2,
-        path3: Path3
-
+        path3: Path3,
       },
       category_id: req.body.category,
       offerPrice: req.body.offerPrice,
       stock: req.body.stock,
     });
-   
+
     const newProduct = await product.save();
+    
     const categoryFull = await Category.find();
     if (newProduct) {
       res.render("admin/addProduct", {
         smessage: "Product Added Successfully.",
-        category: categoryFull
+        category: categoryFull,
       });
     } else {
       res.render("admin/addProduct", {
         fmessage: "Failed to add product.",
-        category: categoryFull
+        category: categoryFull,
       });
     }
   } catch (error) {
@@ -259,13 +258,12 @@ const addProduct = async (req, res) => {
 //Load categories
 const loadCategories = async (req, res) => {
   try {
-    const categories = await Category.find()
-    res.render('admin/categories', { category: categories })
+    const categories = await Category.find();
+    res.render("admin/categories", { category: categories });
   } catch (error) {
     console.log(error.message);
   }
-}
-
+};
 
 //load add category
 const loadAddCategory = async (req, res) => {
@@ -276,20 +274,23 @@ const loadAddCategory = async (req, res) => {
   }
 };
 
-
 //Add category
 const addCategory = async (req, res) => {
   try {
     let checkCategory = req.body.categoryName;
-    if(checkCategory.includes(" ") || /^[0-9]+$/.test(checkCategory)){
+    if (checkCategory.includes(" ") || /^[0-9]+$/.test(checkCategory)) {
       res.render("admin/addCategory", {
         fmessage: "Enter a valid Category Name by adding - instead of space",
       });
     }
 
-    let casedCategory = checkCategory.charAt(0).toUpperCase() + checkCategory.slice(1).toLowerCase();
+    let casedCategory =
+      checkCategory.charAt(0).toUpperCase() +
+      checkCategory.slice(1).toLowerCase();
 
-    const existCategory = await Category.findOne({ categoryName: casedCategory })
+    const existCategory = await Category.findOne({
+      categoryName: casedCategory,
+    });
 
     if (!existCategory) {
       const category = new Category({
@@ -312,33 +313,32 @@ const addCategory = async (req, res) => {
         fmessage: "This Category already exists",
       });
     }
-
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
 //loading edit Product
 const loadEditProduct = async (req, res) => {
   try {
     const id = req.query.id;
-    const products = await Product.findOne({ _id: id })
-    res.render('admin/editProduct', { products: products })
+    const products = await Product.findOne({ _id: id });
+    res.render("admin/editProduct", { products: products });
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
-
+//update Product details
 const updateProduct = async (req, res) => {
   try {
-    const filePaths = req.files.map(file => file.path);
+    const filePaths = req.files.map((file) => file.path);
     const Path1 = "\\Images\\" + path.basename(filePaths[0]);
     const Path2 = "\\Images\\" + path.basename(filePaths[1]);
     const Path3 = "\\Images\\" + path.basename(filePaths[2]);
-    await Product.findByIdAndUpdate({ _id: req.body.id },
-      
+    await Product.findByIdAndUpdate(
+      { _id: req.body.id },
+
       {
         $set: {
           productName: req.body.productName,
@@ -347,13 +347,11 @@ const updateProduct = async (req, res) => {
           actualPrice: req.body.actualPrice,
           stock: req.body.stock,
           image: {
-            contentType: 'image/png',
+            contentType: "image/png",
             path1: Path1,
             path2: Path2,
-            path3: Path3
-    
+            path3: Path3,
           },
-
         },
       }
     );
@@ -362,14 +360,13 @@ const updateProduct = async (req, res) => {
   } catch (error) {
     console.log(error.message);
   }
-}
-
+};
 
 //unlist products
-const unlistProduct = async (req,res,next)=>{
-    try {
+const unlistProduct = async (req, res, next) => {
+  try {
     const prodId = req.params.prodId;
-    const product = await Product.findOne({_id:prodId})
+    const product = await Product.findOne({ _id: prodId });
 
     if (!product) {
       return res.status(404).json({ message: "User not found" });
@@ -378,30 +375,107 @@ const unlistProduct = async (req,res,next)=>{
     product.save();
     res.json({ message: "Product Unlisted successfully" });
     next();
-    } catch (error) {
-      console.log(error.message);
-    }
-}
-
-
-//list products
-const listProduct = async (req,res,next)=>{
-  try {
-  const prodId = req.params.prodId;
-  const product = await Product.findOne({_id:prodId})
-
-  if (!product) {
-    return res.status(404).json({ message: "User not found" });
-  }
-  product.is_listed = true;
-  product.save();
-
-  res.json({ message: "Product Listed successfully" });
-  next();
   } catch (error) {
     console.log(error.message);
   }
-}
+};
+
+//list products
+const listProduct = async (req, res, next) => {
+  try {
+    const prodId = req.params.prodId;
+    const product = await Product.findOne({ _id: prodId });
+
+    if (!product) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    product.is_listed = true;
+    product.save();
+
+    res.json({ message: "Product Listed successfully" });
+    next();
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//unlist category
+const unlistCategory = async (req, res) => {
+  try {
+    const catId = req.params.catId;
+    const category = await Category.findOne({ _id: catId });
+    category.is_listed = false;
+    category.save();
+    res.json({ message: "Category Unlisted successfully" });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//list category
+const listCategory = async (req, res, next) => {
+  try {
+    const catId = req.params.catId;
+    const category = await Category.findOne({ _id: catId });
+    category.is_listed = true;
+    category.save();
+    res.json({ message: "Category Listted successfully" });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//loading edit category
+const loadEditCategory = async (req, res) => {
+  try {
+    const catId = req.query.id;
+    const category = await Category.findOne({ _id: catId });
+    res.render("admin/editCategory", { category: category });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//update category
+const updateCategory = async (req, res) => {
+  try {
+    let checkCategory = req.body.categoryName;
+    if (checkCategory.includes(" ") || /^[0-9]+$/.test(checkCategory)) {
+      res.render("admin/addCategory", {
+        fmessage: "Enter a valid Category Name by adding - instead of space",
+      });
+    }
+
+    let casedCategory =
+      checkCategory.charAt(0).toUpperCase() +
+      checkCategory.slice(1).toLowerCase();
+
+    const existCategory = await Category.findOne({
+      categoryName: casedCategory,
+    });
+
+    if (!existCategory) {
+      await Category.findByIdAndUpdate(
+        { _id: req.body.id },
+        {
+          $set: {
+            categoryName: req.body.categoryName,
+            description: req.body.description,
+          },
+        }
+      );
+
+      res.redirect("/admin/categories");
+    } else {
+      res.render("admin/addCategory", {
+        fmessage: "This Category already exists",
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   loadAdminLogin,
   verifyLogin,
@@ -421,5 +495,9 @@ module.exports = {
   loadEditProduct,
   updateProduct,
   unlistProduct,
-  listProduct
+  listProduct,
+  unlistCategory,
+  listCategory,
+  loadEditCategory,
+  updateCategory,
 };

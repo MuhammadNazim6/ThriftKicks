@@ -47,7 +47,8 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header__logo">
-                        <a class="navbar-brand logo-size" href="/home"><img src="assets/logos/thriftedkicks.png" alt="Thriffy" /></a>
+                        <a class="navbar-brand logo-size" href="/home"><img src="assets/logos/thriftedkicks.png"
+                                alt="Thriffy" /></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
@@ -55,8 +56,8 @@
                         <ul>
                             <li class="active"><a href="/home">Home</a></li>
                             <li><a href="/shop">Shop</a></li>
-                            <li> <a href="#">About Us</a>  </li>
-                    
+                            <li> <a href="#">About Us</a> </li>
+
                             <% if(typeof user !=='undefined' ) { %>
                                 <li><a href="/account">Account</a></li>
                                 <% } else { %>
@@ -93,8 +94,8 @@
     <section class="hero">
         <img src="assets/hero/hero-1.jpg">
         <div class="hero__slider owl-carousel">
-            <div class="hero__items set-bg" > 
-               
+            <div class="hero__items set-bg">
+
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
@@ -117,76 +118,101 @@
                     </div>
                 </div>
             </div>
-          
+
     </section>
     <!-- Hero Section End -->
 
 
- <!-- Product Section Start -->
-<div class="container">
-    <div class="row">
-        <div class="container-fluid py-4">
-            <div class="row">
-              <div class="col-8">
-                <form class="form-inline my-2 my-lg-0">
-                  <div class="input-group border" style= "height: 43px;">
-                    <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
-                      style="width: 700px;">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary " type="submit">Search</button>
+    <!-- Product Section Start -->
+    <div class="container">
+        <div class="row">
+            <div class="container-fluid py-4">
+                <div class="row">
+                    <div class="col-8">
+                        <form class="form-inline my-2 my-lg-0">
+                            <div class="input-group border" style="height: 43px;">
+                                <input class="form-control ms-5 " type="text" placeholder="Search Products" name="search"
+                                    style="width: 700px;">
+                                <div class="input-group-append ">
+                                    <button class="btn btn-primary " type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                  </div>
-                </form>
-              </div>
+                </div>
             </div>
-          </div>
-
-      
 
 
-  <% if(products.length>0){
-    for(let i=0;i<products.length ;i++){  %>
-         
-        
-         <div class="col-lg-3" >
-            <a href="/productView?id=<%=products[i]._id %>">
-            
-         <div class="card m-3 " style="width: 18rem; height:40rem">
-            <img src="<%= products[i].image.path1 %>" class="card-img-top" alt="<%= products[i].image.path1 %>">
-            <div class="card-body">
-                <h5><%= products[i].productName %> </h5>
-                <br>
-                <h4>₹<%= products[i].actualPrice %>/-</h4>
-         <p class="card-text"><%= products[i].description %></p>
-            </div>
-          </div>
-          
-        </a>
+
+
+            <% if(products.length>0){
+                for(let i=0;i<products.length ;i++){ %>
+
+
+                    <div class="col-lg-3">
+
+
+                        <div class="card m-3 " style="width: 18rem; height:40rem">
+                            <a href="/productView?id=<%=products[i]._id %>">
+                                <img src="<%= products[i].image.path1 %>" class="card-img-top"
+                                    alt="<%= products[i].image.path1 %>">
+                            </a>
+                            <div class="card-body">
+                                <h5>
+                                    <a href="/productView?id=<%=products[i]._id %>">
+                                        <%= products[i].productName %>
+                                    </a>
+                                </h5>
+                                <p class="card-text">
+                                    <%= products[i].category_id.categoryName %>
+                                </p>
+                                <h4>₹<%= products[i].actualPrice %>/-</h4>
+                                <br>
+                                <button data-product-id="<%= products[i]._id %>"
+                                    class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
+                                    to Cart</button>
+                                <button class="btn btn-dark  buy-button cartButton">Buy Now</button>
+                                
+                                <!-- <div class="product__details__cart__option">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="1">
+                                        </div>
+                                    </div>
+                                    <a href="#" class="primary-btn">add to cart</a>
+                                </div> -->
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <% } %>
+                        <% } %>
+
+
         </div>
- 
-  <%  }  %>
-<%  }  %> 
 
-
-</div>
-
-</div>
-<div class="container ">
-    <div class="d-flex justify-content-center">
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <% for (let i = 1; i <= totalPages; i++) { %>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                    </li>
-                <% } %>
-            </ul>
-        </nav>
     </div>
- 
-</div>
+    <div class="container ">
+        <div class="d-flex justify-content-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<%= i %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                        <% } %>
+                </ul>
+            </nav>
+        </div>
 
-    
+    </div>
+
+
     <!-- Product Section End -->
 
 
@@ -235,9 +261,9 @@
 
 
 
-    
 
- 
+
+
 
     <!-- Footer Section Begin -->
     <footer class="footer">
@@ -246,13 +272,13 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="img/footer-logo.png" alt="" /></a>
+                            <a href="#"><img src=" " alt="" /></a>
                         </div>
                         <p>
                             The customer is at the heart of our unique business model, which
                             includes design.
                         </p>
-                        <a href="#"><img src="img/payment.png" alt="" /></a>
+                        <a href="#"><img src="  " alt="" /></a>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -330,7 +356,7 @@
                     <h5 class="modal-title text-white" id="loginSignupModalLabel">
                         Login or Sign Up
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="color: #fff">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -343,7 +369,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         style="background-color: #000; color: #fff">
                         Close
                     </button>
@@ -355,7 +381,6 @@
     </div>
 
 
-
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/jquery.countdown.min.js"></script>
@@ -365,5 +390,32 @@
     <script src="/js/main.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <script>
+        document.querySelectorAll(".addtoCartButton").forEach(function (button) {
+            button.addEventListener("click", addtoCart)
+        })
+
+        async function addtoCart() {
+            const prodId = this.getAttribute("data-product-id");
+            // const dataToSend ={"name":"nazim"}
+            const response = await fetch(`/api/addtoCart/${prodId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // body: JSON.stringify(dataToSend)
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            console.log(data.message);
+
+        }
+
+    </script>
     <%- include('../layouts/footer.ejs')%>

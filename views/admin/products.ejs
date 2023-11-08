@@ -184,7 +184,8 @@
             <th class="text-dark text-lg text-bold">Product Name</th>
             <th class="text-dark text-lg text-bold">Description</th>
             <th class="text-dark text-lg text-bold">Size</th>
-            <!-- <th class="text-dark text-lg text-bold">Category</th> -->
+            <th class="text-dark text-lg text-bold">Category</th>
+            <th class="text-dark text-lg text-bold">Stock</th>
             <th class="text-dark text-lg text-bold">Image</th>
             <th>Actions</th>
           </tr>
@@ -193,8 +194,10 @@
     <td class="text-dark"><%= products[i].productName %></td>
     <td class="text-wrap description-size text-dark"><%= products[i].description %></td>
     <td class="text-dark"><%= products[i].size %></td>
-    <!-- <td class="text-dark"><%= products[i].category_id %></td>  -->
+    <td class="text-dark"><%= products[i].category_id.categoryName %></td> 
+    <td class="text-dark"><%= products[i].stock %></td> 
     <td class="text-dark"><img class="product-view" src="<%= products[i].image.path1 %>"></td>
+    
  
     
      <td>
@@ -314,9 +317,9 @@
         const currentState = this.getAttribute("data-state");
         let url;
         if (currentState === "listed") {
-          url = `/admin/api/unlist/${prodId}`;
+          url = `/admin/api/unlistProd/${prodId}`;
         } else {
-          url = `/admin/api/list/${prodId}`;
+          url = `/admin/api/listProd/${prodId}`;
         }
   
         // Send an AJAX request to toggle the product state.
@@ -334,22 +337,20 @@
             }
           })
           .then((data) => {
-            // Handle a successful response, e.g., display a success message or update the UI.
             console.log(data.message);
             if (currentState === "listed") {
-              this.textContent = "List"; // Changed from "list" to "List"
+              this.textContent = "List"; 
               this.setAttribute("data-state", "unlisted");
               this.classList.remove("btn-danger");
               this.classList.add("btn-success");
             } else {
-              this.textContent = "Unlist"; // Changed from "List" to "Unlist"
+              this.textContent = "Unlist"; 
               this.setAttribute("data-state", "listed");
               this.classList.remove("btn-success");
               this.classList.add("btn-danger");
             }
           })
           .catch((error) => {
-            // Handle errors, e.g., display an error message.
             console.error(error);
           });
       });

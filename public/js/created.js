@@ -3,12 +3,17 @@ document.querySelectorAll(".cartButton").forEach(function (element) {
   $(document).ready(function () {
     $("#loginSignupModal").addClass("show");
     $("#loginSignupModal").modal("show");
+    
   }); })
   
 });
 
 
-//product view image cganging functionality
+function closeModal() {
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'none';
+}
+//product view image changing functionality
 const button1 = document.getElementById('button1')
 const button2 = document.getElementById('button2')
 const button3 = document.getElementById('button3')
@@ -53,7 +58,6 @@ button3.addEventListener('click',function(){
 })
 
 
-//
 
 //function for image zoom
 function imageZoom(imgID, resultID) {
@@ -112,3 +116,26 @@ function imageZoom(imgID, resultID) {
   }
 }
 imageZoom("myimage", "myresult");
+
+
+//add to cart functionalty
+document.querySelectorAll(".addtoCartButton").forEach(function (button) {
+  button.addEventListener("click", addtoCart)
+})
+
+async function addtoCart() {
+  const prodId = this.getAttribute("data-product-id");
+  const response = await fetch(`/api/addtoCart/${prodId}`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      // body: JSON.stringify(dataToSend)
+  })
+  if (!response.ok) {
+      throw new Error("Failed to fetch data");
+  }
+  const data = await response.json()
+  console.log(data.message);
+
+}

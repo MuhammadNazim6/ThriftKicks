@@ -208,13 +208,13 @@
                         <div class="product__details__cart__option">
                             <div class="quantity">
                                 <div class="pro-qty">
-                                    <input type="text" value="1">
+                                    <input type="text" value="1" id="quantity">
                                 </div>
                             </div>
-                            <a href="#" class="primary-btn">add to cart</a>
+                            <button data-product-id="<%= product._id %>" href="" class="primary-btn <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">add to cart</button>
                         </div>
                         <div class="product__details__btns__option">
-                            <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+                            <a href=""><i class="fa fa-heart"></i> add to wishlist</a>
                             <!-- <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a> -->
                         </div>
                         <div class="product__details__last__option">
@@ -558,10 +558,10 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="img/footer-logo.png" alt=""></a>
+                        <a href="#"><img src=" " alt=""></a>
                     </div>
                     <p>The customer is at the heart of our unique business model, which includes design.</p>
-                    <a href="#"><img src="img/payment.png" alt=""></a>
+                    <a href="#"><img src="  " alt=""></a>
                 </div>
             </div>
             <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -630,10 +630,28 @@
 <!-- Search End -->
 
 
+
 <script>
+        document.querySelectorAll(".addtoCartButton").forEach(function (button) {
+            button.addEventListener("click", addtoCart)
+        })
+        document.query
+        async function addtoCart() {
+            const prodId = this.getAttribute("data-product-id");
+            const response = await fetch(`/api/addtoCart/${prodId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // body: JSON.stringify(dataToSend)
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            console.log(data.message);
 
-
-
+        }
 
 
 

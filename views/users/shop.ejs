@@ -383,10 +383,10 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="img/footer-logo.png" alt=""></a>
+                            <a href="#"><img src=" " alt=""></a>
                         </div>
                         <p>The customer is at the heart of our unique business model, which includes design.</p>
-                        <a href="#"><img src="img/payment.png" alt=""></a>
+                        <a href="#"><img src="  " alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -455,6 +455,45 @@
 
 
 
+    <!-- modal for cart -->
+    <div class="modal fade" id="loginSignupModal" tabindex="-1" role="dialog" aria-labelledby="loginSignupModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 600px">
+            <div class="modal-content" id="myModal" style="background-color: #302e2e; color: #fff">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white" id="loginSignupModalLabel">
+                        Login or Sign Up
+                    </h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="color: #fff">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- modal staring -->
+                <div class="modal-body">
+                    <p style="color: #fff">
+                        Welcome to our website! To access Cart and other features, please log
+                        in or sign up.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button   type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        style="background-color: #000; color: #fff">
+                        Close
+                    </button>
+                    <a href="/login" class="btn btn-primary">Login</a>
+                    <a href="/register" class="btn btn-success">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.nice-select.min.js"></script>
@@ -465,6 +504,6 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-
+  
 
     <%- include('../layouts/footer.ejs')%>

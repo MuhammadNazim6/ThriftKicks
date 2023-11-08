@@ -43,19 +43,19 @@ const productSchema = new mongoose.Schema({
   },
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "category",
+    ref: "category"
   },
   offerPrice: {
     type: Number,
   },
   ratings: [ratingSchema], // An array of the Rating subdocument
   stock: {
-    type: Number,
+    type: Number
     
   },
   is_listed: {
     type: Boolean,
-    default: true,
+    default: true
   }
 
 });
