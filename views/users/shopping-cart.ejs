@@ -175,13 +175,32 @@
                                             <td class="quantity__item">
                                                 <div class="quantity">
                                                     <div class="pro-qty-2">
-                                                        <span class="text-lg">
-                                                            <%= cart.products[i].quantity %>
-                                                        </span>
+
+
+                                                        <div class="quantity-selector">
+                                                            <button 
+                                                                class="btn btn-dark decrease" id="decrease">-</button>
+
+                                                            <input type="text" id="quantity"
+                                                                value="<%= cart.products[i].quantity %>"
+                                                                class="form-control"
+                                                                data-stock="<%= cart.products[i].productId.stock %>"
+                                                                prodId ="<%= cart.products[i].productId._id %>"
+                                                                data-index ="<%=i%>"
+                                                                data-price ="<%= cart.products[i].productId.actualPrice %>"
+                                                                >
+
+                                                            <button 
+                                                                
+                                                                class="btn btn-dark inline increase"
+                                                                id="increase">+</button>
+
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="cart__price">₹ <%=
+                                            <td id="price<%= i %>" class="cart__price">₹ <%=
                                                     cart.products[i].quantity*cart.products[i].productId.actualPrice %>
                                             </td>
                                             <td class="cart__close"><i class="fa fa-close"></i></td>
@@ -201,7 +220,10 @@
 
 
                         </table>
+
                     </div>
+
+
 
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
@@ -329,6 +351,79 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+
+
+
+
+
+    <script>
+
+        const decreaseButtons = document.querySelectorAll('.decrease')
+        const increaseButton = document.querySelectorAll('.increase')
+        
+
+        decreaseButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const inputTag = this.nextElementSibling;
+                const quantityValue = parseInt(inputTag.value);
+                const productStock = parseInt(inputTag.dataset.stock)
+                const prodId = inputTag.getAttribute('prodId')
+                const index = "price"+inputTag.dataset.index;
+                const priceCell = document.getElementById(index)
+                const priceOfProduct = inputTag.dataset.price;
+
+                console.log(priceOfProduct);
+                if (quantityValue !== 1) {
+                    changeQuantity( -1 ,prodId ,inputTag ,priceCell ,priceOfProduct);
+                } else {
+                    alert("A minimum value required");
+                }
+            })
+        })
+        increaseButton.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const inputTag = this.previousElementSibling;
+                const quantityValue = parseInt(inputTag.value);
+                const productStock = parseInt(inputTag.dataset.stock)
+                const prodId = inputTag.getAttribute('prodId')
+                const index = "price"+inputTag.dataset.index;
+                const priceCell = document.getElementById(index)
+                const priceOfProduct = inputTag.dataset.price;
+
+                console.log(priceOfProduct);
+
+                if (quantityValue !== productStock) {
+                    changeQuantity( 1 ,prodId ,inputTag ,priceCell ,priceOfProduct);
+                } else {
+                    alert("A max value required");
+                }
+            })
+        })
+
+        async function changeQuantity(incdecValue ,prodId, inputTag ,priceCell ,priceOfProduct) {
+            console.log("helloo");
+            let url = `/inc-dec/${prodId}`
+            const response = await fetch(`/inc-dec/${prodId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ incdecValue , prodId } )
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            console.log(data.message);
+            if(data.message){
+               
+                inputTag.value = parseInt(inputTag.value) + incdecValue;
+                priceCell.textContent = "₹ "+inputTag.value * priceOfProduct;
+
+            }
+            
+        }
+    </script>
 
 
 

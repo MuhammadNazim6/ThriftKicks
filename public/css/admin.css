@@ -109,35 +109,6 @@
   display: none;
 } 
 
-/* .xzoom_part{
-  padding-top: 50px;;
-}
-
-.xzoom_container{
-  margin: 0px 10px;
-}
-
-.xzoom-thumbs{
-  margin: 10px 0;
-}
-
-.xzoom{
-  height: 450px;
-  width: 100%;
-  box-shadow: 1px 4px 8px #aaa;
-}
-
-.xzoom-gallery{
-  border: 1px solid #eee;
-}
-
-.xzoom-gallery:hover{
-  border:1px solid #378bbf;
-}
-
-.xzoom-lens{
-  cursor: zoom-in;
-} */
 
 * {box-sizing: border-box;}
 
@@ -169,4 +140,25 @@
 }
 .no_products_incart{
   height: 250px;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+}
+
+/* Style the input field */
+#quantity {
+  text-align: center;
+  width: 40px;
+}
+
+/* Style the buttons to appear in a straight horizontal line */
+.quantity-selector button {
+  display: inline-block;
+  margin: 0;
+}
+
+.cursor_cart{
+  cursor: pointer;
 }

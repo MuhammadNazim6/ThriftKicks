@@ -312,10 +312,6 @@ const loadcart = async (req, res) => {
       .populate("userId")
       .populate("products.productId");
 
-    // console.log(cart.products[0].productId.productName);
-    // console.log(cart.products[1].productId.productName);
-    // console.log(cart.products[2].productId.productName);
-    // console.log(cart.products[0].productId.image.path1);
     if (cart) {
       res.render("users/shopping-cart", { user: userData, cart: cart });
     } else {
@@ -402,19 +398,31 @@ const addtoCart = async (req, res) => {
   }
 };
 
-//decrement quantity function
-const productDecrement = async (req,res)=>{
+
+
+//to increase and decrease cart products
+const cartIncreaseDecrease = async (req,res)=>{
   try {
     const user_id = req.session.user_id;
     const user = await User.findOne({ _id: user_id }); 
-    console.log("User name is " + user.firstname + " " + user.lastname);
+    const value = req.body.incdecValue;
     const product_id = req.params.prodId;
 
+    console.log(value); console.log(product_id); console.log(user.firstname);
+    const result = await Cart.updateOne(
+      { userId: user_id, "products.productId": product_id },
+      { $inc: { "products.$.quantity": value } } // Use "$" to identify the matched array element
+    );
 
+   
+      
+    res.json({ message: "Changed quantity successfully"});
   } catch (error) {
     console.log(error.message);
   }
 }
+
+
 
 module.exports = {
   loadLogin,
@@ -428,4 +436,5 @@ module.exports = {
   loadcart,
   loadProductView,
   addtoCart,
+  cartIncreaseDecrease
 };

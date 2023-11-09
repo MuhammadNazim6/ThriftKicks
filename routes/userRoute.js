@@ -22,5 +22,6 @@ user_route.get("/logout", auth.isLogin, userController.userLogout);
 user_route.get('/productView',userController.loadProductView)
 
 user_route.post('/api/addtoCart/:prodId',userController.addtoCart)
+user_route.post('/inc-dec/:prodId',userController.cartIncreaseDecrease)
 
 module.exports = user_route;
