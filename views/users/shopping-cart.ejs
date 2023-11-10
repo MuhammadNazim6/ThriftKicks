@@ -145,7 +145,7 @@
 
 
 
-                            <% if(typeof cart !=='undefined' ) { %>
+                            <% if(typeof cart!=="undefined" && cart.products.length> 0) { %>
                                 <thead>
                                     <tr>
                                         <th>Product</th>
@@ -161,15 +161,30 @@
                                         <tr>
                                             <td class="product__cart__item">
                                                 <div class="cart_image">
-                                                    <img class="imaage"
-                                                        src="<%= cart.products[i].productId.image.path1 %>" alt="">
+
+                                                    <a href="/productView?id=<%=cart.products[i].productId._id %>">
+                                                        <img class="imaage card-image"
+                                                            src="<%= cart.products[i].productId.image.path1 %>" alt="">
+                                                    </a>
+
+
                                                 </div>
                                                 <div class="product__cart__item__text">
+
+                                                    <a href="/productView?id=<%=cart.products[i].productId._id %>">
+                                                        <h6>
+                                                            <%= cart.products[i].productId.productName %>
+                                                        </h6>
+                                                    </a>
+
+
+
                                                     <h6>
-                                                        <%= cart.products[i].productId.productName %>
+                                                        <%= cart.products[i].productId.size %>
                                                     </h6>
                                                     <h5>₹ <%= cart.products[i].productId.actualPrice %>
                                                     </h5>
+
                                                 </div>
                                             </td>
                                             <td class="quantity__item">
@@ -178,21 +193,18 @@
 
 
                                                         <div class="quantity-selector">
-                                                            <button 
-                                                                class="btn btn-dark decrease" id="decrease">-</button>
+                                                            <button class="btn btn-dark decrease"
+                                                                id="decrease">-</button>
 
                                                             <input type="text" id="quantity"
                                                                 value="<%= cart.products[i].quantity %>"
                                                                 class="form-control"
                                                                 data-stock="<%= cart.products[i].productId.stock %>"
-                                                                prodId ="<%= cart.products[i].productId._id %>"
-                                                                data-index ="<%=i%>"
-                                                                data-price ="<%= cart.products[i].productId.actualPrice %>"
-                                                                >
+                                                                prodId="<%= cart.products[i].productId._id %>"
+                                                                data-index="<%=i%>"
+                                                                data-price="<%= cart.products[i].productId.actualPrice %>">
 
-                                                            <button 
-                                                                
-                                                                class="btn btn-dark inline increase"
+                                                            <button class="btn btn-dark inline increase"
                                                                 id="increase">+</button>
 
                                                         </div>
@@ -200,16 +212,54 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td id="price<%= i %>" class="cart__price">₹ <%=
-                                                    cart.products[i].quantity*cart.products[i].productId.actualPrice %>
+                                            <td id="price<%= i %>" class="cart__price">₹ <span class="prices">
+                                                    <%= cart.products[i].quantity*cart.products[i].productId.actualPrice
+                                                        %>
+                                                </span>
                                             </td>
-                                            <td class="cart__close"><i class="fa fa-close"></i></td>
+                                            <td class="cart__close"><i
+                                                    class="fa fa-close round-delete-button deleteProd"
+                                                    data-prodId="<%=cart.products[i].productId._id %>"></i></td>
                                         </tr>
 
                                         <% } %>
 
 
+                                            <!-- modal content--------- -->
 
+                                            <div class="modal fade" id="productDelete" tabindex="-1" role="dialog"
+                                                aria-labelledby="productDelete" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered"
+                                                    style="max-width: 600px">
+                                                    <div class="modal-content"
+                                                        style="background-color: #e6e6e6; color: #ffffff">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title text-white" id="productDelete">
+
+                                                            </h5>
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                                aria-label="Close" style="color: #000000">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+
+                                                        <div class="modal-body text-center">
+                                                            <h5 style="color: #000000">
+                                                                Are you sure you want to delete this product ?
+                                                            </h5>
+                                                        </div>
+                                                        <div class="modal-footer">
+
+                                                            <a data-bs-dismiss="modal"
+                                                                class="btn btn-dark cancel">Cancel</a>
+                                                            <a class="btn btn-danger confirm">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- modal content ending --------- -->
 
 
                                 </tbody>
@@ -249,7 +299,7 @@
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span>rpes </span></li>
+                            <li>Subtotal <span id="subtotalPrice">1000</span></li>
                             <li>Total <span>$ 169.50</span></li>
                         </ul>
                         <a href="#" class="primary-btn">Proceed to checkout</a>
@@ -357,10 +407,10 @@
 
 
     <script>
-
+        // increment and decrement function
         const decreaseButtons = document.querySelectorAll('.decrease')
         const increaseButton = document.querySelectorAll('.increase')
-        
+        const deleteButton = document.querySelectorAll('.round-delete-button')
 
         decreaseButtons.forEach(function (button) {
             button.addEventListener('click', function () {
@@ -368,61 +418,127 @@
                 const quantityValue = parseInt(inputTag.value);
                 const productStock = parseInt(inputTag.dataset.stock)
                 const prodId = inputTag.getAttribute('prodId')
-                const index = "price"+inputTag.dataset.index;
+                const index = "price" + inputTag.dataset.index;
                 const priceCell = document.getElementById(index)
                 const priceOfProduct = inputTag.dataset.price;
 
-                console.log(priceOfProduct);
                 if (quantityValue !== 1) {
-                    changeQuantity( -1 ,prodId ,inputTag ,priceCell ,priceOfProduct);
+                    changeQuantity(-1, prodId, inputTag, priceCell, priceOfProduct);
                 } else {
                     alert("A minimum value required");
                 }
             })
         })
+
         increaseButton.forEach(function (button) {
             button.addEventListener('click', function () {
                 const inputTag = this.previousElementSibling;
                 const quantityValue = parseInt(inputTag.value);
                 const productStock = parseInt(inputTag.dataset.stock)
                 const prodId = inputTag.getAttribute('prodId')
-                const index = "price"+inputTag.dataset.index;
+                const index = "price" + inputTag.dataset.index;
                 const priceCell = document.getElementById(index)
                 const priceOfProduct = inputTag.dataset.price;
 
-                console.log(priceOfProduct);
-
                 if (quantityValue !== productStock) {
-                    changeQuantity( 1 ,prodId ,inputTag ,priceCell ,priceOfProduct);
+                    changeQuantity(1, prodId, inputTag, priceCell, priceOfProduct);
                 } else {
-                    alert("A max value required");
+                    alert("Stock limit reached");
                 }
             })
         })
 
-        async function changeQuantity(incdecValue ,prodId, inputTag ,priceCell ,priceOfProduct) {
+        async function changeQuantity(incdecValue, prodId, inputTag, priceCell, priceOfProduct) {
             console.log("helloo");
-            let url = `/inc-dec/${prodId}`
+
             const response = await fetch(`/inc-dec/${prodId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ incdecValue , prodId } )
+                body: JSON.stringify({ incdecValue, prodId })
             })
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
             }
             const data = await response.json()
             console.log(data.message);
-            if(data.message){
-               
-                inputTag.value = parseInt(inputTag.value) + incdecValue;
-                priceCell.textContent = "₹ "+inputTag.value * priceOfProduct;
+            if (data.message) {
 
+                inputTag.value = parseInt(inputTag.value) + incdecValue;
+                priceCell.textContent = "₹ " + inputTag.value * priceOfProduct;
+                changePrice();
             }
-            
         }
+        async function changePrice() {
+            var sum = 0;
+            let totPriceSpan = document.getElementById("subtotalPrice")
+            console.log(totPriceSpan);
+
+            let prices = document.getElementsByClassName('prices')
+
+            // prices.forEach(price => {
+            // sum = sum + parseInt(prices.textContent);
+            // });
+            console.log(prices.textContent);
+        }
+
+
+
+        
+        //     deleteButton.forEach(function (button){
+        //     button.addEventListener('click', function () {  
+        //     const prodId = button.getAttribute('data-prodId');
+
+        //     const isConfirmed = window.confirm("Are you sure you want to delete this item from the cart?");
+        // if (isConfirmed) {
+        //     // User confirmed, proceed with deletion
+        //     deleteCartProduct(prodId);
+        // }
+
+        //     })
+        // })
+
+        //Deleting Cart product
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('.deleteProd');
+            deleteButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const prodId = button.getAttribute('data-prodId');
+
+                    // Show the modal
+                    $('#productDelete').modal('show');
+
+                    const confirmButton = document.querySelector('.confirm');
+                    confirmButton.addEventListener('click', async function () {
+                        // User confirmed, proceed with deletion
+                        await deleteCartProduct(prodId);
+
+                        // Close the modal after deletion
+                        $('#productDelete').modal('hide');
+                    });
+                });
+            });
+        });
+
+
+        //FETCH of cart product delete
+        async function deleteCartProduct(prodId) {
+            const confirm = await document.querySelector(".confirm");
+            console.log(confirm);
+            const response = await fetch(`/deleteProduct/${prodId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+
+            })
+            if (response) {
+                location.reload(true);
+            }
+        }
+
+
     </script>
 
 

@@ -1,5 +1,11 @@
 <%- include('../layouts/header.ejs')%>
 
+
+ <!-- Page Preloder -->
+ <!-- <div id="preloder">
+    <div class="loader"></div>
+  </div> -->
+
     <!-- Offcanvas Menu Begin -->
     <!-- <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
@@ -202,49 +208,42 @@
 
 
 
-            <% if(products.length>0){
-                for(let i=0;i<products.length ;i++){ %>
-
-
-                    <div class="col-lg-3">
-
-
-                        <div class="card m-3 " style="width: 15rem; height:30rem">
-                            <a href="/productView?id=<%=products[i]._id %>">
-                                <img src="<%= products[i].image.path1 %>" class="card-image"
-                                    alt="">
-                            </a>
-                            <div class="card-body">
-                                <h6>
+            <div class="container-fluid">
+                <div class="row">
+                    <% if(products.length > 0) {
+                        for(let i = 0; i < products.length; i++) { %>
+            
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="card m-3" style="width: 15rem; height: 30rem;">
                                     <a href="/productView?id=<%=products[i]._id %>">
-                                        <%= products[i].productName %>
+                                        <img src="<%= products[i].image.path1 %>" class="card-image" alt="">
                                     </a>
-                                </h>
-                                <p class="card-text">
-                                    <%= products[i].category_id.categoryName %>
-                                </p>
-                                <h5>₹<%= products[i].actualPrice %>/-</h5>
-                                <h5><%= products[i].size %></h5>
-                                <br>
-                                <button data-product-id="<%= products[i]._id %>"
-                                    class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
-                                    to Cart</button>
-                                <!-- <button class="btn btn-dark  buy-button cartButton">Buy Now</button> -->
-                                
+                                    <div class="card-body">
+                                        <h6>
+                                            <a href="/productView?id=<%=products[i]._id %>">
+                                                <%= products[i].productName %>
+                                            </a>
+                                        </h6>
+                                        <p class="card-text">
+                                            <%= products[i].category_id.categoryName %>
+                                        </p>
+                                        <h5>₹<%= products[i].actualPrice %>/-</h5>
+                                        <h5><%= products[i].size %></h5>
+                                        <br>
+                                        <button data-product-id="<%= products[i]._id %>"
+                                            class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
+                                            to Cart</button>
+                                        <!-- <button class="btn btn-dark  buy-button cartButton">Buy Now</button> -->
+                                    </div>
+                                </div>
                             </div>
-
-                        </div>
-
-
-                    </div>
-
-                    <% } %>
+            
                         <% } %>
-
-
+                    <% } %>
+                </div>
+            </div>
         </div>
-
-    </div>
+            </div>
 
     <!-- pagination -->
     <div class="container ">
@@ -317,78 +316,72 @@
 
 
 
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer__about">
-                        <div class="footer__logo">
-                            <a href="#"><img src=" " alt="" /></a>
-                        </div>
-                        <p>
-                            The customer is at the heart of our unique business model, which
-                            includes design.
-                        </p>
-                        <a href="#"><img src="  " alt="" /></a>
+<!-- Footer Section Begin -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+                    <div class="footer__logo">
+                        <a href="#"><img src="img/footer-logo.png" alt=""></a>
                     </div>
-                </div>
-                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Shopping</h6>
-                        <ul>
-                            <li><a href="#">Clothing Store</a></li>
-                            <li><a href="#">Trending Shoes</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Sale</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Shopping</h6>
-                        <ul>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Delivary</a></li>
-                            <li><a href="#">Return & Exchanges</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>NewLetter</h6>
-                        <div class="footer__newslatter">
-                            <p>
-                                Be the first to know about new arrivals, look books, sales &
-                                promos!
-                            </p>
-                            <form action="#">
-                                <input type="text" placeholder="Your email" />
-                                <button type="submit"><span class="icon_mail_alt"></span></button>
-                            </form>
-                        </div>
-                    </div>
+                    <p>The customer is at the heart of our unique business model, which includes design.</p>
+                    <a href="#"><img src="img/payment.png" alt=""></a>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="footer__copyright__text">
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <p>
-                            Copyright ©
-                            <script>
-                                document.write(new Date().getFullYear());
-                            </script>
-                            2020 All rights reserved
-                        </p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                    <h6>Shopping</h6>
+                    <ul>
+                        <li><a href="#">Clothing Store</a></li>
+                        <li><a href="#">Trending Shoes</a></li>
+                        <li><a href="#">Accessories</a></li>
+                        <li><a href="#">Sale</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                    <h6>Shopping</h6>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Payment Methods</a></li>
+                        <li><a href="#">Delivary</a></li>
+                        <li><a href="#">Return & Exchanges</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                <div class="footer__widget">
+                    <h6>NewLetter</h6>
+                    <div class="footer__newslatter">
+                        <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                        <form action="#">
+                            <input type="text" placeholder="Your email">
+                            <button type="submit"><span class="icon_mail_alt"></span></button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
-    <!-- Footer Section End -->
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="footer__copyright__text">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <p>Copyright ©
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>2020
+                        All rights reserved | This template is made with <i class="fa fa-heart-o"
+                        aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    </p>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </div>
+            </div>
+        </div>
+    </div>
+  </footer>
+  <!-- Footer Section End -->
 
     <!-- Search Begin -->
     <div class="search-model">
@@ -421,16 +414,14 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                        style="background-color: #000; color: #fff">
-                        Close
-                    </button> -->
+            
                     <a href="/login" class="btn btn-primary">Login</a>
                     <a href="/register" class="btn btn-info">Sign Up</a>
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <script src="/js/bootstrap.min.js"></script>
@@ -453,7 +444,6 @@
 
         async function addtoCart() {
             const prodId = this.getAttribute("data-product-id");
-            // const dataToSend ={"name":"nazim"}
             const response = await fetch(`/api/addtoCart/${prodId}`, {
                 method: "POST",
                 headers: {

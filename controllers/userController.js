@@ -303,7 +303,7 @@ const loadShop = async (req, res) => {
 };
 
 //loading shopping cart
-const loadcart = async (req, res) => {
+const   loadcart = async (req, res) => {
   try {
     const user_id = req.session.user_id;
 
@@ -380,7 +380,6 @@ const addtoCart = async (req, res) => {
         );
 
         console.log("Quantity incremented successfully");
-
         //if same product doesnt exist in the cart
       } else {
         const newProduct = {
@@ -413,12 +412,41 @@ const cartIncreaseDecrease = async (req,res)=>{
       { userId: user_id, "products.productId": product_id },
       { $inc: { "products.$.quantity": value } } // Use "$" to identify the matched array element
     );
-
-   
       
+
+
     res.json({ message: "Changed quantity successfully"});
   } catch (error) {
     console.log(error.message);
+  }
+}
+
+
+//delete product in cart function
+const deleteCartProduct = async (req,res,next)=>{
+  try {
+    console.log("reachinggggggg");
+    const user_id = req.session.user_id;
+    const product_id = req.params.prodId;
+
+    const result = await Cart.updateOne(
+      { userId: user_id },
+      {$pull : { products: { productId: product_id } } 
+      });  
+    res.redirect('/cart')
+    next();
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+//loading checkout page
+const loadCheckout = async (req,res)=>{
+  try {
+    res.render('users/checkout')
+  } catch (error) {
+ console.log(error.message);   
   }
 }
 
@@ -436,5 +464,7 @@ module.exports = {
   loadcart,
   loadProductView,
   addtoCart,
-  cartIncreaseDecrease
+  cartIncreaseDecrease,
+  deleteCartProduct,
+  loadCheckout
 };

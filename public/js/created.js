@@ -9,6 +9,19 @@ document.querySelectorAll(".cartButton").forEach(function (element) {
 });
 
 
+    //delete product modal
+    // document.querySelectorAll(".deleteProd").forEach(function (element) {
+    //   element.addEventListener("click", function () {
+    //   $(document).ready(function () {
+    //     $("#productDelete").addClass("show");
+    //     $("#productDelete").modal("show");
+        
+    //   }); })
+      
+    // });
+
+    
+
 function closeModal() {
   const modal = document.getElementById('myModal');
   modal.style.display = 'none';

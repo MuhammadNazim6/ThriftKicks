@@ -23,5 +23,8 @@ user_route.get('/productView',userController.loadProductView)
 
 user_route.post('/api/addtoCart/:prodId',userController.addtoCart)
 user_route.post('/inc-dec/:prodId',userController.cartIncreaseDecrease)
+user_route.post('/deleteProduct/:prodId',userController.deleteCartProduct)
+
+user_route.get('/checkout',userController.loadCheckout)
 
 module.exports = user_route;
