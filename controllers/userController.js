@@ -200,12 +200,16 @@ const loadLogin = async (req, res) => {
   }
 };
 
+
 // verifyLogin
 const verifyLogin = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
     const userData = await User.findOne({ email: email });
+    if(!userData.is_verified){
+      return res.render("users/login", { verif_message: "You email is not verified" });
+    }
     if (!userData.isBlocked) {
       if (userData) {
         const passwordMatch = await bcrypt.compare(password, userData.password);
