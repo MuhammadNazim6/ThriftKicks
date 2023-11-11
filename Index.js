@@ -4,6 +4,7 @@ const express = require("express")
 const app = express();
 const nocache = require("nocache")
 const session = require("express-session")
+require('dotenv').config();
 const config = require("./config/config")
 const user_route = require("./routes/userRoute")
 const admin_route = require("./routes/adminRoute")
@@ -27,7 +28,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/", user_route);
 app.use("/admin", admin_route);
-app.listen(8000, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log("server is Running");
 });
 

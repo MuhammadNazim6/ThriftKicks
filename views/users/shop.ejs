@@ -303,7 +303,7 @@
                         <%= products[i].category_id.categoryName %>
                     </p>
                     <h5>₹<%= products[i].actualPrice %>/-</h5>
-                    <h5><%= products[i].size %></h5>
+                    <h6><%= products[i].size %></h6>
                     <br>
                     <button data-product-id="<%= products[i]._id %>"
                         class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add

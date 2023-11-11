@@ -1,35 +1,21 @@
 const UserAddressModel = require("../models/userModel");
 const ProductsModel = require("../models/productsModel");
+const mailer = require("../services/mail");
+const bcrypt = require("bcrypt");
+const otplib = require("otplib");
 const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
 const Cart = UserAddressModel.Cart;
 const Product = ProductsModel.Product;
-const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer");
-const mailFunction = async (email, subject, text) => {
+let OTP;
+
+// Generate a new OTP secret
+const generateOtp = async () => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.HOST,
-      service: process.env.SERVICE,
-      port: NUMBER(process.env.EMAIL_PORT),
-      secure: Boolean(process.env.SECURE),
-      auth: {
-        user: process.env.USER,
-        pass: process.env.PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: process.env.USER,
-      to: email,
-      subject: subject,
-      text: text,
-    });
-
-    console.log("email sent successfully");
+    const otpSecret = otplib.authenticator.generateSecret();
+    OTP = otplib.authenticator.generate(otpSecret);
+    console.log(`OTP: ${OTP}`);
   } catch (error) {
-    console.log("email Not Sent");
-
     console.log(error.message);
   }
 };
@@ -53,9 +39,81 @@ const loadRegister = async (req, res) => {
   }
 };
 
+//verifying email
+const verifyEmail = async (req, res, next) => {
+  try {
+    const email = req.body.email;
+    const name = req.body.lname;
+    req.session.name = name;
+    req.session.email = email;
+
+    generateOtp()
+    mailer.sendMail(email, OTP, name);
+    next();
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//loadVerifyOtp
+const loadVerifyOtp = async (req, res) => {
+  try {
+    const email = req.session.email;
+    console.log(email + " is here");
+    res.render("users/enterOtp", { email: email });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//verifyOtp
+const verifyOtp = async (req, res) => {
+  try {
+    const userOTP = req.body.otp;
+    const emailId = req.body.email;
+    console.log(userOTP);
+    console.log(emailId);
+
+    if (OTP === userOTP) {
+      console.log("correct");
+      const user = await User.findOne({ email: emailId });
+
+      user.is_verified = true;
+
+      const verified = await user.save();
+
+      if (verified) {
+        res.render("users/enterOtp", {
+          email: emailId,
+          message: "Your email has been verified",
+        });
+      }
+    } else {
+      res.render("users/enterOtp", {
+        email: emailId,
+        fmessage: "Enter a valid OTP",
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//resendOtp
+const resendOtp = async (req, res, next) => {
+  try {
+    generateOtp()
+    mailer.sendMail(req.session.email, OTP, req.session.name);
+    next();
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 //insert user
 const insertUser = async (req, res) => {
   try {
+    const email = req.body.email;
     const mail = await User.findOne({ email: req.body.email });
     const currentValue = req.body;
     if (currentValue.fname.includes(" ") || /^[0-9]+$/.test(req.body.fname)) {
@@ -74,7 +132,7 @@ const insertUser = async (req, res) => {
       });
     }
     if (mail) {
-      res.render("users/registration", {
+      return res.render("users/registration", {
         msgPass: "This User have already registered",
         currentValue: currentValue,
       });
@@ -110,13 +168,12 @@ const insertUser = async (req, res) => {
         password: spassword,
         is_admin: 0,
       });
+
       //returning a promise
       const userData = await user.save(); //saving data to mongo db
 
       if (userData) {
-        res.render("users/registration", {
-          message: "Your registration is successful.",
-        });
+        res.redirect(`/verifyOtp?email=${encodeURIComponent(email)}`);
       } else {
         res.render("users/registration", {
           message: "Your registration has failed.",
@@ -303,7 +360,7 @@ const loadShop = async (req, res) => {
 };
 
 //loading shopping cart
-const   loadcart = async (req, res) => {
+const loadcart = async (req, res) => {
   try {
     const user_id = req.session.user_id;
 
@@ -334,7 +391,6 @@ const loadProductView = async (req, res) => {
     console.log(error.message);
   }
 };
-
 
 //add to cart
 const addtoCart = async (req, res) => {
@@ -397,33 +453,30 @@ const addtoCart = async (req, res) => {
   }
 };
 
-
-
 //to increase and decrease cart products
-const cartIncreaseDecrease = async (req,res)=>{
+const cartIncreaseDecrease = async (req, res) => {
   try {
     const user_id = req.session.user_id;
-    const user = await User.findOne({ _id: user_id }); 
+    const user = await User.findOne({ _id: user_id });
     const value = req.body.incdecValue;
     const product_id = req.params.prodId;
 
-    console.log(value); console.log(product_id); console.log(user.firstname);
+    console.log(value);
+    console.log(product_id);
+    console.log(user.firstname);
     const result = await Cart.updateOne(
       { userId: user_id, "products.productId": product_id },
       { $inc: { "products.$.quantity": value } } // Use "$" to identify the matched array element
     );
-      
 
-
-    res.json({ message: "Changed quantity successfully"});
+    res.json({ message: "Changed quantity successfully" });
   } catch (error) {
     console.log(error.message);
   }
-}
-
+};
 
 //delete product in cart function
-const deleteCartProduct = async (req,res,next)=>{
+const deleteCartProduct = async (req, res, next) => {
   try {
     console.log("reachinggggggg");
     const user_id = req.session.user_id;
@@ -431,30 +484,31 @@ const deleteCartProduct = async (req,res,next)=>{
 
     const result = await Cart.updateOne(
       { userId: user_id },
-      {$pull : { products: { productId: product_id } } 
-      });  
-    res.redirect('/cart')
+      { $pull: { products: { productId: product_id } } }
+    );
+    res.redirect("/cart");
     next();
   } catch (error) {
     console.log(error.message);
   }
-}
-
+};
 
 //loading checkout page
-const loadCheckout = async (req,res)=>{
+const loadCheckout = async (req, res) => {
   try {
-    res.render('users/checkout')
+    res.render("users/checkout");
   } catch (error) {
- console.log(error.message);   
+    console.log(error.message);
   }
-}
-
-
+};
 
 module.exports = {
   loadLogin,
   loadRegister,
+  verifyEmail,
+  loadVerifyOtp,
+  verifyOtp,
+  resendOtp,
   insertUser,
   verifyLogin,
   loadHome,
@@ -466,5 +520,5 @@ module.exports = {
   addtoCart,
   cartIncreaseDecrease,
   deleteCartProduct,
-  loadCheckout
+  loadCheckout,
 };

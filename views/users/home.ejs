@@ -214,21 +214,21 @@
                         for(let i = 0; i < products.length; i++) { %>
             
                             <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="card m-3" style="width: 15rem; height: 30rem;">
+                                <div class="card m-3" style="width: 15rem; height: 26rem;">
                                     <a href="/productView?id=<%=products[i]._id %>">
                                         <img src="<%= products[i].image.path1 %>" class="card-image" alt="">
                                     </a>
                                     <div class="card-body">
-                                        <h6>
+                                        <span class="text-center">
                                             <a href="/productView?id=<%=products[i]._id %>">
                                                 <%= products[i].productName %>
                                             </a>
-                                        </h6>
-                                        <p class="card-text">
-                                            <%= products[i].category_id.categoryName %>
-                                        </p>
-                                        <h5>₹<%= products[i].actualPrice %>/-</h5>
-                                        <h5><%= products[i].size %></h5>
+                                        </span>
+                                        <span class="card-text">
+                                            <!-- <%= products[i].category_id.categoryName %> -->
+                                        </span>
+                                        <h6>₹<%= products[i].actualPrice %>/-</h6>
+                                        <!-- <h6 class="text-center"><%= products[i].size %></h6> -->
                                         <br>
                                         <button data-product-id="<%= products[i]._id %>"
                                             class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
@@ -278,7 +278,7 @@
                         </div>
                         <div class="banner__item__text">
                             <h2>New Thrifted Collections</h2>
-                            <a href="#">Shop now</a>
+                            <a href="/shop">Shop now</a>
                         </div>
                     </div>
                 </div>
@@ -289,7 +289,7 @@
                         </div>
                         <div class="banner__item__text">
                             <h2>Sneakers</h2>
-                            <a href="#">Shop now</a>
+                            <a href="/shop">Shop now</a>
                         </div>
                     </div>
                 </div>
@@ -300,7 +300,7 @@
                         </div>
                         <div class="banner__item__text">
                             <h2>Shoes Spree</h2>
-                            <a href="#">Shop now</a>
+                            <a href="/shop">Shop now</a>
                         </div>
                     </div>
                 </div>

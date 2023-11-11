@@ -249,3 +249,27 @@
   transition: .5s;
   background: #e60000;
 }
+
+.otp-container{
+  display: flex;
+  justify-content: center;
+ 
+}
+
+.otp-holder{
+  height: 40px;
+  width: 400px;
+  background-color: #3f3d3d;
+  color: white;
+  font-weight: 800;
+}
+.otp-button{
+  background-color: #555252;
+  color: white;
+}
+
+.verif-message{
+  width: 400px;
+  color: white;
+  height: 55px;
+}
