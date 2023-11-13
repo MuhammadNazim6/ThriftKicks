@@ -2,9 +2,9 @@
 
 
  <!-- Page Preloder -->
- <!-- <div id="preloder">
+ <div id="preloder">
     <div class="loader"></div>
-  </div> -->
+  </div>
 
     <!-- Offcanvas Menu Begin -->
     <!-- <div class="offcanvas-menu-overlay"></div>
@@ -128,62 +128,7 @@
     </section> -->
     <!-- Hero Section End -->
 
-    <!-- <section class="product spad">
-            
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
-                <% if(products.length>0){
-                    for(let i=0;i<products.length ;i++){ %>
-
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <ul class="filter__controls">
-                                        <li class="active" data-filter="*"></li>
-                                        <li data-filter=".new-arrivals"></li>
-                                        <li data-filter=".hot-sales"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-                            <ul class="product__hover">
-
-                                <li><a href="/productView?id=<%=products[0]._id %>"><img src="<%= products[0].image.path1 %>" class="leftside"></a></li>
-                                
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><%= products[0].productName %></h6>
-
-                            <a href="#" class="add-cart"><%= products[0].category_id.categoryName %></a>
-                            
-                           
-                           
-                            <h5>₹<%= products[0].actualPrice %>/-</h5>
-                            <h6 class="text-md"><%= products[0].size %></h6>
-                            <div class="product__color__select">
-                               <br>
-                               <span><%= products[0].size %></span>
-                                
-                            </div>
-                            
-                        </div>
-                        <button data-product-id="<%= products[0]._id %>"
-                            class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
-                            to Cart</button>
-                            <button class="btn btn-dark  buy-button cartButton">Buy Now</button>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-           
-            
-                    <% } %>
-                        <% } %>
-              
-    </section> -->
-    <!-- Product Section End -->
+    
 
 
     <!-- Product Section Start -->
@@ -194,7 +139,7 @@
                     <div class="col-8">
                         <form class="form-inline my-2 my-lg-0">
                             <div class="input-group border" style="height: 43px;">
-                                <input class="form-control ms-5 " type="text" placeholder="Search Products" name="search"
+                                <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
                                     style="width: 700px;">
                                 <div class="input-group-append ">
                                     <button class="btn btn-primary " type="submit">Search</button>
@@ -204,8 +149,6 @@
                     </div>
                 </div>
             </div>
-
-
 
 
             <div class="container-fluid">
@@ -243,7 +186,7 @@
                 </div>
             </div>
         </div>
-            </div>
+    </div>
 
     <!-- pagination -->
     <div class="container ">
@@ -260,7 +203,6 @@
                 </ul>
             </nav>
         </div>
-
     </div>
 
 

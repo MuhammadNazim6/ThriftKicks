@@ -117,7 +117,7 @@ const insertUser = async (req, res) => {
     const mail = await User.findOne({ email: req.body.email });
     const currentValue = req.body;
     if (currentValue.fname.includes(" ") || /^[0-9]+$/.test(req.body.fname)) {
-      res.render("users/registration", {
+      return res.render("users/registration", {
         msgFname: "Enter a valid Name",
         currentValue: currentValue,
       });
@@ -126,7 +126,7 @@ const insertUser = async (req, res) => {
       currentValue.lname.includes(" ") ||
       /^[0-9]+$/.test(currentValue.lname)
     ) {
-      res.render("users/registration", {
+      return res.render("users/registration", {
         msgLname: "Enter a valid Name",
         currentValue: currentValue,
       });
@@ -144,13 +144,13 @@ const insertUser = async (req, res) => {
       mob.includes(" ") ||
       /[a-zA-Z]/.test(mob)
     ) {
-      res.render("users/registration", {
+      return res.render("users/registration", {
         msgMobile: "Enter a Proper Mobile number",
         currentValue: currentValue,
       });
     }
     if (currentValue.password.length < 6) {
-      res.render("users/registration", {
+     return res.render("users/registration", {
         msgPassword: "Enter a strong Password",
         currentValue: currentValue,
       });
@@ -175,13 +175,13 @@ const insertUser = async (req, res) => {
       if (userData) {
         res.redirect(`/verifyOtp?email=${encodeURIComponent(email)}`);
       } else {
-        res.render("users/registration", {
+        return res.render("users/registration", {
           message: "Your registration has failed.",
           currentValue: currentValue,
         });
       }
     } else {
-      res.render("users/registration", {
+      return res.render("users/registration", {
         msgPass: "Passwords do NOT match",
         currentValue: currentValue,
       });
@@ -363,6 +363,7 @@ const loadShop = async (req, res) => {
   }
 };
 
+
 //loading shopping cart
 const loadcart = async (req, res) => {
   try {
@@ -373,8 +374,19 @@ const loadcart = async (req, res) => {
       .populate("userId")
       .populate("products.productId");
 
+      //finding sum of all products in the cart
+      let totalAmount = 0;
+      cart.products.forEach((product, index) => {
+          if (index === 0) {
+            totalAmount = 0;
+          }
+          totalAmount += product.productId.actualPrice * product.quantity;
+      });
+     
+
+
     if (cart) {
-      res.render("users/shopping-cart", { user: userData, cart: cart });
+      res.render("users/shopping-cart", { user: userData, cart: cart , totalAmount: totalAmount});
     } else {
       res.render("users/shopping-cart", { user: userData });
     }
@@ -383,6 +395,7 @@ const loadcart = async (req, res) => {
   }
 };
 
+//loading productview
 const loadProductView = async (req, res) => {
   try {
     const product_id = req.query.id;
@@ -500,11 +513,33 @@ const deleteCartProduct = async (req, res, next) => {
 //loading checkout page
 const loadCheckout = async (req, res) => {
   try {
-    res.render("users/checkout");
+    const userId = req.session.user_id;
+    const userData = await User.findOne({_id:userId})
+    const cartDetails = await Cart.findOne({userId:userId})
+    .populate('userId')
+    .populate("products.productId");
+
+     //finding sum of all products in the cart
+     let totalAmount = 0;
+     cartDetails.products.forEach((product, index) => {
+         if (index === 0) {
+           totalAmount = 0;
+         }
+         totalAmount += product.productId.actualPrice * product.quantity;
+     });
+
+
+    res.render("users/checkout",{cart:cartDetails , totalAmount:totalAmount});
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
+//show zoom
+const showZoom = async (req,res)=>{
+  res.render('users/zoom')
+}
 
 module.exports = {
   loadLogin,
@@ -525,4 +560,5 @@ module.exports = {
   cartIncreaseDecrease,
   deleteCartProduct,
   loadCheckout,
+  showZoom
 };

@@ -299,8 +299,13 @@
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span id="subtotalPrice">1000</span></li>
-                            <li>Total <span>$ 169.50</span></li>
+                            <li>Subtotal 
+                                
+                                    <span id="subtotalAmount"><%= totalAmount %></span>
+                                    <span>₹&nbsp; </span>
+                                
+                            <li>Total<span id="totalAmount"><%= totalAmount %></span>
+                                <span>₹&nbsp; </span></li>
                         </ul>
                         <a href="/checkout" class="primary-btn">Proceed to checkout</a>
                     </div>
@@ -411,6 +416,8 @@
         const decreaseButtons = document.querySelectorAll('.decrease')
         const increaseButton = document.querySelectorAll('.increase')
         const deleteButton = document.querySelectorAll('.round-delete-button')
+        
+
 
         decreaseButtons.forEach(function (button) {
             button.addEventListener('click', function () {
@@ -422,8 +429,14 @@
                 const priceCell = document.getElementById(index)
                 const priceOfProduct = inputTag.dataset.price;
 
+                const totalAmount = document.getElementById("totalAmount")
+                let numericPrice = parseInt(totalAmount.textContent);
+
+                console.log("here it is"+numericPrice);
+                
+
                 if (quantityValue !== 1) {
-                    changeQuantity(-1, prodId, inputTag, priceCell, priceOfProduct);
+                    changeQuantity(-1, prodId, inputTag, priceCell, priceOfProduct ,numericPrice);
                 } else {
                     alert("A minimum value required");
                 }
@@ -440,17 +453,19 @@
                 const priceCell = document.getElementById(index)
                 const priceOfProduct = inputTag.dataset.price;
 
+                const totalAmount = document.getElementById("totalAmount")
+                let numericPrice = parseInt(totalAmount.textContent);
+                
+                
                 if (quantityValue !== productStock) {
-                    changeQuantity(1, prodId, inputTag, priceCell, priceOfProduct);
+                    changeQuantity(1, prodId, inputTag, priceCell, priceOfProduct ,numericPrice);
                 } else {
                     alert("Stock limit reached");
                 }
             })
         })
 
-        async function changeQuantity(incdecValue, prodId, inputTag, priceCell, priceOfProduct) {
-            console.log("helloo");
-
+        async function changeQuantity(incdecValue, prodId, inputTag, priceCell, priceOfProduct ,numericPrice) {
             const response = await fetch(`/inc-dec/${prodId}`, {
                 method: "POST",
                 headers: {
@@ -467,37 +482,18 @@
 
                 inputTag.value = parseInt(inputTag.value) + incdecValue;
                 priceCell.textContent = "₹ " + inputTag.value * priceOfProduct;
-                changePrice();
+                changePrice(priceOfProduct , incdecValue ,numericPrice);
             }
         }
-        async function changePrice() {
-            var sum = 0;
-            let totPriceSpan = document.getElementById("subtotalPrice")
-            console.log(totPriceSpan);
 
-            let prices = document.getElementsByClassName('prices')
 
-            // prices.forEach(price => {
-            // sum = sum + parseInt(prices.textContent);
-            // });
-            console.log(prices.textContent);
+        async function changePrice(priceOfProduct , incdec ,numericPrice) {
+            
+            totalAmount.textContent = numericPrice + (incdec * parseInt(priceOfProduct));
+            document.getElementById('subtotalAmount').textContent = totalAmount.textContent
         }
 
 
-
-        
-        //     deleteButton.forEach(function (button){
-        //     button.addEventListener('click', function () {  
-        //     const prodId = button.getAttribute('data-prodId');
-
-        //     const isConfirmed = window.confirm("Are you sure you want to delete this item from the cart?");
-        // if (isConfirmed) {
-        //     // User confirmed, proceed with deletion
-        //     deleteCartProduct(prodId);
-        // }
-
-        //     })
-        // })
 
         //Deleting Cart product
         document.addEventListener('DOMContentLoaded', function () {
