@@ -295,7 +295,6 @@ const loadAccount = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id });
     const address = await Address.find({ userId: req.session.user_id });
-    console.log(address);
     res.render("users/account", { user: userData, address: address });
   } catch (error) {
     console.log(error.message);
@@ -604,10 +603,10 @@ const updateEditedAddress = async (req, res) => {
   try {
     const { houseName, city, state, country, pincode, email } = req.body;
     const user = await User.findOne({ email: email });
-    console.log(user);
+
     const address = await Address.find({ userId: user._id });
     if (address && address.length > 0) {
-      const firstAddress = address[0];
+      const firstAddress = address[0]; 
 
       firstAddress.houseName = houseName;
       firstAddress.city = city;
@@ -669,16 +668,26 @@ const changePass = async (req, res) => {
 // add new address
 const addAddress = async (req, res) => {
   try {
-    const { emailIp, name, houseName, city, state, country, pincode, mobile } =
-      req.body;
-    console.log(emailIp);
-    console.log(name);
-    console.log(houseName);
-    console.log(city);
-    console.log(state);
-    console.log(country);
-    console.log(pincode);
-    console.log(mobile);
+    const { email, name, houseName, city, state, country, pincode, mobile } = req.body;
+    const userData = await User.findOne({email,email})
+
+    const address = new Address({
+      userId: userData._id,
+      fullname: name,
+      mobile: mobile,
+      houseName: houseName,
+      city: city,
+      state: state,
+      country: country,
+      pincode: pincode,
+    });
+
+    //returning a promise
+    const newAddress = await address.save();
+    if(newAddress){
+      res.json({ message: "Added address successfully" });
+    }
+
   } catch (error) {
     console.log(error.message);
   }

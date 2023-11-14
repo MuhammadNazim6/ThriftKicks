@@ -111,13 +111,14 @@
                             <input type="hidden" name="email" id="email"
                                 class="form-control mb-1 text-lg text-bold pl-3" value="<%= user.email %>">
 
-                            <div class="checkout__input">
-
-                                <% if(typeof address!=='undefined' && address.length> 0){
-
-                                    for(let i=0;i< address.length; i++){ %>
 
 
+                            <% if(typeof address!=='undefined' && address.length> 0){ %>
+
+                                
+
+                                    <% for(let i=0;i< address.length; i++){ %>
+                                        <div class="checkout__input mt-5">
                                         <p>
                                             <%= address[i].fullname %>
                                         </p>
@@ -143,64 +144,78 @@
                                         <div class="custom-control custom-checkbox custom-checkbox-lg mt-4">
                                             <input type="checkbox" class="custom-control-input" id="customCheckbox"
                                                 name="customCheckbox">
-                                            <label class="custom-control-label text-lg" for="customCheckbox">Choose the
-                                                existing address</label>
+                                            <label class="custom-control-label text-lg" for="customCheckbox">Choose this
+                                                 address</label>
                                         </div>
+                                </div>
+                                <% } } %>
 
-                                        <% } } %>
 
-                            </div>
-                            <h4 class="my-5">Add new Address</h4>
-                            <!-- ccccccccccccccccccccccccccccccccccccccccccccccccccccc -->
-                            <form class="address-form">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="checkout__input">
-                                            <p>Name<span>*</span></p>
-                                            <input type="text" placeholder="Name" class="checkout__input__add"
-                                                name="name" id="name">
-                                        </div>
-                                    </div>
-                                </div>
+                                    <h4 class="my-5">Add new Address</h4>
+                                    <!-- ccccccccccccccccccccccccccccccccccccccccccccccccccccc -->
 
-                                <div class="checkout__input">
-                                    <p>Address<span>*</span></p>
-                                    <input type="text" placeholder="House Name" class="checkout__input__add"
-                                        name="houseName" id="houseName">
-                                </div>
-                                <div class="checkout__input">
-                                    <p>Town/City<span>*</span></p>
-                                    <input type="text" placeholder="City" name="city" id="city">
-                                </div>
-                                <div class="checkout__input">
-                                    <p>State<span>*</span></p>
-                                    <input type="text" placeholder="State" name="state" id="state">
-                                </div>
-                                <div class="checkout__input">
-                                    <p>Country<span>*</span></p>
-                                    <input type="text" placeholder="Country" name="country" id="country">
-                                </div>
-                                <div class="checkout__input">
-                                    <p>Postcode<span>*</span></p>
-                                    <input type="text" placeholder="Pincode" name="pincode" id="pincode">
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="checkout__input">
-                                            <p>Phone<span>*</span></p>
-                                            <input type="text" placeholder="Phone" name="mobile" id="mobile">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="checkout__input">
+                                                <p>Name<span>*</span></p>
+                                                <input type="text" name="name" id="name"
+                                                    class="form-control text-lg text-bold pl-3" value=""
+                                                    placeholder="Name" required>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
 
+                                    <div class="checkout__input">
+                                        <p>House Name<span>*</span></p>
+                                        <input type="text" name="houseName" id="houseName"
+                                            class="form-control text-lg text-bold pl-3" value=""
+                                            placeholder="House Name" required>
                                     </div>
-                                </div>
+                                    <div class="checkout__input">
+                                        <p>Town/City<span>*</span></p>
+                                        <input type="text" name="city" id="city"
+                                            class="form-control text-lg text-bold pl-3" value="" placeholder="City"
+                                            required>
+                                    </div>
+                                    <div class="checkout__input">
+                                        <p>State<span>*</span></p>
+                                        <input type="text" name="state" id="state"
+                                            class="form-control text-lg text-bold pl-3" value="" placeholder="State"
+                                            required>
+                                    </div>
+                                    <div class="checkout__input">
+                                        <p>Country<span>*</span></p>
+                                        <input type="text" name="country" id="country"
+                                            class="form-control text-lg text-bold pl-3" value="" placeholder="Country"
+                                            required>
+                                    </div>
+                                    <div class="checkout__input">
+                                        <p>Pincode<span>*</span></p>
+                                        <input type="text" name="pincode" id="pincode"
+                                            class="form-control text-lg text-bold pl-3" value="" placeholder="Pincode"
+                                            required>
+                                    </div>
 
-                            </form>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="checkout__input">
+                                                <p>Mobile<span>*</span></p>
+                                                <input type="text" name="mobile" id="mobile"
+                                                    class="form-control text-lg text-bold pl-3" value=""
+                                                    placeholder="Mobile" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
 
-                            <button type="button" class="btn btn-dark" id="addAddressButton">Add Address</button>
+                                        </div>
+                                    </div>
 
+                                    <button type="button" class="btn btn-dark" id="addAddressButton">Add
+                                        Address</button>
+                                    <span id="addressAlert" class="alert alert-success text-white mr-5 mb-4"
+                                        style="width:350px; display:none;">
+                                        Address Added Successfully
+                                    </span>
 
                         </div>
                         <div class="col-lg-4 col-md-6">
@@ -211,7 +226,8 @@
                                     <% for(let i=0; i < cart.products.length; i++){%>
                                         <li>0<%=i+1%>.&nbsp;<%=cart.products[i].productId.productName %> <span>₹
                                                         <%=cart.products[i].productId.actualPrice *
-                                                            cart.products[i].quantity%></span></li>
+                                                            cart.products[i].quantity%>
+                                                    </span></li>
                                         <% } %>
 
                                             <ul class="checkout__total__all">
@@ -354,7 +370,6 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-
                     <a href="/login" class="btn btn-primary">Login</a>
                     <a href="/register" class="btn btn-info">Sign Up</a>
                 </div>
@@ -380,31 +395,35 @@
 
         //constants
         const addAddressBtn = document.getElementById('addAddressButton');
-        const emailIp = document.getElementById('email');
-        const name = document.querySelector('#name').value;
-        const houseName = document.querySelector('#houseName').value;
-        const city = document.querySelector('#city').value;
-        const state = document.querySelector('#state').value;
-        const country = document.querySelector('#country').value;
-        const pincode = document.querySelector('#pincode').value;
-        const mobile = document.querySelector('#mobile').value;
-
 
         //events
         addAddressBtn.addEventListener('click', addNewAddress);
 
-
-          //   functions
+        //   functions
         async function addNewAddress() {
             try {
-                
-            const email = emailIp.value;
-            const response = await fetch(`/addAddress`, {
+                const emailIp = document.getElementById('email');
+                const name = document.getElementById('name').value;
+                const houseName = document.getElementById('houseName').value;
+                const city = document.getElementById('city').value;
+                const state = document.getElementById('state').value;
+                const country = document.getElementById('country').value;
+                const pincode = document.getElementById('pincode').value;
+                const mobile = document.getElementById('mobile').value;
+                const email = emailIp.value;
+                console.log(email);
+                console.log('House Name:', houseName);
+                console.log('City:', city);
+                console.log('State:', state);
+                console.log('Country:', country);
+                console.log('Pincode:', pincode);
+                console.log('Mobile:', mobile);
+                const response = await fetch(`/addAddress`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({emailIp,name,houseName,city,state,country,pincode,mobile})
+                    body: JSON.stringify({ email, name, houseName, city, state, country, pincode, mobile })
                 });
 
                 if (!response.ok) {
@@ -413,17 +432,24 @@
 
                 const data = await response.json();
                 console.log(data.message);
-            
+                if (data.message) {
+                    addressAlert.style.display = 'inline'
+                    addressAlert.classList.replace('alert-danger', 'alert-success')
+                    addressAlert.textContent = data.message
+                    setTimeout(() => {
+                        addressAlert.style.display = 'none';
+                    }, 1000);
+                }
+
 
             } catch (error) {
                 console.log("could not add address");
             }
-            
-            
+
+
         }
 
 
-      
         async function updateAddress() {
             try {
                 const email = emailIp.value;
