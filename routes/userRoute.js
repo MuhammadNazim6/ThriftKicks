@@ -38,5 +38,10 @@ user_route.post('/editUserData',userController.editUserData)
 user_route.post('/updateAddress',userController.updateAddress)
 user_route.post('/updateEditedAddress',userController.updateEditedAddress)
 
+user_route.post('/checkCurrPass',userController.checkCurrPass)
+user_route.post('/changePass',userController.changePass)
+
+user_route.post('/addAddress',userController.addAddress)
+
 
 module.exports = user_route;

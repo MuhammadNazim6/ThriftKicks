@@ -47,7 +47,7 @@ const verifyEmail = async (req, res, next) => {
     req.session.name = name;
     req.session.email = email;
 
-    generateOtp()
+    generateOtp();
     mailer.sendMail(email, OTP, name);
     next();
   } catch (error) {
@@ -102,7 +102,7 @@ const verifyOtp = async (req, res) => {
 //resendOtp
 const resendOtp = async (req, res, next) => {
   try {
-    generateOtp()
+    generateOtp();
     mailer.sendMail(req.session.email, OTP, req.session.name);
     next();
   } catch (error) {
@@ -150,7 +150,7 @@ const insertUser = async (req, res) => {
       });
     }
     if (currentValue.password.length < 6) {
-     return res.render("users/registration", {
+      return res.render("users/registration", {
         msgPassword: "Enter a strong Password",
         currentValue: currentValue,
       });
@@ -200,15 +200,16 @@ const loadLogin = async (req, res) => {
   }
 };
 
-
 // verifyLogin
 const verifyLogin = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
     const userData = await User.findOne({ email: email });
-    if(!userData.is_verified){
-      return res.render("users/login", { verif_message: "You email is not verified" });
+    if (!userData.is_verified) {
+      return res.render("users/login", {
+        verif_message: "You email is not verified",
+      });
     }
     if (!userData.isBlocked) {
       if (userData) {
@@ -293,9 +294,9 @@ const loadHome = async (req, res) => {
 const loadAccount = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id });
-    const address = await Address.find({userId:req.session.user_id})
+    const address = await Address.find({ userId: req.session.user_id });
     console.log(address);
-    res.render("users/account", { user: userData , address:address});
+    res.render("users/account", { user: userData, address: address });
   } catch (error) {
     console.log(error.message);
   }
@@ -365,7 +366,6 @@ const loadShop = async (req, res) => {
   }
 };
 
-
 //loading shopping cart
 const loadcart = async (req, res) => {
   try {
@@ -376,17 +376,21 @@ const loadcart = async (req, res) => {
       .populate("userId")
       .populate("products.productId");
 
-      //finding sum of all products in the cart    
+    //finding sum of all products in the cart
 
     if (cart) {
       let totalAmount = 0;
-        cart.products.forEach((product, index) => {
-            if (index === 0) {
-              totalAmount = 0;
-            }
-            totalAmount += product.productId.actualPrice * product.quantity;
-        });
-      res.render("users/shopping-cart", { user: userData, cart: cart , totalAmount: totalAmount});
+      cart.products.forEach((product, index) => {
+        if (index === 0) {
+          totalAmount = 0;
+        }
+        totalAmount += product.productId.actualPrice * product.quantity;
+      });
+      res.render("users/shopping-cart", {
+        user: userData,
+        cart: cart,
+        totalAmount: totalAmount,
+      });
     } else {
       res.render("users/shopping-cart", { user: userData });
     }
@@ -511,80 +515,79 @@ const deleteCartProduct = async (req, res, next) => {
 const loadCheckout = async (req, res) => {
   try {
     const userId = req.session.user_id;
-    const userData = await User.findOne({_id:userId})
-    const cartDetails = await Cart.findOne({userId:userId})
-    .populate('userId')
-    .populate("products.productId");
+    const userData = await User.findOne({ _id: userId });
+    const cartDetails = await Cart.findOne({ userId: userId })
+      .populate("userId")
+      .populate("products.productId");
 
-     //finding sum of all products in the cart
-     let totalAmount = 0;
-     cartDetails.products.forEach((product, index) => {
-         if (index === 0) {
-           totalAmount = 0;
-         }
-         totalAmount += product.productId.actualPrice * product.quantity;
-     });
+    const address = await Address.find({ userId: userId });
+    //finding sum of all products in the cart
+    let totalAmount = 0;
+    cartDetails.products.forEach((product, index) => {
+      if (index === 0) {
+        totalAmount = 0;
+      }
+      totalAmount += product.productId.actualPrice * product.quantity;
+    });
 
-
-    res.render("users/checkout",{cart:cartDetails , totalAmount:totalAmount});
+    res.render("users/checkout", {
+      user: userData,
+      cart: cartDetails,
+      totalAmount: totalAmount,
+      address: address,
+    });
   } catch (error) {
     console.log(error.message);
   }
 };
 
-
 //show zoom
-const showZoom = async (req,res)=>{
-  res.render('users/zoom')
-}
-
+const showZoom = async (req, res) => {
+  res.render("users/zoom");
+};
 
 // edit and update user data
-const editUserData = async (req,res)=>{
+const editUserData = async (req, res) => {
   try {
-    const {email, fname ,lname , mobile} = req.body 
-   
-    const userData = await User.findOne({email:email})
+    const { email, fname, lname, mobile } = req.body;
 
-  if(userData){
-    const updatedUserData = await User.updateOne(
-      { _id: userData._id }, 
-      {
-        $set: {
-          firstname: fname ?? userData.firstname,
-          lastname: lname ?? userData.lastname,
-          mobile: mobile ?? userData.mobile
-          
-        },
-      }
-    );
-    res.json({ message: "User Updated Successfully" });
-  }else{
-    console.log('No User found');
-  }
+    const userData = await User.findOne({ email: email });
+
+    if (userData) {
+      const updatedUserData = await User.updateOne(
+        { _id: userData._id },
+        {
+          $set: {
+            firstname: fname ?? userData.firstname,
+            lastname: lname ?? userData.lastname,
+            mobile: mobile ?? userData.mobile,
+          },
+        }
+      );
+      res.json({ message: "User Updated Successfully" });
+    } else {
+      console.log("No User found");
+    }
   } catch (error) {
     console.log(error.message);
   }
-}
-
-
+};
 
 // adding and updating new address
-const updateAddress = async (req,res)=>{
+const updateAddress = async (req, res) => {
   try {
-    const [ houseName , city ,state ,country ,pincode ,email ] = req.body
-    const userData = await User.findOne({email:email})
+    const [houseName, city, state, country, pincode, email] = req.body;
+    const userData = await User.findOne({ email: email });
 
     const address = new Address({
       userId: userData._id,
-      fullname: userData.firstname +" "+ userData.lastname,
+      fullname: userData.firstname + " " + userData.lastname,
       mobile: userData.mobile,
       houseName: houseName,
       city: city,
       state: state,
       country: country,
       pincode: pincode,
-      
     });
 
     //returning a promise
@@ -594,38 +597,92 @@ const updateAddress = async (req,res)=>{
   } catch (error) {
     console.log(error.message);
   }
-}
-
+};
 
 // updating edited address
-const updateEditedAddress = async (req,res)=>{
+const updateEditedAddress = async (req, res) => {
   try {
-    const {houseName ,city , state ,country ,pincode , email} = req.body;
-    const user = await User.findOne({email:email})
+    const { houseName, city, state, country, pincode, email } = req.body;
+    const user = await User.findOne({ email: email });
     console.log(user);
-    const address = await Address.find({userId : user._id})
+    const address = await Address.find({ userId: user._id });
     if (address && address.length > 0) {
       const firstAddress = address[0];
-    
+
       firstAddress.houseName = houseName;
       firstAddress.city = city;
       firstAddress.state = state;
       firstAddress.country = country;
       firstAddress.pincode = pincode;
-      
-  //save the changes
+
+      //save the changes
       await firstAddress.save();
-    
-      console.log('First address updated successfully');
-    
+
+      console.log("First address updated successfully");
     }
     res.json({ message: "Address Addes Successfully" });
-
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
+//Checking current password same or not
+const checkCurrPass = async (req, res) => {
+  try {
+    const { currentPassVal, email } = req.body;
+    const user = await User.findOne({ email: email });
+    const passwordMatch = await bcrypt.compare(currentPassVal, user.password);
+    if (passwordMatch) {
+      res.json({ message: "Correct" });
+    } else {
+      res.json({ message: "Incorrect" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//changing password to new password
+const changePass = async (req, res) => {
+  try {
+    const { newPassVal, email } = req.body;
+    const userData = await User.findOne({ email: email });
+    const encryptedPass = await securePassword(newPassVal);
+    if (userData) {
+      const updatedUserData = await User.updateOne(
+        { _id: userData._id },
+        {
+          $set: {
+            password: encryptedPass,
+          },
+        }
+      );
+      res.json({ message: "User Password Changed Successfully" });
+    } else {
+      console.log("user not found");
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// add new address
+const addAddress = async (req, res) => {
+  try {
+    const { emailIp, name, houseName, city, state, country, pincode, mobile } =
+      req.body;
+    console.log(emailIp);
+    console.log(name);
+    console.log(houseName);
+    console.log(city);
+    console.log(state);
+    console.log(country);
+    console.log(pincode);
+    console.log(mobile);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 module.exports = {
   loadLogin,
@@ -651,5 +708,8 @@ module.exports = {
 
   editUserData,
   updateAddress,
-  updateEditedAddress
+  updateEditedAddress,
+  checkCurrPass,
+  changePass,
+  addAddress,
 };

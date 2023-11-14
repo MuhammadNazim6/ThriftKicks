@@ -104,16 +104,7 @@
                     <h3 class="mr-4 text-end">Welcome <span>&nbsp;<%= user.firstname %></span></h3>
 
                     <div class="tab-content">
-                        <div class="text-right mt-3 d-block">
-                            <span id="userDataUpdatedAlert" class="alert alert-success text-white mr-5 mb-4"
-                                style="width:350px; display: none;">
-                                User Details Updated Successfully
-                            </span>
-                            <button type="button" id="editUserBtn" class="btn btn-dark mr-5" style="width: 170px;">Edit
-                                Profile</button>&nbsp;
-                            <button type="button" id="saveUserEdits" class="btn btn-primary mr-5"
-                                style="display: none;width: 170px;">Save </button>
-                        </div>
+                        
                         <div class="tab-pane fade active show" id="account-general">
                             <!-- <div class="card-body media align-items-center">
                             <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
@@ -130,6 +121,23 @@
 
                             <hr class="border-light m-0">
                             <div class="card-body">
+
+
+                                <div class="text-right mt-3 d-block">
+                                    <span id="userDataUpdatedAlert" class="alert alert-success text-white mr-5 mb-4"
+                                        style="width:350px; display: none;">
+                                        User Details Updated Successfully
+                                    </span>
+                                    <button type="button" id="editUserBtn" class="btn btn-dark mr-5" style="width: 170px;">Edit
+                                        Profile</button>&nbsp;
+                                    <button type="button" id="saveUserEdits" class="btn btn-primary mr-5"
+                                        style="display: none;width: 170px;">Save </button>
+                                </div>
+
+
+
+
+
                                 <div class="form-group">
                                     <label class="form-label text-lg">First Name:</label>
                                     <input type="text" name="fname" id="fname"
@@ -212,21 +220,28 @@
 
                         </div>
 
-                        <!-- ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff -->
+                        <!-- ffffffffffffffffff -->
                         <div class="tab-pane fade" id="account-change-password">
                             <div class="card-body pb-2">
                                 <div class="form-group">
-                                    <label class="form-label">Current password</label>
-                                    <input type="password" class="form-control">
+                                    <label class="form-label text-lg">Current password</label>
+                                    <input type="password" id="currentPass" class="form-control text-lg bg-glass">
+                                    <button id="checkPassBtn" class="btn btn-dark mt-3"> Check Password</button>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">New password</label>
-                                    <input type="password" class="form-control">
+                                    <label class="form-label text-lg">New password</label>
+                                    <input type="password" id="newPass" class="form-control text-lg bg-glass" readonly>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Repeat new password</label>
-                                    <input type="password" class="form-control">
+                                <div class="form-group mb-5">
+                                    <label class="form-label text-lg">Repeat new password</label>
+                                    <input type="password" id="confirmPass" class="form-control text-lg mb-5 bg-glass" readonly>
                                 </div>
+                                <button id="changePassBtn" class="btn btn-dark mt-3" style="display: none;"> Change Password</button>
+                                
+                                <span id="passAlert" class="alert alert-success text-white mr-5 mb-4"
+                                style="width:350px; display:none;">
+                                 
+                            </span>
                             </div>
                         </div>
 
@@ -1085,6 +1100,128 @@
                         }, 1000);
                     }
         }
+
+
+
+        //password changing of user
+        const currentPass = document.getElementById('currentPass')
+        const newPass = document.getElementById('newPass')
+        const confirmPass = document.getElementById('confirmPass')
+        const checkPassBtn = document.getElementById('checkPassBtn')
+        const emailIp = document.getElementById('email');
+        const changePassBtn = document.getElementById('changePassBtn')
+
+        
+        
+        //events
+        checkPassBtn.addEventListener('click',checkPass)
+        changePassBtn.addEventListener('click',changePassword)
+
+
+
+        //functions
+        async function checkPass(){
+            currentPassVal =  currentPass.value
+            const email = emailIp.value;
+
+            const response = await fetch(`/checkCurrPass`,{
+                method: 'POST',
+                headers:{
+                        'Content-Type': 'application/json',
+                    },
+                body: JSON.stringify({currentPassVal , email}),
+                    
+            })
+            if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+
+                    const data = await response.json();
+                    console.log(data.message);
+
+                    if (data.message === "Correct") {
+                        currentPass.readOnly = true;
+                        newPass.readOnly = false;
+                        confirmPass.readOnly = false;
+                        newPass.placeholder = "Enter New Password"
+                        confirmPass.placeholder = "Confirm Password "
+                        changePassBtn.style.display = 'inline'
+                    }else{
+                        console.log("Incorrect password entered");
+                    }
+        }
+                    
+                
+           async function changePassword(){
+            try {
+                const currentPassVal = currentPass.value
+                const newPassVal = newPass.value
+                const confirmPassVal = confirmPass.value
+                const emailIp = document.getElementById('email');
+                const email = emailIp.value
+                const passAlert =  document.getElementById('passAlert')
+
+                if(newPassVal.length <= 5){
+                        passAlert.style.display = 'inline'
+                        passAlert.classList.replace('alert-success','alert-danger')
+                        passAlert.textContent = "Enter a strong password"
+
+                        setTimeout(() => {
+                            passAlert.style.display = 'none';
+                        }, 1500);
+                        return
+                }
+
+                if(currentPassVal === newPassVal){
+                        passAlert.style.display = 'inline'
+                        passAlert.classList.replace('alert-success','alert-danger')
+                        passAlert.textContent = "Cannot change to existing password"
+
+                        setTimeout(() => {
+                            passAlert.style.display = 'none';
+                        }, 2000);
+                        return
+                }
+                if(newPassVal !== confirmPassVal){
+                        passAlert.style.display = 'inline'
+                        passAlert.classList.replace('alert-success','alert-danger')
+                        passAlert.textContent = "Both password dont match"
+
+                        setTimeout(() => {
+                            passAlert.style.display = 'none';
+                        }, 2000);
+                        return
+                }
+                
+                        const response = await fetch(`/changePass`,{
+                        method: 'POST',
+                        headers:{
+                                'Content-Type': 'application/json',
+                            },
+                        body: JSON.stringify({newPassVal,email}),
+                            
+                    })
+                    const data = await response.json();
+                    console.log(data.message);
+                    if(data.message){
+                        passAlert.style.display = 'inline'
+                        passAlert.classList.replace('alert-danger','alert-success')
+                        passAlert.textContent = data.message
+                        setTimeout(() => {
+                            passAlert.style.display = 'none';
+                        }, 1000);
+                        
+                    }
+                   
+
+            } catch (error) {
+                console.log("Coudnt change password");
+            }
+           } 
+        
+
+
+
 
     </script>
     <%- include('../layouts/footer.ejs')%>

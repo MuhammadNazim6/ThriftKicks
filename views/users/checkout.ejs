@@ -108,64 +108,98 @@
                                     here</a> to enter your code</h6>
                             <h6 class="checkout__title">Billing Details</h6>
 
-                            <div class="checkout__input">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="address1" name="selectedAddresses[]" value="Address 1">
-                                    <label class="custom-control-label" for="address1">Address 1</label>
-                                  </div>
-                                <input type="text" placeholder="House No" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite">
-                                <input type="text" placeholder="Street ">
-                            </div>
+                            <input type="hidden" name="email" id="email"
+                                class="form-control mb-1 text-lg text-bold pl-3" value="<%= user.email %>">
 
+                            <div class="checkout__input">
+
+                                <% if(typeof address!=='undefined' && address.length> 0){
+
+                                    for(let i=0;i< address.length; i++){ %>
+
+
+                                        <p>
+                                            <%= address[i].fullname %>
+                                        </p>
+                                        <p>
+                                            <%= address[i].mobile %>
+                                        </p>
+                                        <p>
+                                            <%= address[i].houseName %>
+                                        </p>
+                                        <p>
+                                            <%= address[i].city %>
+                                        </p>
+                                        <p>
+                                            <%= address[i].pincode %>
+                                        </p>
+                                        <p>
+                                            <%= address[i].state %>
+                                        </p>
+                                        <p>
+                                            <%= address[i].country %>
+                                        </p>
+
+                                        <div class="custom-control custom-checkbox custom-checkbox-lg mt-4">
+                                            <input type="checkbox" class="custom-control-input" id="customCheckbox"
+                                                name="customCheckbox">
+                                            <label class="custom-control-label text-lg" for="customCheckbox">Choose the
+                                                existing address</label>
+                                        </div>
+
+                                        <% } } %>
+
+                            </div>
+                            <h4 class="my-5">Add new Address</h4>
                             <!-- ccccccccccccccccccccccccccccccccccccccccccccccccccccc -->
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>First Name<span>*</span></p>
-                                        <input type="text" name="fname" id="fname">
+                            <form class="address-form">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="checkout__input">
+                                            <p>Name<span>*</span></p>
+                                            <input type="text" placeholder="Name" class="checkout__input__add"
+                                                name="name" id="name">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Last Name<span>*</span></p>
-                                        <input type="text" name="lname" id="lname">
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="checkout__input">
-                                <p>Address<span>*</span></p>
-                                <input type="text" placeholder="House No" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite">
-                                <input type="text" placeholder="Street ">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Town/City<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country/State<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Postcode / ZIP<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Phone<span>*</span></p>
-                                        <input type="text">
+                                <div class="checkout__input">
+                                    <p>Address<span>*</span></p>
+                                    <input type="text" placeholder="House Name" class="checkout__input__add"
+                                        name="houseName" id="houseName">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Town/City<span>*</span></p>
+                                    <input type="text" placeholder="City" name="city" id="city">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>State<span>*</span></p>
+                                    <input type="text" placeholder="State" name="state" id="state">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Country<span>*</span></p>
+                                    <input type="text" placeholder="Country" name="country" id="country">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Postcode<span>*</span></p>
+                                    <input type="text" placeholder="Pincode" name="pincode" id="pincode">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>Phone<span>*</span></p>
+                                            <input type="text" placeholder="Phone" name="mobile" id="mobile">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Email<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                            </div>
+
+                            </form>
+
+                            <button type="button" class="btn btn-dark" id="addAddressButton">Add Address</button>
 
 
                         </div>
@@ -174,40 +208,42 @@
                                 <h4 class="order__title">Your order</h4>
                                 <div class="checkout__order__products">Product <span>Total</span></div>
                                 <ul class="checkout__total__products">
-                                    <% for(let i = 0; i < cart.products.length; i++){%>
-                                        <li>0<%=i+1%>.&nbsp;<%=cart.products[i].productId.productName %> <span>₹ <%=cart.products[i].productId.actualPrice * cart.products[i].quantity%></span></li>
-                                <%   }   %> 
+                                    <% for(let i=0; i < cart.products.length; i++){%>
+                                        <li>0<%=i+1%>.&nbsp;<%=cart.products[i].productId.productName %> <span>₹
+                                                        <%=cart.products[i].productId.actualPrice *
+                                                            cart.products[i].quantity%></span></li>
+                                        <% } %>
 
-                                <ul class="checkout__total__all">
-                                    <li>Subtotal <span>₹ <%= totalAmount %></span></li>
-                                    <li>Total <span>₹ <%= totalAmount %></span></li>
-                                </ul>
-                                 
-                                <p>.</p>
+                                            <ul class="checkout__total__all">
+                                                <li>Subtotal <span>₹ <%= totalAmount %></span></li>
+                                                <li>Total <span>₹ <%= totalAmount %></span></li>
+                                            </ul>
 
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Cash on delivery
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        UPI
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Net banking
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
+                                            <p>.</p>
 
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+                                            <div class="checkout__input__checkbox">
+                                                <label for="payment">
+                                                    Cash on delivery
+                                                    <input type="checkbox" id="payment">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="checkout__input__checkbox">
+                                                <label for="paypal">
+                                                    UPI
+                                                    <input type="checkbox" id="paypal">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="checkout__input__checkbox">
+                                                <label for="paypal">
+                                                    Net banking
+                                                    <input type="checkbox" id="paypal">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+
+                                            <button type="submit" class="site-btn">PLACE ORDER</button>
                             </div>
                         </div>
                     </div>
@@ -326,6 +362,8 @@
         </div>
     </div>
 
+
+
     <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -338,7 +376,81 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
+    <script>
 
+        //constants
+        const addAddressBtn = document.getElementById('addAddressButton');
+        const emailIp = document.getElementById('email');
+        const name = document.querySelector('#name').value;
+        const houseName = document.querySelector('#houseName').value;
+        const city = document.querySelector('#city').value;
+        const state = document.querySelector('#state').value;
+        const country = document.querySelector('#country').value;
+        const pincode = document.querySelector('#pincode').value;
+        const mobile = document.querySelector('#mobile').value;
+
+
+        //events
+        addAddressBtn.addEventListener('click', addNewAddress);
+
+
+          //   functions
+        async function addNewAddress() {
+            try {
+                
+            const email = emailIp.value;
+            const response = await fetch(`/addAddress`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({emailIp,name,houseName,city,state,country,pincode,mobile})
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+
+                const data = await response.json();
+                console.log(data.message);
+            
+
+            } catch (error) {
+                console.log("could not add address");
+            }
+            
+            
+        }
+
+
+      
+        async function updateAddress() {
+            try {
+                const email = emailIp.value;
+                const response = await fetch(`/updateAddress`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(Address),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+
+                const data = await response.json();
+                console.log(data.message);
+
+                if (data.message) {
+                    addAddressBtn.style.display = 'none';
+                    location.reload();
+                }
+            } catch (error) {
+                console.log("Address couldn't be updated", error);
+            }
+        }
+    </script>
 
 
     <%- include('../layouts/footer.ejs')%>

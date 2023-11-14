@@ -28,15 +28,15 @@
 
                 <% if (typeof message !=='undefined' ) { %>
 
-                  <p class="alert alert-danger text-light mb-3">
+                  <p class="alert alert-danger text-white mb-3">
                     <%= message %>
                   </p>
                   <% } %>
 
                   <% if (typeof verif_message !=='undefined' ) { %>
 
-                    <p class="alert alert-danger text-light mb-3 text-center">
-                      <%= verif_message %>&nbsp;&nbsp;&nbsp;<a class="text-light text-decoration-underline" href="/resendOtp">Verify now</a>
+                    <p class="alert alert-danger text-white mb-3 text-center">
+                      <%= verif_message %>&nbsp;&nbsp;&nbsp;<a class="text-light text-decoration-underline text-white" href="/resendOtp">Verify now</a>
                     </p>
                     
                     <% } %>
