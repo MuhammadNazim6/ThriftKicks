@@ -32,7 +32,11 @@ user_route.post('/api/addtoCart/:prodId',userController.addtoCart)
 user_route.post('/inc-dec/:prodId',userController.cartIncreaseDecrease)
 user_route.post('/deleteProduct/:prodId',userController.deleteCartProduct)
 
-user_route.get('/checkout',userController.loadCheckout)
+user_route.get('/checkout', auth.isLogin,userController.loadCheckout)
+
+user_route.post('/editUserData',userController.editUserData)
+user_route.post('/updateAddress',userController.updateAddress)
+user_route.post('/updateEditedAddress',userController.updateEditedAddress)
 
 
 module.exports = user_route;

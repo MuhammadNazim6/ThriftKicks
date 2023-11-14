@@ -107,6 +107,18 @@
                             <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
                                     here</a> to enter your code</h6>
                             <h6 class="checkout__title">Billing Details</h6>
+
+                            <div class="checkout__input">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="address1" name="selectedAddresses[]" value="Address 1">
+                                    <label class="custom-control-label" for="address1">Address 1</label>
+                                  </div>
+                                <input type="text" placeholder="House No" class="checkout__input__add">
+                                <input type="text" placeholder="Apartment, suite">
+                                <input type="text" placeholder="Street ">
+                            </div>
+
+                            <!-- ccccccccccccccccccccccccccccccccccccccccccccccccccccc -->
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
@@ -155,32 +167,7 @@
                                 </div>
                             </div>
 
-                            <div class="checkout__input">
-                                <p>Choose existing Address<span><label for="paypal">
-                                    <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label></span></p>
-                                <input type="text" placeholder="House No" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite">
-                                <input type="text" placeholder="Street ">
-                            </div>
-                            <!-- <div class="checkout__input__checkbox">
-                          <label for="acc">
-                              Create an account?
-                              <input type="checkbox" id="acc">
-                              <span class="checkmark"></span>
-                          </label>
-                          <p>Create an account by entering the information below. If you are a returning customer
-                          please login at the top of the page</p>
-                      </div> -->
 
-
-
-                            <!-- <div class="checkout__input">
-                          <p>Order notes<span>*</span></p>
-                          <input type="text"
-                          placeholder="Notes about your order, e.g. special notes for delivery.">
-                      </div> -->
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
@@ -195,7 +182,7 @@
                                     <li>Subtotal <span>₹ <%= totalAmount %></span></li>
                                     <li>Total <span>₹ <%= totalAmount %></span></li>
                                 </ul>
-                                
+                                 
                                 <p>.</p>
 
                                 <div class="checkout__input__checkbox">

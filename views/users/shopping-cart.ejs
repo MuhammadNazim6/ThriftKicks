@@ -296,10 +296,11 @@
                             <button type="submit">Apply</button>
                         </form>
                     </div>
+                    <% if(typeof cart!=="undefined" && cart.products.length> 0) { %>
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal 
+                            <li> Subtotal 
                                 
                                     <span id="subtotalAmount"><%= totalAmount %></span>
                                     <span>₹&nbsp; </span>
@@ -309,6 +310,8 @@
                         </ul>
                         <a href="/checkout" class="primary-btn">Proceed to checkout</a>
                     </div>
+                    <% } %>
+
                 </div>
             </div>
         </div>

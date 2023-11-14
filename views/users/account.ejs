@@ -1,354 +1,1090 @@
 <%- include('../layouts/header.ejs')%>
 
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Free ,30-day return or refund guarantee.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="/home">Home</a></li>
+                            <li><a href="/shop">Shop</a></li>
+                            <li> <a href="#">About Us</a> </li>
+
+                            <% if(typeof user !=='undefined' ) { %>
+                                <li class="active"><a href="/account">Account</a></li>
+                                <% } else { %>
+                                    <li><a href="/login">SignIn</a></li>
+                                    <% } %>
 
 
-  <p> Account</p>
-  <p>
+                                        <li>
+                                            <% if(typeof user !=='undefined' ) { %>
+                                                <a id="" class="cursor_cart" href="/cart">Cart <img
+                                                        src="assets/icon/cart.png" alt="" /></a>
+                                                <% } else { %>
+                                                    <a class="cartButton cursor_cart">Cart <img
+                                                            src="assets/icon/cart.png" alt="" /></a>
+                                                    <% } %>
+                                        </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a>
+                        <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
+                        <a href=""><img src="assets/icon/cart.png" alt="" /> <span>0</span></a>
+                        <div class="price">$0.00</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- <p> Account</p> -->
+    <!-- <p>
     <%= user.name %>
       <%= user.email %>
         <%= user.password %>
           <%= user.name %>
             <%= user.name %>
-  </p>
-  <a href="/logout"> Logout </a>
-
-  <!-- Header Section Begin -->
-<header class="header">
-  <div class="header__top">
-      <div class="container">
-          <div class="row">
-              <div class="col-lg-6 col-md-7">
-                  <div class="header__top__left">
-                      <p>Free , 30-day return or refund guarantee.</p>
-                  </div>
-              </div>
-              <div class="col-lg-6 col-md-5">
-                  <div class="header__top__right">
-                      <div class="header__top__links">
-                         
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div class="container">
-      <div class="row">
-          <div class="col-lg-3 col-md-3">
-              <div class="header__logo">
-                  <a class="navbar-brand logo-size" href="/home"><img src="assets/logos/thriftedkicks.png"
-                          alt="Thriffy" /></a>
-              </div>
-          </div>
-          <div class="col-lg-6 col-md-6">
-              <nav class="header__menu mobile-menu">
-                  <ul>
-                      <li><a href="/home">Home</a></li>
-                      <li><a href="/shop">Shop</a></li>
-                      <li> <a href="#">About Us</a> </li>
-
-                      <% if(typeof user !=='undefined' ) { %>
-                          <li class="active"><a href="/account">Account</a></li>
-                          <% } else { %>
-                              <li><a href="/login">SignIn</a></li>
-                              <% } %>
+  </p> -->
+    <!-- <a href="/logout"> Logout </a>  -->
 
 
-                                  <li>
-                                      <% if(typeof user !=='undefined' ) { %>
-                                          <a id="" class="cursor_cart" href="/cart">Cart <img src="assets/icon/cart.png" alt="" /></a>
-                                          <% } else { %>
-                                              <a class="cartButton cursor_cart">Cart <img src="assets/icon/cart.png"
-                                                      alt="" /></a>
-                                              <% } %>
-                                  </li>
-                  </ul>
-              </nav>
-          </div>
-          <div class="col-lg-3 col-md-3">
-              <div class="header__nav__option">
-                  <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a>
-                  <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
-                  <a href=""><img src="assets/icon/cart.png" alt="" /> <span>0</span></a>
-                  <div class="price">$0.00</div>
-              </div>
-          </div>
-      </div>
-      <div class="canvas__open"><i class="fa fa-bars"></i></div>
-  </div>
-</header>
-<!-- Header Section End -->
-
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-option">
-  <div class="container">
-      <div class="row">
-          <div class="col-lg-12">
-              <div class="breadcrumb__text">
-                  <h4>Check Out</h4>
-                  <div class="breadcrumb__links">
-                      <a href="./index.html">Home</a>
-                      <a href="./shop.html">Shop</a>
-                      <span>Check Out</span>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-</section>
-<!-- Breadcrumb Section End -->
-
-<!-- Checkout Section Begin -->
-<section class="checkout spad">
-  <div class="container">
-      <div class="checkout__form">
-          <form action="#">
-              <div class="row">
-                  <div class="col-lg-8 col-md-6">
-                      <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                      here</a> to enter your code</h6>
-                      <h6 class="checkout__title">Billing Details</h6>
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <div class="checkout__input">
-                                  <p>Fist Name<span>*</span></p>
-                                  <input type="text">
-                              </div>
-                          </div>
-                          <div class="col-lg-6">
-                              <div class="checkout__input">
-                                  <p>Last Name<span>*</span></p>
-                                  <input type="text">
-                              </div>
-                          </div>
-                      </div>
-                      <div class="checkout__input">
-                          <p>Country<span>*</span></p>
-                          <input type="text">
-                      </div>
-                      <div class="checkout__input">
-                          <p>Address<span>*</span></p>
-                          <input type="text" placeholder="Street Address" class="checkout__input__add">
-                          <input type="text" placeholder="Apartment, suite, unite ect (optinal)">
-                      </div>
-                      <div class="checkout__input">
-                          <p>Town/City<span>*</span></p>
-                          <input type="text">
-                      </div>
-                      <div class="checkout__input">
-                          <p>Country/State<span>*</span></p>
-                          <input type="text">
-                      </div>
-                      <div class="checkout__input">
-                          <p>Postcode / ZIP<span>*</span></p>
-                          <input type="text">
-                      </div>
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <div class="checkout__input">
-                                  <p>Phone<span>*</span></p>
-                                  <input type="text">
-                              </div>
-                          </div>
-                          <div class="col-lg-6">
-                              <div class="checkout__input">
-                                  <p>Email<span>*</span></p>
-                                  <input type="text">
-                              </div>
-                          </div>
-                      </div>
-                      <div class="checkout__input__checkbox">
-                          <label for="acc">
-                              Create an account?
-                              <input type="checkbox" id="acc">
-                              <span class="checkmark"></span>
-                          </label>
-                          <p>Create an account by entering the information below. If you are a returning customer
-                          please login at the top of the page</p>
-                      </div>
-                      <div class="checkout__input">
-                          <p>Account Password<span>*</span></p>
-                          <input type="text">
-                      </div>
-                      <div class="checkout__input__checkbox">
-                          <label for="diff-acc">
-                              Note about your order, e.g, special noe for delivery
-                              <input type="checkbox" id="diff-acc">
-                              <span class="checkmark"></span>
-                          </label>
-                      </div>
-                      <div class="checkout__input">
-                          <p>Order notes<span>*</span></p>
-                          <input type="text"
-                          placeholder="Notes about your order, e.g. special notes for delivery.">
-                      </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6">
-                      <div class="checkout__order">
-                          <h4 class="order__title">Your order</h4>
-                          <div class="checkout__order__products">Product <span>Total</span></div>
-                          <ul class="checkout__total__products">
-                              <li>01. Vanilla salted caramel <span>$ 300.0</span></li>
-                              <li>02. German chocolate <span>$ 170.0</span></li>
-                              <li>03. Sweet autumn <span>$ 170.0</span></li>
-                              <li>04. Cluten free mini dozen <span>$ 110.0</span></li>
-                          </ul>
-                          <ul class="checkout__total__all">
-                              <li>Subtotal <span>$750.99</span></li>
-                              <li>Total <span>$750.99</span></li>
-                          </ul>
-                          <div class="checkout__input__checkbox">
-                              <label for="acc-or">
-                                  Create an account?
-                                  <input type="checkbox" id="acc-or">
-                                  <span class="checkmark"></span>
-                              </label>
-                          </div>
-                          <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                          ut labore et dolore magna aliqua.</p>
-                          <div class="checkout__input__checkbox">
-                              <label for="payment">
-                                  Check Payment
-                                  <input type="checkbox" id="payment">
-                                  <span class="checkmark"></span>
-                              </label>
-                          </div>
-                          <div class="checkout__input__checkbox">
-                              <label for="paypal">
-                                  Paypal
-                                  <input type="checkbox" id="paypal">
-                                  <span class="checkmark"></span>
-                              </label>
-                          </div>
-                          <button type="submit" class="site-btn">PLACE ORDER</button>
-                      </div>
-                  </div>
-              </div>
-          </form>
-      </div>
-  </div>
-</section>
-<!-- Checkout Section End -->
-
-<!-- Footer Section Begin -->
-<footer class="footer">
-  <div class="container">
-      <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="footer__about">
-                  <div class="footer__logo">
-                      <a href="#"><img src="img/footer-logo.png" alt=""></a>
-                  </div>
-                  <p>The customer is at the heart of our unique business model, which includes design.</p>
-                  <a href="#"><img src="img/payment.png" alt=""></a>
-              </div>
-          </div>
-          <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-              <div class="footer__widget">
-                  <h6>Shopping</h6>
-                  <ul>
-                      <li><a href="#">Clothing Store</a></li>
-                      <li><a href="#">Trending Shoes</a></li>
-                      <li><a href="#">Accessories</a></li>
-                      <li><a href="#">Sale</a></li>
-                  </ul>
-              </div>
-          </div>
-          <div class="col-lg-2 col-md-3 col-sm-6">
-              <div class="footer__widget">
-                  <h6>Shopping</h6>
-                  <ul>
-                      <li><a href="#">Contact Us</a></li>
-                      <li><a href="#">Payment Methods</a></li>
-                      <li><a href="#">Delivary</a></li>
-                      <li><a href="#">Return & Exchanges</a></li>
-                  </ul>
-              </div>
-          </div>
-          <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-              <div class="footer__widget">
-                  <h6>NewLetter</h6>
-                  <div class="footer__newslatter">
-                      <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                      <form action="#">
-                          <input type="text" placeholder="Your email">
-                          <button type="submit"><span class="icon_mail_alt"></span></button>
-                      </form>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="row">
-          <div class="col-lg-12 text-center">
-              <div class="footer__copyright__text">
-                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                  <p>Copyright ©
-                      <script>
-                          document.write(new Date().getFullYear());
-                      </script>2020
-                      All rights reserved | This template is made with <i class="fa fa-heart-o"
-                      aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                  </p>
-                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              </div>
-          </div>
-      </div>
-  </div>
-</footer>
-<!-- Footer Section End -->
-
-<!-- Search Begin -->
-<div class="search-model">
-  <div class="h-100 d-flex align-items-center justify-content-center">
-      <div class="search-close-switch">+</div>
-      <form class="search-model-form">
-          <input type="text" id="search-input" placeholder="Search here.....">
-      </form>
-  </div>
-</div>
-<!-- Search End -->
 
 
-<!-- modal starting -->
-<div class="modal fade" id="loginSignupModal" tabindex="-1" role="dialog" aria-labelledby="loginSignupModalLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" style="max-width: 600px">
-    <div class="modal-content" style="background-color: #302e2e; color: #fff">
-        <div class="modal-header">
-            <h5 class="modal-title text-white" id="loginSignupModalLabel">
-                Login or Sign Up
-            </h5>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="color: #fff">
-                <span aria-hidden="true">&times;</span>
-            </button>
+
+    <div class="container light-style flex-grow-1 container-p-y text-lg">
+
+        <div class="card overflow-hidden">
+            <div class="row no-gutters row-bordered row-border-light">
+                <div class="col-md-3 pt-0">
+                    <div class="list-group list-group-flush account-settings-links">
+                        <a class="list-group-item list-group-item-action active text-lg" data-toggle="list"
+                            href="#account-general">General</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#wishlist">wishlist</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#account-change-password">Change password</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#account-social-links">Social links</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#account-connections">Connections</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#account-notifications">Notifications</a>
+                        <a class="list-group-item text-bold" href="/logout">Logout</a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <h3 class="mr-4 text-end">Welcome <span>&nbsp;<%= user.firstname %></span></h3>
+
+                    <div class="tab-content">
+                        <div class="text-right mt-3 d-block">
+                            <span id="userDataUpdatedAlert" class="alert alert-success text-white mr-5 mb-4"
+                                style="width:350px; display: none;">
+                                User Details Updated Successfully
+                            </span>
+                            <button type="button" id="editUserBtn" class="btn btn-dark mr-5" style="width: 170px;">Edit
+                                Profile</button>&nbsp;
+                            <button type="button" id="saveUserEdits" class="btn btn-primary mr-5"
+                                style="display: none;width: 170px;">Save </button>
+                        </div>
+                        <div class="tab-pane fade active show" id="account-general">
+                            <!-- <div class="card-body media align-items-center">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
+                                class="d-block ui-w-80">
+                            <div class="media-body ml-4">
+                                <label class="btn btn-outline-primary">
+                                    Upload new photo
+                                    <input type="file" class="account-settings-fileinput">
+                                </label> &nbsp;
+                                <button type="button" class="btn btn-default md-btn-flat">Reset</button>
+                                <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                            </div>
+                        </div> -->
+
+                            <hr class="border-light m-0">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label text-lg">First Name:</label>
+                                    <input type="text" name="fname" id="fname"
+                                        class="form-control mb-1 text-lg text-bold pl-3 readonly"
+                                        value="<%= user.firstname %>" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label text-lg mt-1">Last Name:</label>
+                                    <input type="text" name="lname" id="lname"
+                                        class="form-control text-lg text-bold pl-3 readonly"
+                                        value="<%= user.lastname %>" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label text-lg mt-3">E-mail:</label>
+                                    <input type="text" name="email" id="email"
+                                        class="form-control mb-1 text-lg text-bold pl-3 " value="<%= user.email %>"
+                                        readonly>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label text-lg mt-3">Mobile:</label>
+                                    <input type="text" name="mobile" id="mobile"
+                                        class="form-control text-lg text-bold pl-3 readonly" value="<%= user.mobile %>"
+                                        readonly>
+                                </div>
+                                <div class="form-group address-form">
+                                    <label class="form-label text-lg mt-3">Address:</label>
+                                    <% if(typeof address !=='undefined' && address.length> 0){ %>
+
+                                        <% for(let i=0;i< 1 ;i++){ %>
+
+                                            <input type="text"  name="houseName" id="houseName"
+                                                class="form-control addressCell text-lg text-bold pl-3 houseName"
+                                                value="<%=address[i].houseName%>" readonly required>
+                                            <input type="text"  name="city" id="city"
+                                                class="form-control addressCell text-lg text-bold pl-3 city"
+                                                value="<%=address[i].city%>" readonly required>
+                                            <input type="text"  name="state" id="state"
+                                                class="form-control addressCell text-lg text-bold pl-3 state"
+                                                value="<%=address[i].state%>" readonly required>
+                                            <input type="text"  name="country" id="country"
+                                                class="form-control addressCell text-lg text-bold pl-3 country"
+                                                value="<%=address[i].country%>" readonly required>
+                                            <input type="text"  name="pincode" id="pincode"
+                                                class="form-control addressCell text-lg text-bold pl-3 pincode"
+                                                value="<%=address[i].pincode%>" readonly required>
+                                            <button class="btn btn-dark mt-3 editAddress" id="editAddress">Edit
+                                                Address</button>
+                                            <button class="btn btn-primary mt-3" id="saveEditedAddress" style="display: none;">Save
+                                                Address</button>
+
+                                            <% } %>
+
+                                                <% }else{ %>
+                                                    <input type="text" id="houseName" name="houseName"
+                                                        class="form-control text-lg text-bold pl-3" value=""
+                                                        placeholder="House Name">
+                                                    <input type="text" id="city" name="city"
+                                                        class="form-control text-lg text-bold pl-3" value=""
+                                                        placeholder="City">
+                                                    <input type="text" id="state" name="state"
+                                                        class="form-control text-lg text-bold pl-3" value=""
+                                                        placeholder="State">
+                                                    <input type="text" id="country" name="country"
+                                                        class="form-control text-lg text-bold pl-3" value=""
+                                                        placeholder="Country">
+                                                    <input type="text" id="pincode" name="pincode"
+                                                        class="form-control text-lg text-bold pl-3" value=""
+                                                        placeholder="PINCODE">
+                                                    <button class="btn btn-dark mt-3" id="addAddress">Add
+                                                        Address</button>
+                                                    <% } %>
+                                                    <span id="addressAddedAlert" class="alert alert-success text-white mr-5 mb-4"
+                                style="width:350px; display:none;">
+                                 Address Added Successfully
+                            </span>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff -->
+                        <div class="tab-pane fade" id="account-change-password">
+                            <div class="card-body pb-2">
+                                <div class="form-group">
+                                    <label class="form-label">Current password</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">New password</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Repeat new password</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-pane fade" id="wishlist">
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>one</td>
+                                        <td>one</td>
+                                        <td>one</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+
+                        <div class="tab-pane fade" id="account-social-links">
+                            <div class="card-body pb-2">
+                                <div class="form-group">
+                                    <label class="form-label">Twitter</label>
+                                    <input type="text" class="form-control" value="https://twitter.com/user">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Facebook</label>
+                                    <input type="text" class="form-control" value="https://www.facebook.com/user">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Google+</label>
+                                    <input type="text" class="form-control" value>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">LinkedIn</label>
+                                    <input type="text" class="form-control" value>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Instagram</label>
+                                    <input type="text" class="form-control" value="https://www.instagram.com/user">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="account-connections">
+                            <div class="card-body">
+                                <button type="button" class="btn btn-twitter">Connect to
+                                    <strong>Twitter</strong></button>
+                            </div>
+                            <hr class="border-light m-0">
+                            <div class="card-body">
+                                <h5 class="mb-2">
+                                    <a href="javascript:void(0)" class="float-right text-muted text-tiny"><i
+                                            class="ion ion-md-close"></i> Remove</a>
+                                    <i class="ion ion-logo-google text-google"></i>
+                                    You are connected to Google:
+                                </h5>
+                                <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                    data-cfemail="f9979498818e9c9595b994989095d79a9694">[email&#160;protected]</a>
+                            </div>
+                            <hr class="border-light m-0">
+                            <div class="card-body">
+                                <button type="button" class="btn btn-facebook">Connect to
+                                    <strong>Facebook</strong></button>
+                            </div>
+                            <hr class="border-light m-0">
+                            <div class="card-body">
+                                <button type="button" class="btn btn-instagram">Connect to
+                                    <strong>Instagram</strong></button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="account-notifications">
+                            <div class="card-body pb-2">
+                                <h6 class="mb-4">Activity</h6>
+                                <div class="form-group">
+                                    <label class="switcher">
+                                        <input type="checkbox" class="switcher-input" checked>
+                                        <span class="switcher-indicator">
+                                            <span class="switcher-yes"></span>
+                                            <span class="switcher-no"></span>
+                                        </span>
+                                        <span class="switcher-label">Email me when someone comments on my article</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="switcher">
+                                        <input type="checkbox" class="switcher-input" checked>
+                                        <span class="switcher-indicator">
+                                            <span class="switcher-yes"></span>
+                                            <span class="switcher-no"></span>
+                                        </span>
+                                        <span class="switcher-label">Email me when someone answers on my forum
+                                            thread</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="switcher">
+                                        <input type="checkbox" class="switcher-input">
+                                        <span class="switcher-indicator">
+                                            <span class="switcher-yes"></span>
+                                            <span class="switcher-no"></span>
+                                        </span>
+                                        <span class="switcher-label">Email me when someone follows me</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <hr class="border-light m-0">
+                            <div class="card-body pb-2">
+                                <h6 class="mb-4">Application</h6>
+                                <div class="form-group">
+                                    <label class="switcher">
+                                        <input type="checkbox" class="switcher-input" checked>
+                                        <span class="switcher-indicator">
+                                            <span class="switcher-yes"></span>
+                                            <span class="switcher-no"></span>
+                                        </span>
+                                        <span class="switcher-label">News and announcements</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="switcher">
+                                        <input type="checkbox" class="switcher-input">
+                                        <span class="switcher-indicator">
+                                            <span class="switcher-yes"></span>
+                                            <span class="switcher-no"></span>
+                                        </span>
+                                        <span class="switcher-label">Weekly product updates</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="switcher">
+                                        <input type="checkbox" class="switcher-input" checked>
+                                        <span class="switcher-indicator">
+                                            <span class="switcher-yes"></span>
+                                            <span class="switcher-no"></span>
+                                        </span>
+                                        <span class="switcher-label">Weekly blog digest</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+        <!-- <div class="text-right mt-3">
+        <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
+        <button type="button" class="btn btn-default">Cancel</button>
+    </div> -->
+    </div>
 
-        <!-- modal staring -->
-        <div class="modal-body text-center">
-            <p style="color: #fff">
-                Welcome to our website! To access Cart and other features, please log
-                in or sign up.
-            </p>
-        </div>
-        <div class="modal-footer">
-    
-            <a href="/login" class="btn btn-primary">Login</a>
-            <a href="/register" class="btn btn-info">Sign Up</a>
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
         </div>
     </div>
-</div>
-</div>
+    <!-- Search End -->
 
-<!-- Js Plugins -->
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.nice-select.min.js"></script>
-<script src="js/jquery.nicescroll.min.js"></script>
-<script src="js/jquery.magnific-popup.min.js"></script>
-<script src="js/jquery.countdown.min.js"></script>
-<script src="js/jquery.slicknav.js"></script>
-<script src="js/mixitup.min.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/main.js"></script>
 
-  <%- include('../layouts/footer.ejs')%>
+    <!-- modal starting -->
+    <div class="modal fade" id="loginSignupModal" tabindex="-1" role="dialog" aria-labelledby="loginSignupModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 600px">
+            <div class="modal-content" style="background-color: #302e2e; color: #fff">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white" id="loginSignupModalLabel">
+                        Login or Sign Up
+                    </h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="color: #fff">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- modal staring -->
+                <div class="modal-body text-center">
+                    <p style="color: #fff">
+                        Welcome to our website! To access Cart and other features, please log
+                        in or sign up.
+                    </p>
+                </div>
+                <div class="modal-footer">
+
+                    <a href="/login" class="btn btn-primary">Login</a>
+                    <a href="/register" class="btn btn-info">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal ending here -->
+
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src=" " alt=""></a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="  " alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript"></script>
+
+
+    <!--   Core JS Files   -->
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <script>
+        var ctx = document.getElementById("chart-bars").getContext("2d");
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: ["M", "T", "W", "T", "F", "S", "S"],
+                datasets: [{
+                    label: "Sales",
+                    tension: 0.4,
+                    borderWidth: 0,
+                    borderRadius: 4,
+                    borderSkipped: false,
+                    backgroundColor: "rgba(255, 255, 255, .8)",
+                    data: [50, 20, 10, 22, 50, 10, 40],
+                    maxBarThickness: 6
+                },],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            drawBorder: false,
+                            display: true,
+                            drawOnChartArea: true,
+                            drawTicks: false,
+                            borderDash: [5, 5],
+                            color: 'rgba(255, 255, 255, .2)'
+                        },
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 500,
+                            beginAtZero: true,
+                            padding: 10,
+                            font: {
+                                size: 14,
+                                weight: 300,
+                                family: "Roboto",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                            color: "#fff"
+                        },
+                    },
+                    x: {
+                        grid: {
+                            drawBorder: false,
+                            display: true,
+                            drawOnChartArea: true,
+                            drawTicks: false,
+                            borderDash: [5, 5],
+                            color: 'rgba(255, 255, 255, .2)'
+                        },
+                        ticks: {
+                            display: true,
+                            color: '#f8f9fa',
+                            padding: 10,
+                            font: {
+                                size: 14,
+                                weight: 300,
+                                family: "Roboto",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                        }
+                    },
+                },
+            },
+        });
+
+
+        var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+        new Chart(ctx2, {
+            type: "line",
+            data: {
+                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Mobile apps",
+                    tension: 0,
+                    borderWidth: 0,
+                    pointRadius: 5,
+                    pointBackgroundColor: "rgba(255, 255, 255, .8)",
+                    pointBorderColor: "transparent",
+                    borderColor: "rgba(255, 255, 255, .8)",
+                    borderColor: "rgba(255, 255, 255, .8)",
+                    borderWidth: 4,
+                    backgroundColor: "transparent",
+                    fill: true,
+                    data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+                    maxBarThickness: 6
+
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            drawBorder: false,
+                            display: true,
+                            drawOnChartArea: true,
+                            drawTicks: false,
+                            borderDash: [5, 5],
+                            color: 'rgba(255, 255, 255, .2)'
+                        },
+                        ticks: {
+                            display: true,
+                            color: '#f8f9fa',
+                            padding: 10,
+                            font: {
+                                size: 14,
+                                weight: 300,
+                                family: "Roboto",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                        }
+                    },
+                    x: {
+                        grid: {
+                            drawBorder: false,
+                            display: false,
+                            drawOnChartArea: false,
+                            drawTicks: false,
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            display: true,
+                            color: '#f8f9fa',
+                            padding: 10,
+                            font: {
+                                size: 14,
+                                weight: 300,
+                                family: "Roboto",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                        }
+                    },
+                },
+            },
+        });
+
+        var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
+
+        new Chart(ctx3, {
+            type: "line",
+            data: {
+                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Mobile apps",
+                    tension: 0,
+                    borderWidth: 0,
+                    pointRadius: 5,
+                    pointBackgroundColor: "rgba(255, 255, 255, .8)",
+                    pointBorderColor: "transparent",
+                    borderColor: "rgba(255, 255, 255, .8)",
+                    borderWidth: 4,
+                    backgroundColor: "transparent",
+                    fill: true,
+                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                    maxBarThickness: 6
+
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            drawBorder: false,
+                            display: true,
+                            drawOnChartArea: true,
+                            drawTicks: false,
+                            borderDash: [5, 5],
+                            color: 'rgba(255, 255, 255, .2)'
+                        },
+                        ticks: {
+                            display: true,
+                            padding: 10,
+                            color: '#f8f9fa',
+                            font: {
+                                size: 14,
+                                weight: 300,
+                                family: "Roboto",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                        }
+                    },
+                    x: {
+                        grid: {
+                            drawBorder: false,
+                            display: false,
+                            drawOnChartArea: false,
+                            drawTicks: false,
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            display: true,
+                            color: '#f8f9fa',
+                            padding: 10,
+                            font: {
+                                size: 14,
+                                weight: 300,
+                                family: "Roboto",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                        }
+                    },
+                },
+            },
+        });
+    </script>
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+                damping: '0.5'
+            }
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
+
+
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.countdown.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
+
+    <script>
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     //updating user details start
+        //     const editAddressBtn = document.querySelector('.editAddress')
+        //     let changeReadonly = document.querySelectorAll('.readonly')
+        //     let saveUsereditsBtn = document.getElementById('saveUserEdits')
+        //     let editUserBtn = document.getElementById('editUserBtn');
+
+
+        //         editUserBtn.addEventListener('click',()=>{
+        //         changeReadonly.forEach((x)=>{
+        //             x.readOnly = !x.readOnly;
+        //         })
+        //         editUserBtn.style.display = 'none'
+        //         saveUsereditsBtn.style.display = 'inline'
+        //         document.getElementById('userDataUpdatedAlert').style.display = 'none'
+        //     })
+
+        //     //save button of user details
+        //     saveUsereditsBtn.addEventListener('click',updateUserEdits)
+
+        //   async function updateUserEdits(){
+        //     try {
+
+        //         const fnameIp = document.getElementById('fname')
+        //         const lnameIp = document.getElementById('lname')
+        //         const mobileIp = document.getElementById('mobile')
+        //         const emailIp = document.getElementById('email')
+        //         const fname = fnameIp.value
+        //         const lname = lnameIp.value
+        //         const mobile = mobileIp.value
+        //         const email = emailIp.value
+
+
+        //         const response = await fetch(`/editUserData`, {
+        //                 method: "POST",
+        //                 headers: {
+        //                     "Content-Type": "application/json",
+        //                 },
+        //                 body: JSON.stringify({ email, fname ,lname ,mobile})
+        //             })
+        //             if (!response.ok) {
+        //                 throw new Error("Failed to fetch data");
+        //             }
+        //             const data = await response.json()
+        //             console.log(data.message);
+        //             if(data.message){
+        //                 document.getElementById('userDataUpdatedAlert').style.display = 'inline'
+        //                 editUserBtn.style.display = 'inline'
+        //                 saveUsereditsBtn.style.display = 'none'
+        //             }
+        //     } catch (error) {
+        //         console.log("Error in Sending Fetch API or Fetching data");
+        //     }
+        //     }
+        // //updating user details END
+
+
+
+        // //ADD ADDRESS START
+
+        // const addAddressBtn = document.getElementById('addAddress')
+        // const inputs = document.querySelectorAll('.address-form input');
+
+
+        // addAddressBtn.addEventListener('click',updateAddress)
+
+        // async function updateAddress(){
+        //     try {
+        //         const emailIp = document.getElementById('email')
+        //         const email = emailIp.value
+        //         const Address = Array.from(inputs).map(inp=>inp.value)
+        //         Address.push(email)
+        //         console.log(Address);
+        //         const response = await fetch(`/updateAddress`, {
+        //                 method: "POST",
+        //                 headers: {
+        //                     "Content-Type": "application/json",
+        //                 },
+        //                 body: JSON.stringify(Address)
+        //             })
+
+        //             if (!response.ok) {
+        //                 throw new Error("Failed to fetch data");
+        //             }
+        //             const data = await response.json()
+        //             console.log(data.message);
+        //             if(data.message){
+        //                 addAddressBtn.style.display = 'none'
+        //                 location.reload();
+        //             }
+
+        //     } catch (error) {
+        //         console.log("Addres coudnt be updated");
+        //     }
+        // }
+
+
+
+        // //Edit address
+
+        // editAddressBtn.addEventListener('click',()=>{
+        //     console.log("hey");
+        //     alert("jhsd")
+        // })
+        // // let editReadonlyRemove = document.querySelectorAll('.readonly')
+        // // const inputs = document.querySelectorAll('.address-form input');
+
+        // async function editAddress(){
+        //      var houseNameInput = document.getElementById('houseName');
+        //       var cityInput = document.getElementById('city');
+        //       var stateInput = document.getElementById('state');
+        //       var countryInput = document.getElementById('country');
+        //       var pincodeInput = document.getElementById('pincode');
+        //       houseNameInput.readOnly = false;
+        //       cityInput.readOnly = false;
+        //       stateInput.readOnly = false;
+        //       countryInput.readOnly = false;
+        //       pincodeInput.readOnly = false;
+        // }
+
+
+        // })
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Constants
+            const changeReadonly = document.querySelectorAll('.readonly');
+            const saveUsereditsBtn = document.getElementById('saveUserEdits');
+            const editUserBtn = document.getElementById('editUserBtn');
+            const addAddressBtn = document.getElementById('addAddress');
+            const inputs = document.querySelectorAll('.address-form input');
+            const editAddressBtn = document.getElementById('editAddress');
+            const saveEditedAddressBtn = document.getElementById('saveEditedAddress')
+
+            // Event listeners
+
+            if (editAddressBtn) {
+                editAddressBtn.addEventListener('click', editAddress);
+            }
+            if (saveEditedAddressBtn) {
+                saveEditedAddressBtn.addEventListener('click',saveEditedAddress);
+            }
+            editUserBtn.addEventListener('click', enableEditMode);
+            saveUsereditsBtn.addEventListener('click', updateUserEdits);
+            addAddressBtn.addEventListener('click', updateAddress);
+           
+
+            // Functions
+            function enableEditMode() {
+                changeReadonly.forEach((x) => {
+                    x.readOnly = !x.readOnly;
+                });
+                editUserBtn.style.display = 'none';
+                saveUsereditsBtn.style.display = 'inline';
+                document.getElementById('userDataUpdatedAlert').style.display = 'none';
+            }
+            //Updating user edits
+            async function updateUserEdits() {
+                try {
+                    const fnameIp = document.getElementById('fname');
+                    const lnameIp = document.getElementById('lname');
+                    const mobileIp = document.getElementById('mobile');
+                    const emailIp = document.getElementById('email');
+                    const fname = fnameIp.value;
+                    const lname = lnameIp.value;
+                    const mobile = mobileIp.value;
+                    const email = emailIp.value;
+
+                    const response = await fetch(`/editUserData`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, fname, lname, mobile }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+
+                    const data = await response.json();
+                    console.log(data.message);
+
+                    if (data.message) {
+                        document.getElementById('userDataUpdatedAlert').style.display = 'inline';
+                        changeReadonly.forEach((x) => {
+                          x.readOnly = true;
+                            });
+                        editUserBtn.style.display = 'inline';
+                        saveUsereditsBtn.style.display = 'none';
+                        setTimeout(() => {
+                            document.getElementById('userDataUpdatedAlert').style.display = 'none';
+                        }, 1000);
+                    }
+                } catch (error) {
+                    console.log('Error in Sending Fetch API or Fetching data', error);
+                }
+            }
+
+            //   Update new Address
+            async function updateAddress() {
+                try {
+                    const emailIp = document.getElementById('email');
+                    const email = emailIp.value;
+                    const Address = Array.from(inputs).map((inp) => inp.value);
+                    Address.push(email);
+
+                    console.log(Address);
+
+                    const response = await fetch(`/updateAddress`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(Address),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+
+                    const data = await response.json();
+                    console.log(data.message);
+
+                    if (data.message) {
+                        addAddressBtn.style.display = 'none';
+                        location.reload();
+                    }
+                } catch (error) {
+                    console.log("Address couldn't be updated", error);
+                }
+            }
+
+            async function editAddress() {
+                console.log('hey edit address');
+                var houseNameInput = document.getElementById('houseName');
+                var cityInput = document.getElementById('city');
+                var stateInput = document.getElementById('state');
+                var countryInput = document.getElementById('country');
+                var pincodeInput = document.getElementById('pincode');
+                houseNameInput.readOnly = false;
+                cityInput.readOnly = false;
+                stateInput.readOnly = false;
+                countryInput.readOnly = false;
+                pincodeInput.readOnly = false;
+                editAddressBtn.style.display = "none"
+                saveEditedAddressBtn.style.display= "inline"
+            }
+        });
+
+        async function saveEditedAddress() {
+            const addressAddedAlert = document.getElementById('addressAddedAlert')
+            const editAddressBtn = document.getElementById('editAddress');
+            const saveEditedAddressBtn = document.getElementById('saveEditedAddress')
+            var houseNameInput = document.querySelector('.houseName');
+            var cityInput = document.querySelector('.city');
+            var stateInput = document.querySelector('.state');
+            var countryInput = document.querySelector('.country');
+            var pincodeInput = document.querySelector('.pincode');
+            const emailIp = document.getElementById('email');
+            const houseName = houseNameInput.value;
+            const city = cityInput.value;
+            const state = stateInput.value;
+            const pincode = pincodeInput.value;
+            const country = countryInput.value;
+            const email = emailIp.value;
+            const response = await fetch(`/updateEditedAddress`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({houseName ,city , state ,country ,pincode , email}),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+
+                    const data = await response.json();
+                    console.log(data.message);
+
+                    if (data.message) {
+                    
+                    editAddressBtn.style.display = 'inline'
+                    saveEditedAddressBtn.style.display = 'none'
+                    houseNameInput.readOnly = true;
+                    cityInput.readOnly = true;
+                    stateInput.readOnly = true;
+                    countryInput.readOnly = true;
+                    pincodeInput.readOnly = true;
+                    addressAddedAlert.style.display = 'inline'
+                    setTimeout(() => {
+                        addressAddedAlert.style.display = 'none';
+                        }, 1000);
+                    }
+        }
+
+    </script>
+    <%- include('../layouts/footer.ejs')%>

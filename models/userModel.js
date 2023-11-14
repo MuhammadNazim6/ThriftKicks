@@ -13,6 +13,9 @@ const addressSchema = new mongoose.Schema({
   mobile: {
     type: String,
   },
+  houseName:{
+    type: String,
+  },
   country: {
     type: String,
   },

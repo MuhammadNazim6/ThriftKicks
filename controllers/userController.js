@@ -293,7 +293,9 @@ const loadHome = async (req, res) => {
 const loadAccount = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id });
-    res.render("users/account", { user: userData });
+    const address = await Address.find({userId:req.session.user_id})
+    console.log(address);
+    res.render("users/account", { user: userData , address:address});
   } catch (error) {
     console.log(error.message);
   }
@@ -374,18 +376,16 @@ const loadcart = async (req, res) => {
       .populate("userId")
       .populate("products.productId");
 
-      //finding sum of all products in the cart
-      let totalAmount = 0;
-      cart.products.forEach((product, index) => {
-          if (index === 0) {
-            totalAmount = 0;
-          }
-          totalAmount += product.productId.actualPrice * product.quantity;
-      });
-     
-
+      //finding sum of all products in the cart    
 
     if (cart) {
+      let totalAmount = 0;
+        cart.products.forEach((product, index) => {
+            if (index === 0) {
+              totalAmount = 0;
+            }
+            totalAmount += product.productId.actualPrice * product.quantity;
+        });
       res.render("users/shopping-cart", { user: userData, cart: cart , totalAmount: totalAmount});
     } else {
       res.render("users/shopping-cart", { user: userData });
@@ -478,9 +478,6 @@ const cartIncreaseDecrease = async (req, res) => {
     const value = req.body.incdecValue;
     const product_id = req.params.prodId;
 
-    console.log(value);
-    console.log(product_id);
-    console.log(user.firstname);
     const result = await Cart.updateOne(
       { userId: user_id, "products.productId": product_id },
       { $inc: { "products.$.quantity": value } } // Use "$" to identify the matched array element
@@ -541,6 +538,95 @@ const showZoom = async (req,res)=>{
   res.render('users/zoom')
 }
 
+
+// edit and update user data
+const editUserData = async (req,res)=>{
+  try {
+    const {email, fname ,lname , mobile} = req.body 
+   
+    const userData = await User.findOne({email:email})
+
+  if(userData){
+    const updatedUserData = await User.updateOne(
+      { _id: userData._id }, 
+      {
+        $set: {
+          firstname: fname ?? userData.firstname,
+          lastname: lname ?? userData.lastname,
+          mobile: mobile ?? userData.mobile
+          
+        },
+      }
+    );
+    res.json({ message: "User Updated Successfully" });
+  }else{
+    console.log('No User found');
+  }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
+// adding and updating new address
+const updateAddress = async (req,res)=>{
+  try {
+    const [ houseName , city ,state ,country ,pincode ,email ] = req.body
+    const userData = await User.findOne({email:email})
+
+    const address = new Address({
+      userId: userData._id,
+      fullname: userData.firstname +" "+ userData.lastname,
+      mobile: userData.mobile,
+      houseName: houseName,
+      city: city,
+      state: state,
+      country: country,
+      pincode: pincode,
+      
+    });
+
+    //returning a promise
+    const newAddress = await address.save();
+    console.log("Done address");
+    res.json({ message: "Address Addes Successfully" });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+// updating edited address
+const updateEditedAddress = async (req,res)=>{
+  try {
+    const {houseName ,city , state ,country ,pincode , email} = req.body;
+    const user = await User.findOne({email:email})
+    console.log(user);
+    const address = await Address.find({userId : user._id})
+    if (address && address.length > 0) {
+      const firstAddress = address[0];
+    
+      firstAddress.houseName = houseName;
+      firstAddress.city = city;
+      firstAddress.state = state;
+      firstAddress.country = country;
+      firstAddress.pincode = pincode;
+      
+  //save the changes
+      await firstAddress.save();
+    
+      console.log('First address updated successfully');
+    
+    }
+    res.json({ message: "Address Addes Successfully" });
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
 module.exports = {
   loadLogin,
   loadRegister,
@@ -560,5 +646,10 @@ module.exports = {
   cartIncreaseDecrease,
   deleteCartProduct,
   loadCheckout,
-  showZoom
+
+  showZoom,
+
+  editUserData,
+  updateAddress,
+  updateEditedAddress
 };

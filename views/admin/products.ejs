@@ -146,7 +146,7 @@
   <div class="container-fluid py-4">
     <div class="row">
       <div class="col-12">
-        <div class="card my-4">
+        <div class="my-4">      <!--card-->
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
               <h6 class="text-white text-capitalize ps-3">Products</h6>
@@ -166,7 +166,7 @@
           <form class="form-inline my-2 my-lg-0">
             <div class="input-group border" style= "height: 41px;">
               <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
-                style="width: 600px;">
+                style="width: 500px;">
               <div class="input-group-append">
                 <button class="btn btn-primary " type="submit">Search</button>
               </div>
@@ -182,7 +182,7 @@
         <table class="table table-bordered table-striped table-hover">
           <tr>
             <th class="text-dark text-lg text-bold">Product Name</th>
-            <th class="text-dark text-lg text-bold">Description</th>
+            <!-- <th class="text-dark text-lg text-bold">Description</th> -->
             <th class="text-dark text-lg text-bold">Size</th>
             <th class="text-dark text-lg text-bold">Category</th>
             <th class="text-dark text-lg text-bold">Stock</th>
@@ -192,7 +192,7 @@
           <% if(products.length> 0){ for(let i=0; i < products.length; i++){ %>
               <tr>
     <td class="text-dark"><%= products[i].productName %></td>
-    <td class="text-wrap description-size text-dark"><%= products[i].description %></td>
+    <!-- <td class="text-wrap description-size text-dark"><%= products[i].description %></td> -->
     <td class="text-dark"><%= products[i].size %></td>
     <td class="text-dark"><%= products[i].category_id.categoryName %></td> 
     <td class="text-dark"><%= products[i].stock %></td> 
