@@ -11,40 +11,40 @@
     }
   </style>
 
-  <!-- Header Section Begin -->
-  <header class="header">
-    <div class="header__top">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 col-md-7">
-            <div class="header__top__left">
+    <!-- Header Section Begin -->
+    <header class="header">
+      <div class="header__top">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-md-7">
+              <div class="header__top__left">
 
+              </div>
             </div>
-          </div>
-          <div class="col-lg-6 col-md-5">
-            <div class="header__top__right">
-              <div class="header__top__links">
+            <div class="col-lg-6 col-md-5">
+              <div class="header__top__right">
+                <div class="header__top__links">
 
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-3 col-md-3">
-          <div class="header__logo">
-            <a class="navbar-brand logo-size"><img src="assets/logos/thriftedkicks.png" alt="Thriffy" /></a>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-3">
+            <div class="header__logo">
+              <a class="navbar-brand logo-size"><img src="assets/logos/thriftedkicks.png" alt="Thriffy" /></a>
+            </div>
           </div>
+
+
         </div>
-
-
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
       </div>
-      <div class="canvas__open"><i class="fa fa-bars"></i></div>
-    </div>
-  </header>
-  <!-- Header Section End -->
+    </header>
+    <!-- Header Section End -->
 
 
   <div class="container">
@@ -217,10 +217,15 @@ async function checkOtp(){
           })
           const data = await response.json();
           if(data.successMessage){
-            window.location.href = '/otpChangepass?';
+            window.location.href = '/otpChangepass?email='+email;
           }
-          if(data.failMessage){
-            
+          if(data.failedMessage){
+            otpAlert.textContent = data.failedMessage;
+                  otpAlert.classList.replace('alert-success','alert-danger') 
+                  otpAlert.style.display = 'inline'
+                  setTimeout(()=>{
+                    otpAlert.style.display = 'none'
+                  },1500)
           }
 
   } catch (error) {

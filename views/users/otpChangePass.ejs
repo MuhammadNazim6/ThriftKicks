@@ -1,30 +1,162 @@
 <%- include('../layouts/header.ejs')%>
-  
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a class="navbar-brand logo-size"><img src="assets/logos/thriftedkicks.png" alt="Thriffy" /></a>
+                    </div>
+                </div>
 
 
-<div class="tab-pane fade" id="account-change-password">
-  <div class="card-body pb-2">
-      <div class="form-group">
-          <label class="form-label text-lg">Current password</label>
-          <input type="password" id="currentPass" class="form-control text-lg bg-glass">
-          <button id="checkPassBtn" class="btn btn-dark mt-3"> Check Password</button>
-      </div>
-      <div class="form-group">
-          <label class="form-label text-lg">New password</label>
-          <input type="password" id="newPass" class="form-control text-lg bg-glass" readonly>
-      </div>
-      <div class="form-group mb-5">
-          <label class="form-label text-lg">Repeat new password</label>
-          <input type="password" id="confirmPass" class="form-control text-lg mb-5 bg-glass" readonly>
-      </div>
-      <button id="changePassBtn" class="btn btn-dark mt-3" style="display: none;"> Change Password</button>
-      
-      <span id="passAlert" class="alert alert-success text-white mr-5 mb-4"
-      style="width:350px; display:inline;">
-  </span>
-  </div>
-</div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+
+    <div class="container">
+        <div class="row otp-container">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+
+                        <div class="form-group d-flex justify-content-center">
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="" id="account-change-password">
+                                        <div class="card-body pb-2">
+                                                <input type="hidden" value="<%=email%>" id="email">
+                                            <div class="form-group">
+                                                <label class="form-label text-lg">New password</label>
+                                                <input type="password" id="newPass"
+                                                    class="form-control text-lg bg-glass" />
+                                            </div>
+                                            <div class="form-group mb-5">
+                                                <label class="form-label text-lg">Repeat new password</label>
+                                                <input type="password" id="confirmPass"
+                                                    class="form-control text-lg mb-5 bg-glass" />
+                                            </div>
+
+
+                                        </div>
+                                        <div class="container d-flex justify-content-center">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button id="changePassBtn"
+                                                        class="d-flex justify-content-center btn btn-dark mt-3">
+                                                        Change Password
+                                                    </button>
+                                                </div>
+                                                    
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="container d-flex justify-content-center">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <span id="passAlertSuccess"
+                                                    class="alert alert-success text-white mr-5 mb-4"
+                                                    style="width: 350px; display:none;"> </span>
+                                                 <span id="passAlertFailed" class="alert alert-danger text-white m-5"
+                                                    style="width: 350px; display:none;"></span>
+                                                </div>
+                                                    
+                                            </div>
+                                            
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            //constants 
+            const newPassElem = document.getElementById('newPass')
+            const confPassElem = document.getElementById('confirmPass')
+            const changePassBtn = document.getElementById('changePassBtn')
+            const alertSuccess = document.getElementById('passAlertSuccess')
+            const alertFailed = document.getElementById('passAlertFailed')
+            const emailElem = document.getElementById('email')
+
+            //event listening
+            changePassBtn.addEventListener('click', changePassword)
 
 
 
-<%- include('../layouts/footer.ejs')%>
+            // functions
+            async function changePassword() {
+                let newPassVal = newPassElem.value
+                let confPass = confPassElem.value
+                let email = emailElem.value
+                console.log("email is here"+email);
+
+                if (newPassVal.length <= 5 || newPassVal.includes(" ")) {
+                    alertFailed.style.display = 'inline'
+                    alertFailed.textContent = 'Enter a strong Password'
+                    setTimeout(() => {
+                        alertFailed.style.display = 'none'
+                    }, 1500)
+                    return
+                }
+                if (newPassVal === confPass) {
+                    const response = await fetch('/changePass', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ newPassVal , email }),
+                    })
+
+                    const data = await response.json();
+                    console.log(data.message);
+                    if (data.message) {
+                        alertSuccess.style.display = 'block'
+                        alertSuccess.textContent = data.message
+                        setTimeout(() => {
+                            alertSuccess.style.display = 'none'
+                        }, 1500)
+                        setTimeout(()=>{
+                            window.location.href = '/login';
+                        },2000)
+                    }
+                }else{
+                        console.log("fetch not working");
+                    }
+
+            }
+        })
+    </script>
+
+    <%- include('../layouts/footer.ejs')%>

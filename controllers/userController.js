@@ -714,7 +714,6 @@ const forgotPassword = async (req,res)=>{
 const forgotPassEmail = async (req,res)=>{
   try {
     const {email} = req.body
-    console.log(email);
 
     const user = await User.findOne({ email : email })
     if(!user){
@@ -723,7 +722,6 @@ const forgotPassEmail = async (req,res)=>{
     const name = user.firstname+" "+user.lastname;
     generateOtp();
     mailer.sendMail( email, OTP, name );
-
     return res.json({ successMessage: "Otp sent to the email" })
 
   } catch (error) {
@@ -736,14 +734,11 @@ const forgotPassEmail = async (req,res)=>{
 const forgetPassCheckOtp = async (req,res)=>{
   try {
     const { email, userOtp } = req.body;
-    console.log(email);
-    console.log(userOtp);
 
     if(userOtp === OTP){
-      console.log("same otp");
       return res.json({ successMessage: "Otp are equal" })
-
     }
+    res.json({failedMessage:'Enter a valid OTP'})
 
   } catch (error) {
     console.log(error.message);
@@ -754,7 +749,9 @@ const forgetPassCheckOtp = async (req,res)=>{
 //Loading changing password using OTP
 const loadOtpchangepass = async (req,res)=>{
   try {
-    res.render('users/otpChangePass')
+    const email = req.query.email
+    console.log(email);
+    res.render('users/otpChangePass',{email})
 
   } catch (error) {
     console.log(error.message);
