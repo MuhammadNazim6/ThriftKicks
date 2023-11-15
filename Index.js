@@ -28,6 +28,12 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/", user_route);
 app.use("/admin", admin_route);
+
+app.use((req, res, next) => { 
+  res.status(404).render('users/404') 
+}) 
+
+
 app.listen(process.env.PORT || 8000, () => {
   console.log("server is Running");
 });

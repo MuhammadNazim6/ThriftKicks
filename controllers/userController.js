@@ -290,6 +290,7 @@ const loadHome = async (req, res) => {
   }
 };
 
+
 //load user account details
 const loadAccount = async (req, res) => {
   try {
@@ -409,6 +410,7 @@ const loadProductView = async (req, res) => {
     res.render("users/productView", { product: product, user: user });
   } catch (error) {
     console.log(error.message);
+    res.status(404).render('users/404') 
   }
 };
 
@@ -575,8 +577,10 @@ const editUserData = async (req, res) => {
 // adding and updating new address
 const updateAddress = async (req, res) => {
   try {
-    const [houseName, city, state, country, pincode, email] = req.body;
-    const userData = await User.findOne({ email: email });
+    const [houseName, city, state, country, pincode] = req.body;
+    const user_id = req.session.user_id;
+    const userData = await User.findOne({ _id: user_id });
+
 
     const address = new Address({
       userId: userData._id,
@@ -588,6 +592,7 @@ const updateAddress = async (req, res) => {
       country: country,
       pincode: pincode,
     });
+    console.log("hello");
 
     //returning a promise
     const newAddress = await address.save();
@@ -693,6 +698,73 @@ const addAddress = async (req, res) => {
   }
 };
 
+
+
+//Loading forgot password
+const forgotPassword = async (req,res)=>{
+  try {
+    res.render('users/forgotPass')
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+//send otp mail for forgot password
+const forgotPassEmail = async (req,res)=>{
+  try {
+    const {email} = req.body
+    console.log(email);
+
+    const user = await User.findOne({ email : email })
+    if(!user){
+      return res.json({ failMessage: "No User found with this email" });
+    }
+    const name = user.firstname+" "+user.lastname;
+    generateOtp();
+    mailer.sendMail( email, OTP, name );
+
+    return res.json({ successMessage: "Otp sent to the email" })
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+//check otp of forget password
+const forgetPassCheckOtp = async (req,res)=>{
+  try {
+    const { email, userOtp } = req.body;
+    console.log(email);
+    console.log(userOtp);
+
+    if(userOtp === OTP){
+      console.log("same otp");
+      return res.json({ successMessage: "Otp are equal" })
+
+    }
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+//Loading changing password using OTP
+const loadOtpchangepass = async (req,res)=>{
+  try {
+    res.render('users/otpChangePass')
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
+
+
 module.exports = {
   loadLogin,
   loadRegister,
@@ -721,4 +793,9 @@ module.exports = {
   checkCurrPass,
   changePass,
   addAddress,
+  forgotPassword,
+  forgotPassEmail,
+  forgetPassCheckOtp,
+  loadOtpchangepass,
+
 };

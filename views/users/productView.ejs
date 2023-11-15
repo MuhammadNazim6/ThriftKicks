@@ -51,14 +51,17 @@
                                     <% } %>
 
 
-                                        <li>
-                                            <% if(typeof user !=='undefined' ) { %>
-                                                <a id="" href="/cart">Cart <img src="assets/icon/cart.png" alt="" /></a>
-                                                <% } else { %>
-                                                    <a id="cartButton">Cart <img src="assets/icon/cart.png"
-                                                            alt="" /></a>
-                                                    <% } %>
-                                        </li>
+                                    <li>
+                                        <% if(typeof user !=='undefined' ) { %>
+                                            <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                shopping_cart
+                                                </span></a>
+                                            <% } else { %>
+                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span></a>
+                                                <% } %>
+                                    </li>
                     </ul>
                 </nav>
             </div>

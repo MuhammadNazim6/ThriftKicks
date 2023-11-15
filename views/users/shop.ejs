@@ -80,15 +80,17 @@
                                 <% } else { %>
                                     <li><a href="/login">SignIn</a></li>
                                     <% } %>
-                                        <li>
-                                            <% if(typeof user !=='undefined' ) { %>
-                                                <a id="" class="cursor_cart" href="/cart">Cart <img src="assets/icon/cart.png" alt="" /></a>
-                                                <% } else { %>
-                                                    <a class="cartButton cursor_cart">Cart <img src="assets/icon/cart.png"
-                                                            alt="" /></a>
-                                                    <% } %>
-                                                    
-                                        </li>
+                                    <li>
+                                        <% if(typeof user !=='undefined' ) { %>
+                                            <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                shopping_cart
+                                                </span></a>
+                                            <% } else { %>
+                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span></a>
+                                                <% } %>
+                                    </li>
                         </ul>
                     </nav>
                 </div>
@@ -150,11 +152,11 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
-                                                    <li><a href="#">Boots</a></li>
-                                                    <li><a href="#">Loafers</a></li>
-                                                    <li><a href="#">Sneakers</a></li>
-                                                    <li><a href="#">Canvas</a></li>
-                                                    <li><a href="#">Sports</a></li>
+                                                    <li><a href="?search=boots">Boots</a></li>
+                                                    <li><a href="?search=Loafers">Loafers</a></li>
+                                                    <li><a href="?search=Sneakers">Sneakers</a></li>
+                                                    <li><a href="?search=Canvas">Canvas</a></li>
+                                                    <li><a href="?search=Sports">Sports</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -168,10 +170,10 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__brand">
                                                 <ul>
-                                                    <li><a href="#">Nike</a></li>
-                                                    <li><a href="#">Puma</a></li>
-                                                    <li><a href="#">Adidas</a></li>
-                                                    <li><a href="#">NewBalance</a></li>
+                                                    <li><a href="?search=Nike">Nike</a></li>
+                                                    <li><a href="?search=Puma">Puma</a></li>
+                                                    <li><a href="?search=Adidas">Adidas</a></li>
+                                                    <li><a href="?search=NewBalance">NewBalance</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -185,30 +187,15 @@
                                     <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__size">
-                                                <label for="xs">uk-5
-                                                    <input type="radio" id="xs">
-                                                </label>
-                                                <label for="sm">uk-5.5
-                                                    <input type="radio" id="sm">
-                                                </label>
-                                                <label for="md">uk-7
-                                                    <input type="radio" id="md">
-                                                </label>
-                                                <label for="xl">uk-7.5
-                                                    <input type="radio" id="xl">
-                                                </label>
-                                                <label for="2xl">uk-8
-                                                    <input type="radio" id="2xl">
-                                                </label>
-                                                <label for="xxl">uk-8.5
-                                                    <input type="radio" id="xxl">
-                                                </label>
-                                                <label for="3xl">uk-9
-                                                    <input type="radio" id="3xl">
-                                                </label>
-                                                <label for="4xl">uk-10
-                                                    <input type="radio" id="4xl">
-                                                </label>
+                                                <ul>
+                                                    <li><a href="?search=uk-5">UK-5</a></li>
+                                                    <li><a href="?search=uk-5.5">UK-5.5</a></li>
+                                                    <li><a href="?search=uk-7">UK-7</a></li>
+                                                    <li><a href="?search=uk-7.5">UK-7.5</a></li>
+                                                    <li><a href="?search=uk-8.5">UK-8.5</a></li>
+                                                    <li><a href="?search=uk-9">UK-9</a></li>
+                                                    <li><a href="?search=uk-10">UK-10</a></li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>

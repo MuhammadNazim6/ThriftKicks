@@ -43,5 +43,11 @@ user_route.post('/changePass',userController.changePass)
 
 user_route.post('/addAddress',userController.addAddress)
 
+user_route.get('/forgotPassword',userController.forgotPassword)
+user_route.post('/forgotPassEmail',userController.forgotPassEmail)
+user_route.post('/forgetPassCheckOtp',userController.forgetPassCheckOtp)
+
+user_route.get('/otpChangepass',userController.loadOtpchangepass)
+
 
 module.exports = user_route;

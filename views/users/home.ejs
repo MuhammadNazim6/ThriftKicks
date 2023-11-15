@@ -2,9 +2,9 @@
 
 
  <!-- Page Preloder -->
- <div id="preloder">
+ <!-- <div id="preloder">
     <div class="loader"></div>
-  </div>
+  </div> -->
 
     <!-- Offcanvas Menu Begin -->
     <!-- <div class="offcanvas-menu-overlay"></div>
@@ -70,15 +70,21 @@
                                     <li><a href="/login">SignIn</a></li>
                                     <% } %>
 
-
+                                    
                                         <li>
                                             <% if(typeof user !=='undefined' ) { %>
-                                                <a id="" class="cursor_cart" href="/cart">Cart <img src="assets/icon/cart.png" alt="" /></a>
+                                                <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span></a>
                                                 <% } else { %>
-                                                    <a class="cartButton cursor_cart">Cart <img src="assets/icon/cart.png"
-                                                            /></a>
+                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                        shopping_cart
+                                                        </span></a>
                                                     <% } %>
                                         </li>
+                                        
+                                 
+
                         </ul>
                     </nav>
                 </div>
@@ -97,15 +103,32 @@
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-    <!-- <section class="hero">
-        <img src="assets/hero/hero-1.jpg">
+    <section class="hero">
+
+    <div class="container">
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-8">
+                    <form class="form-inline my-2 my-lg-0">
+                        <div class="input-group border" style="height: 43px;">
+                            <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
+                                style="width: 600px;">
+                            <div class="input-group-append ">
+                                <button class="btn btn-primary " type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <img src="assets/hero/hero-1.jpg" class=" my-5">
         <div class="hero__slider owl-carousel">
             <div class="hero__items set-bg">
-
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-7 col-md-8">
-                            <div class="hero__text">
+            <div class="row">
+                    <div class="col-xl-5 col-lg-7 col-md-8">
+                        <div class="hero__text">
                                 <h6>Summer Collection</h6>
                                 <h2>Fall - Winter Collections 2030</h2>
                                 <p>
@@ -125,7 +148,7 @@
                 </div>
             </div>
 
-    </section> -->
+    </section>
     <!-- Hero Section End -->
 
     
@@ -134,21 +157,7 @@
     <!-- Product Section Start -->
     <div class="container">
         <div class="row">
-            <div class="container-fluid py-4">
-                <div class="row">
-                    <div class="col-8">
-                        <form class="form-inline my-2 my-lg-0">
-                            <div class="input-group border" style="height: 43px;">
-                                <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
-                                    style="width: 700px;">
-                                <div class="input-group-append ">
-                                    <button class="btn btn-primary " type="submit">Search</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+           
 
 
             <div class="container-fluid">
@@ -179,7 +188,7 @@
                                         <!-- <button class="btn btn-dark  buy-button cartButton">Buy Now</button> -->
                                     </div>
                                 </div>
-                            </div>
+                            </div> 
             
                         <% } %>
                     <% } %>
@@ -365,7 +374,7 @@
     </div>
 
 
-
+    
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/jquery.countdown.min.js"></script>
@@ -403,4 +412,5 @@
         }
 
     </script>
+    
     <%- include('../layouts/footer.ejs')%>

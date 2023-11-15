@@ -42,20 +42,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5">
-                        <div class="header__top__right">
-                            <div class="header__top__links">
-                                <a href="#">Sign in</a>
-                                <a href="#">FAQs</a>
-                            </div>
-                            <div class="header__top__hover">
-                                <span>Usd <i class="arrow_carrot-down"></i></span>
-                                <ul>
-                                    <li>USD</li>
-                                    <li>EUR</li>
-                                    <li>USD</li>
-                                </ul>
-                            </div>
-                        </div>
+                      
                     </div>
                 </div>
             </div>
@@ -87,12 +74,16 @@
                                 <% } else { %>
                                     <li><a href="/login">SignIn</a></li>
                                     <% } %>
-                                        <li class="active">
+
+                                        <li>
                                             <% if(typeof user !=='undefined' ) { %>
-                                                <a id="" href="/cart">Cart <img src="assets/icon/cart.png" alt="" /></a>
+                                                <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span></a>
                                                 <% } else { %>
-                                                    <a id="cartButton">Cart <img src="assets/icon/cart.png"
-                                                            alt="" /></a>
+                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                        shopping_cart
+                                                        </span></a>
                                                     <% } %>
                                         </li>
                         </ul>

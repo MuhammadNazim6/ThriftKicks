@@ -1,0 +1,243 @@
+<%- include('../layouts/header.ejs')%>
+
+  <style>
+    /* Add this style in your CSS or in the head of your HTML document */
+    .otp-box {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      text-align: center;
+      margin: 0 5px;
+    }
+  </style>
+
+  <!-- Header Section Begin -->
+  <header class="header">
+    <div class="header__top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 col-md-7">
+            <div class="header__top__left">
+
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-5">
+            <div class="header__top__right">
+              <div class="header__top__links">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
+          <div class="header__logo">
+            <a class="navbar-brand logo-size"><img src="assets/logos/thriftedkicks.png" alt="Thriffy" /></a>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+  </header>
+  <!-- Header Section End -->
+
+
+  <div class="container">
+    <div class="row otp-container">
+
+      <h3 class="text-center"> Enter your email </h3>
+
+      <!-- <div class="col-lg-6 mt-3">
+        <form method="post">
+          <div class="d-flex justify-content-center">
+            <input type='text' name='otp' class="otp-holder p-3" id="otp">
+            <input class="otp-button" type="submit">
+          </div>
+          <input type="hidden" value="<%=  %>" name="email">
+          <br>
+          <span class="d-flex justify-content-center"> OTP not recieved ?? &nbsp;&nbsp;<a type="submit" href="/resendOtp?"><b>resend
+            otp</b> </a></span>
+        </form>
+      </div> -->
+
+
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+
+            <div class="form-group d-flex justify-content-center">
+              <input id="email" type="text" placeholder="Enter your email" class="form-control bg-glass text-lg"
+                style="height: 51px;">
+              <button id="sendOtpBtn" class="btn btn-dark" type="" style="height: 51px; width: 180px;">Send Otp</button>
+            </div>
+
+
+            <form method="post" class="text-center">
+              <h3 class="text-center mb-4"> Enter OTP </h3>
+
+              <div class="form-group d-flex justify-content-center">
+                <input type="text" name="otp" class="form-control otp-input bg-glass text-lg " id="otp"
+                  placeholder="   Enter OTP" style="height: 41px;" required readonly>
+                <button id="submitBtn" class="btn btn-dark otp-button" type="button">Submit</button>
+              </div>
+
+              <input type="hidden" value="<%= %>" name="email">
+
+              <div class="mt-3">
+                <p class="text-muted">OTP not received? <a href="/resendOtp"><strong>Resend OTP</strong></a></p>
+               <br>
+                <span id="otpAlert" class="alert alert-success text-white mr-5 mb-4"
+                                style="width:400px; display:none;"> </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+
+      <% if(typeof message !=='undefined' ){ %>
+
+        <div class="alert alert-success text-center verif-message align-items-center" role="alert">
+          <%= message %> <a href="/login">&nbsp&nbsp <b>Login Here</b></a>
+        </div>
+        <div class=""></div>
+        <% } %>
+
+          <% if(typeof fmessage !=='undefined' ){ %>
+
+            <div class="alert alert-danger text-center verif-message" role="alert">
+              <%= fmessage %>
+            </div>
+            <% } %>
+
+    </div>
+  </div>
+
+
+  <!-- Js Plugins -->
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.nice-select.min.js"></script>
+  <script src="js/jquery.nicescroll.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/jquery.countdown.min.js"></script>
+  <script src="js/jquery.slicknav.js"></script>
+  <script src="js/mixitup.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      //constants calling
+      const emailElem = document.getElementById('email')
+      const sendOtpBtn = document.getElementById('sendOtpBtn')
+      const otpElem = document.getElementById('otp')
+      const otpAlert = document.getElementById('otpAlert')
+      const submitBtn = document.getElementById('submitBtn')
+      
+      
+
+
+      //event attactching
+      sendOtpBtn.addEventListener('click',forgotPassEmail)
+      submitBtn.addEventListener('click',checkOtp)
+
+
+
+
+      // functions creation
+
+      //Send mail to user for otp
+      async function forgotPassEmail() {
+        try {
+          const email = emailElem.value;
+          const response = await fetch(`/forgotPassEmail`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+          })
+
+          const data = await response.json();
+                console.log(data.failMessage);
+
+                if (data.failMessage) {
+                  otpAlert.textContent = data.failMessage;
+                  otpAlert.classList.replace('alert-success','alert-danger')
+                  otpAlert.style.display = 'inline'
+                  setTimeout(()=>{
+                    otpAlert.style.display = 'none'
+                  },1500)
+
+                }
+                if(data.successMessage){
+                  otpElem.readOnly = false;
+                  otpAlert.textContent = data.successMessage;
+                  otpAlert.classList.replace('alert-danger','alert-success')  
+                  otpAlert.style.display = 'inline'
+                  setTimeout(()=>{
+                    otpAlert.style.display = 'none'
+                  },1500)
+                }
+
+        } catch (error) {
+          console.log("Could not send mail for OTP");
+        }
+      }
+
+
+
+  //Check both OTP's
+async function checkOtp(){
+  try {
+    const email = emailElem.value;
+    const userOtp = otpElem.value;
+    const response = await fetch(`/forgetPassCheckOtp`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, userOtp }),
+          })
+          const data = await response.json();
+          if(data.successMessage){
+            window.location.href = '/otpChangepass?';
+          }
+          if(data.failMessage){
+            
+          }
+
+  } catch (error) {
+    console.log("couldnt check OTP");
+  }
+}
+
+
+
+
+
+
+    })
+
+
+  </script>
+
+
+
+  <%- include('../layouts/footer.ejs')%>

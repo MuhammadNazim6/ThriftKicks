@@ -42,4 +42,6 @@ admin_route.post('/categories/editCategory',adminController.updateCategory)
 admin_route.get('/products/editProduct',authAdmin.isLogin,adminController.loadEditProduct)
 admin_route.post('/products/editProduct',upload.array('image',3),adminController.updateProduct)
 
+
+
 module.exports = admin_route; 
