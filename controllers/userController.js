@@ -1,5 +1,6 @@
 const UserAddressModel = require("../models/userModel");
 const ProductsModel = require("../models/productsModel");
+const OrdersModel = require('../models/ordersModel')
 const mailer = require("../services/mail");
 const bcrypt = require("bcrypt");
 const otplib = require("otplib");
@@ -7,6 +8,7 @@ const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
 const Cart = UserAddressModel.Cart;
 const Product = ProductsModel.Product;
+const Order = OrdersModel.Order;
 let OTP;
 
 // Generate a new OTP secret
@@ -546,17 +548,40 @@ const loadCheckout = async (req, res) => {
 //Order placing
 const placeOrder = async (req,res)=>{
   try {
-      console.log("Hello reaching");
-
+    const { paymentSelected , addressSelected } = req.body;
+    // console.log(paymentSelected);console.log(addressSelected);console.log("Hello reaching");  
     const userId = req.session.user_id;
-    console.log(userId);
     const userData = await User.findOne({_id:userId})
-    console.log(userData.email);
-    const payment = req.body.payment
-    const address = req.body.address
-    console.log(payment);
-    console.log(address);
+    const shippingAddress = await Address.findOne({_id:addressSelected})
+    const cart = await Cart.findOne({userId:userId})
+  
+    console.log(shippingAddress.country); 
+    console.log( shippingAddress.fullname);
+    console.log(shippingAddress.mobile);
+    console.log(shippingAddress.pincode);
+    console.log(shippingAddress.city);
+    console.log(shippingAddress.state);
 
+    const order = new Order({
+        userId : userId,
+        shippingAddress:{
+          country: shippingAddress.country,
+          fullName: shippingAddress.fullname,
+          mobile: shippingAddress.mobile,
+          pincode: shippingAddress.pincode,
+          city: shippingAddress.city,
+          state: shippingAddress.state,
+        },
+
+
+     
+    });
+
+    //returning a promise
+    const newOrderPlaced = await Order.save();
+
+    
+console.log('done');
 
 
 

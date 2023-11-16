@@ -476,6 +476,18 @@ const updateCategory = async (req, res) => {
   }
 };
 
+
+// loading Orders Page
+const loadOrdersAdmin = async (req,res)=>{
+  try {
+    res.render('admin/ordersAdmin')
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
 module.exports = {
   loadAdminLogin,
   verifyLogin,
@@ -500,4 +512,5 @@ module.exports = {
   listCategory,
   loadEditCategory,
   updateCategory,
+  loadOrdersAdmin
 };
