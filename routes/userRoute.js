@@ -33,6 +33,7 @@ user_route.post('/inc-dec/:prodId',userController.cartIncreaseDecrease)
 user_route.post('/deleteProduct/:prodId',userController.deleteCartProduct)
 
 user_route.get('/checkout', auth.isLogin,userController.loadCheckout)
+user_route.post('/checkout',userController.placeOrder)
 
 user_route.post('/editUserData',userController.editUserData)
 user_route.post('/updateAddress',userController.updateAddress)

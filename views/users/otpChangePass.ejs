@@ -74,7 +74,7 @@
                                             </div>
                                             
                                         </div>
-                                        <div class="container d-flex justify-content-center">
+                                        <div class="container d-flex justify-content-center mt-5">
                                             <div class="row">
                                                 <div class="col">
                                                     <span id="passAlertSuccess"
@@ -152,7 +152,12 @@
                         },2000)
                     }
                 }else{
-                        console.log("fetch not working");
+                    alertFailed.style.display = 'inline'
+                    alertFailed.textContent = 'Both Passwords do not match'
+                    setTimeout(() => {
+                        alertFailed.style.display = 'none'
+                    }, 1500)
+                    return
                     }
 
             }

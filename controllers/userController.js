@@ -542,6 +542,31 @@ const loadCheckout = async (req, res) => {
   }
 };
 
+
+//Order placing
+const placeOrder = async (req,res)=>{
+  try {
+      console.log("Hello reaching");
+
+    const userId = req.session.user_id;
+    console.log(userId);
+    const userData = await User.findOne({_id:userId})
+    console.log(userData.email);
+    const payment = req.body.payment
+    const address = req.body.address
+    console.log(payment);
+    console.log(address);
+
+
+
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
 //show zoom
 const showZoom = async (req, res) => {
   res.render("users/zoom");
@@ -581,7 +606,6 @@ const updateAddress = async (req, res) => {
     const user_id = req.session.user_id;
     const userData = await User.findOne({ _id: user_id });
 
-
     const address = new Address({
       userId: userData._id,
       fullname: userData.firstname + " " + userData.lastname,
@@ -592,7 +616,6 @@ const updateAddress = async (req, res) => {
       country: country,
       pincode: pincode,
     });
-    console.log("hello");
 
     //returning a promise
     const newAddress = await address.save();
@@ -781,6 +804,7 @@ module.exports = {
   cartIncreaseDecrease,
   deleteCartProduct,
   loadCheckout,
+  placeOrder,
 
   showZoom,
 

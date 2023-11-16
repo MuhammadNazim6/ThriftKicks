@@ -2,9 +2,9 @@
 
 
  <!-- Page Preloder -->
- <!-- <div id="preloder">
+ <div id="preloder">
     <div class="loader"></div>
-  </div> -->
+  </div>
 
     <!-- Offcanvas Menu Begin -->
     <!-- <div class="offcanvas-menu-overlay"></div>
@@ -71,19 +71,17 @@
                                     <% } %>
 
                                     
-                                        <li>
-                                            <% if(typeof user !=='undefined' ) { %>
-                                                <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                    shopping_cart
-                                                    </span></a>
-                                                <% } else { %>
-                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                        shopping_cart
-                                                        </span></a>
-                                                    <% } %>
-                                        </li>
-                                        
-                                 
+                            <li>
+                                <% if(typeof user !=='undefined' ) { %>
+                                    <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                        shopping_cart
+                                        </span></a>
+                                    <% } else { %>
+                                        <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                            shopping_cart
+                                            </span></a>
+                                        <% } %>
+                            </li>
 
                         </ul>
                     </nav>

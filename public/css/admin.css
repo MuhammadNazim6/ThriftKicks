@@ -1,10 +1,25 @@
 
 
 
-  @import url('https://fonts.googleapis.com/css2?family=Linefont:wght@100&family=Montserrat&family=Poppins:wght@200&family=Roboto+Slab:wght@300&family=Vollkorn&display=swap');
+  /* @import url('https://fonts.googleapis.com/css2?family=Linefont:wght@100&family=Montserrat&family=Poppins:wght@200&family=Roboto+Slab:wght@300&family=Vollkorn&display=swap'); */
+
+
+  /* @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Mitr:wght@200;300;400;500&family=Open+Sans&display=swap'); */
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Anonymous+Pro&family=Fira+Mono:wght@400;500;700&family=JetBrains+Mono:wght@200;400;500;600&family=Mitr:wght@200;300;400;500&family=Open+Sans&display=swap');
 
 *{
-  font-family: Montserrat;
+  /* font-family: 'Alegreya Sans', sans-serif;
+font-family: 'Mitr', sans-serif;
+font-family: 'Open Sans', sans-serif; */
+
+font-family: 'Alegreya Sans', sans-serif;
+font-family: 'Anonymous Pro', monospace;
+font-family: 'Fira Mono', monospace;
+font-family: 'JetBrains Mono', monospace;
+font-family: 'Mitr', sans-serif;
+font-family: 'Open Sans', sans-serif;
 }
 
 .custom-button{
@@ -446,3 +461,43 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
   background-color: #007bff;
   border-color: #007bff;
 }
+
+
+/* radio button */
+.small-radio input[type="radio"] {
+    width: 15px; /* Adjust the width */
+    height: 15px; /* Adjust the height */
+  }
+
+    /* Style for the custom radio button */
+    .custom-radio {
+      display: inline-flex;
+      align-items: center;
+
+    }
+    
+    .custom-radio input[type="radio"] {
+
+      margin-right: 25px; /* Adjust the spacing between the span and the radio button */
+      width: 14px; /* Set the width of the radio button */
+      height: 23px; /* Set the height of the radio button */
+      appearance: none; /* Remove default styles */
+      border: 1px solid #797777; /* Set border color */
+      border-radius: 50%; /* Make it a circle */
+      outline: none; /* Remove outline on focus */
+      transition: 0.3s; /* Add a smooth transition effect */
+    }
+    
+    .custom-radio input[type="radio"]:checked {
+      background-color: #153143; /* Set background color when checked */
+    }
+
+    .radioAdjust{
+      vertical-align: 20px;
+    }
+    .hrline {
+      flex-grow: 1; /* Expand the horizontal line to fill the available space */
+      border: none;
+      border-top: 2px solid #4d4c4c; /* Adjust the color and style of the horizontal line */
+      margin: 0 5px; /* Adjust the spacing around the horizontal line */
+  }

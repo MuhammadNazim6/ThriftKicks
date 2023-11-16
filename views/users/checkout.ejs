@@ -3,7 +3,7 @@
 
 
     <!-- Page Preloder -->
-    
+
     <!-- <div id="preloder">
     <div class="loader"></div>
     </div> -->
@@ -53,17 +53,20 @@
                                     <% } %>
 
 
-                                    <li>
-                                        <% if(typeof user !=='undefined' ) { %>
-                                            <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                shopping_cart
-                                                </span></a>
-                                            <% } else { %>
-                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                    shopping_cart
+                                        <li>
+                                            <% if(typeof user !=='undefined' ) { %>
+                                                <a class="cursor_cart" href="/cart"><span>Cart</span> <span
+                                                        style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                        shopping_cart
                                                     </span></a>
-                                                <% } %>
-                                    </li>
+                                                <% } else { %>
+                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span
+                                                            style="vertical-align: -4px;"
+                                                            class="material-symbols-outlined">
+                                                            shopping_cart
+                                                        </span></a>
+                                                    <% } %>
+                                        </li>
                         </ul>
                     </nav>
                 </div>
@@ -104,54 +107,58 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form action="#">
+                <form action="">
                     <div class="row">
-                        <div class="col-lg-8 col-md-6">
-                            <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                                    here</a> to enter your code</h6>
+                        <div class="col-lg-8 col-md-6 addressReload">
+                            <!-- <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
+                                    here</a> to enter your code</h6> -->
                             <h6 class="checkout__title">Billing Details</h6>
 
                             <input type="hidden" name="email" id="email"
                                 class="form-control mb-1 text-lg text-bold pl-3" value="<%= user.email %>">
 
 
-
                             <% if(typeof address!=='undefined' && address.length> 0){ %>
-
-                                
-
+                                <form class="small-radio">
                                     <% for(let i=0;i< address.length; i++){ %>
                                         <div class="checkout__input mt-5">
-                                        <p>
-                                            <%= address[i].fullname %>
-                                        </p>
-                                        <p>
-                                            <%= address[i].mobile %>
-                                        </p>
-                                        <p>
-                                            <%= address[i].houseName %>
-                                        </p>
-                                        <p>
-                                            <%= address[i].city %>
-                                        </p>
-                                        <p>
-                                            <%= address[i].pincode %>
-                                        </p>
-                                        <p>
-                                            <%= address[i].state %>
-                                        </p>
-                                        <p>
-                                            <%= address[i].country %>
-                                        </p>
+                                            <p>
+                                                <%= address[i].fullname %>
+                                            </p>
+                                            <p>
+                                                <%= address[i].mobile %>
+                                            </p>
+                                            <p>
+                                                <%= address[i].houseName %>
+                                            </p>
+                                            <p>
+                                                <%= address[i].city %>
+                                            </p>
+                                            <p>
+                                                <%= address[i].pincode %>
+                                            </p>
+                                            <p>
+                                                <%= address[i].state %>
+                                            </p>
+                                            <p>
+                                                <%= address[i].country %>
+                                            </p>
+                                            <input type="hidden" value="<%= address[i]._id %> ">
 
-                                        <div class="custom-control custom-checkbox custom-checkbox-lg mt-4">
-                                            <input type="checkbox" class="custom-control-input" id="customCheckbox"
-                                                name="customCheckbox">
-                                            <label class="custom-control-label text-lg" for="customCheckbox">Choose this
-                                                 address</label>
+                                            <br>
+                                            <label class="custom-radio">
+                                                <input type="radio" name="address" value="<%= address[i]._id %>">
+
+                                                <p class="mb-3">Choose Address</p>
+                                            </label>
+                                            <hr class="hrline">
+
+
                                         </div>
-                                </div>
-                                <% } } %>
+                                        <% } %>
+                                </form>
+
+                                <% } %>
 
 
                                     <h4 class="my-5">Add new Address</h4>
@@ -194,7 +201,7 @@
                                     </div>
                                     <div class="checkout__input">
                                         <p>Pincode<span>*</span></p>
-                                        <input type="text" name="pincode" id="pincode"
+                                        <input type="number" name="pincode" id="pincode"
                                             class="form-control text-lg text-bold pl-3" value="" placeholder="Pincode"
                                             required>
                                     </div>
@@ -203,7 +210,7 @@
                                         <div class="col-lg-6">
                                             <div class="checkout__input">
                                                 <p>Mobile<span>*</span></p>
-                                                <input type="text" name="mobile" id="mobile"
+                                                <input type="number" name="mobile" id="mobile"
                                                     class="form-control text-lg text-bold pl-3" value=""
                                                     placeholder="Mobile" required>
                                             </div>
@@ -240,30 +247,41 @@
 
                                             <p>.</p>
 
-                                            <div class="checkout__input__checkbox">
-                                                <label for="payment">
-                                                    Cash on delivery
-                                                    <input type="checkbox" id="payment">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </div>
-                                            <div class="checkout__input__checkbox">
-                                                <label for="paypal">
-                                                    UPI
-                                                    <input type="checkbox" id="paypal">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </div>
-                                            <div class="checkout__input__checkbox">
-                                                <label for="paypal">
-                                                    Net banking
-                                                    <input type="checkbox" id="paypal">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </div>
 
-                                            <button type="submit" class="site-btn">PLACE ORDER</button>
+                                            <div class="checkout__input__checkbox">
+                                                <label for="cod">
+                                                    Cash delivery
+                                                    <input type="radio" id="cod" name="payment" value="cod">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="checkout__input__checkbox">
+                                                <label for="upi">
+                                                    UPI
+                                                    <input type="radio" id="upi" name="payment" value="upi">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="checkout__input__checkbox">
+                                                <label for="netbanking">
+                                                    Net banking
+                                                    <input type="radio" id="netbanking" name="payment"
+                                                        value="netbanking">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <button id="placeOrderBtn" type="button" class="site-btn">PLACE
+                                                ORDER</button>
+
                             </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span id="placeOrderAlert" class="alert-success text-white mt-4 text-lg text-center pt-1"
+                                    style="width:350px; display:none; border-radius: 5px; height: 40px;">
+        
+                                </span>
+
+                            </div>
+
                         </div>
                     </div>
                 </form>
@@ -398,9 +416,14 @@
 
         //constants
         const addAddressBtn = document.getElementById('addAddressButton');
+        const placeOrderBtn = document.getElementById('placeOrderBtn')
+        const placeOrderAlert = document.getElementById('placeOrderAlert')
+
+
 
         //events
         addAddressBtn.addEventListener('click', addNewAddress);
+        placeOrderBtn.addEventListener('click', placeOrderFn)
 
         //   functions
         async function addNewAddress() {
@@ -414,13 +437,6 @@
                 const pincode = document.getElementById('pincode').value;
                 const mobile = document.getElementById('mobile').value;
                 const email = emailIp.value;
-                console.log(email);
-                console.log('House Name:', houseName);
-                console.log('City:', city);
-                console.log('State:', state);
-                console.log('Country:', country);
-                console.log('Pincode:', pincode);
-                console.log('Mobile:', mobile);
                 const response = await fetch(`/addAddress`, {
                     method: 'POST',
                     headers: {
@@ -442,43 +458,93 @@
                     setTimeout(() => {
                         addressAlert.style.display = 'none';
                     }, 1000);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000)
                 }
 
 
             } catch (error) {
                 console.log("could not add address");
             }
-
-
         }
 
 
-        async function updateAddress() {
+
+
+        //place order function
+        async function placeOrderFn() {
             try {
-                const email = emailIp.value;
-                const response = await fetch(`/updateAddress`, {
+                let paymentSelected;
+                let addressSelected;
+                var paymentOptions = Array.from(document.getElementsByName("payment"))
+                var addressIds = Array.from(document.getElementsByName('address'))
+
+                addressIds.forEach(function (option) {
+                    if (option.checked) {
+                        addressSelected = option.value;
+                    }
+                })
+
+                paymentOptions.forEach(function (option) {
+                    if (option.checked) {
+                        paymentSelected = option.value;
+                    }
+                });
+
+                if (typeof addressSelected === 'undefined') {
+                    placeOrderAlert.style.display = 'inline'
+                    placeOrderAlert.classList.replace('alert-success','alert-danger')
+                    placeOrderAlert.textContent = 'Choose an address'
+                    setTimeout(()=>{
+                        placeOrderAlert.style.display = 'none'
+                    },2000)
+                    return
+                }
+
+                if (typeof paymentSelected === 'undefined') {
+                    placeOrderAlert.style.display = 'inline'
+                    placeOrderAlert.classList.replace('alert-success','alert-danger')
+                    placeOrderAlert.textContent = 'Choose a Payment Method'
+                    setTimeout(()=>{
+                        placeOrderAlert.style.display = 'none'
+                    },2000)
+                    return
+                }
+            
+                 const response = await fetch(`/checkout`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(Address),
+                    body: JSON.stringify({ paymentSelected , addressSelected })
                 });
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
 
-                const data = await response.json();
-                console.log(data.message);
-
-                if (data.message) {
-                    addAddressBtn.style.display = 'none';
-                    location.reload();
-                }
+                // const data = await response.json();
+                // console.log(data.message);
+                // if (data.message) {
+                //     addressAlert.style.display = 'inline'
+                //     addressAlert.classList.replace('alert-danger', 'alert-success')
+                //     addressAlert.textContent = data.message
+                //     setTimeout(() => {
+                //         addressAlert.style.display = 'none';
+                //     }, 1000);
+                //     setTimeout(() => {
+                //         location.reload();
+                //     }, 1000)
+                // }
             } catch (error) {
-                console.log("Address couldn't be updated", error);
+                console.log(error.message);
             }
         }
+
+
+
+
     </script>
 
 

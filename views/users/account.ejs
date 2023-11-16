@@ -1,5 +1,11 @@
 <%- include('../layouts/header.ejs')%>
 
+
+<!-- <div id="preloder">
+    <div class="loader"></div>
+  </div> -->
+
+
     <!-- Header Section Begin -->
     <header class="header">
         <div class="header__top">
@@ -124,6 +130,8 @@
                                         Profile</button>&nbsp;
                                     <button type="button" id="saveUserEdits" class="btn btn-primary mr-5"
                                         style="display: none;width: 170px;">Save </button>
+                                    <button type="button" id="cancelBtn" class="btn btn-dark mr-5"
+                                        style="display: none;width: 170px;">Cancel </button>
                                 </div>
 
 
@@ -151,7 +159,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label text-lg mt-3">Mobile:</label>
-                                    <input type="text" name="mobile" id="mobile"
+                                    <input type="number" name="mobile" id="mobile"
                                         class="form-control text-lg text-bold pl-3 readonly" value="<%= user.mobile %>"
                                         readonly>
                                 </div>
@@ -173,7 +181,7 @@
                                             <input type="text"  name="country" id="country"
                                                 class="form-control addressCell text-lg text-bold pl-3 country"
                                                 value="<%=address[i].country%>" readonly required>
-                                            <input type="text"  name="pincode" id="pincode"
+                                            <input type="number"  name="pincode" id="pincode"
                                                 class="form-control addressCell text-lg text-bold pl-3 pincode"
                                                 value="<%=address[i].pincode%>" readonly required>
 
@@ -200,7 +208,7 @@
                                                     <input type="text"  name="country"
                                                         class="form-control text-lg text-bold pl-3" value=""
                                                         placeholder="Country">
-                                                    <input type="text" name="pincode"
+                                                    <input type="number" name="pincode"
                                                         class="form-control text-lg text-bold pl-3" value=""
                                                         placeholder="PINCODE">
                                                     <button class="btn btn-dark mt-3" id="addAddress">Add
@@ -933,6 +941,7 @@
             const inputs = document.querySelectorAll('.address-form input');
             const editAddressBtn = document.getElementById('editAddress');
             const saveEditedAddressBtn = document.getElementById('saveEditedAddress')
+            const cancelBtn = document.getElementById('cancelBtn')
 
             // Event listeners
 
@@ -945,6 +954,7 @@
             editUserBtn.addEventListener('click', enableEditMode);
             saveUsereditsBtn.addEventListener('click', updateUserEdits);
             addAddressBtn.addEventListener('click', updateAddress);
+            cancelBtn.addEventListener('click',cancelBtnFn)
            
 
             // Functions
@@ -955,6 +965,7 @@
                 editUserBtn.style.display = 'none';
                 saveUsereditsBtn.style.display = 'inline';
                 document.getElementById('userDataUpdatedAlert').style.display = 'none';
+                cancelBtn.style.display = "inline"
             }
             //Updating user edits
             async function updateUserEdits() {
@@ -1118,6 +1129,7 @@
         async function checkPass(){
             currentPassVal =  currentPass.value
             const email = emailIp.value;
+            const passAlert =  document.getElementById('passAlert')
 
             const response = await fetch(`/checkCurrPass`,{
                 method: 'POST',
@@ -1141,13 +1153,19 @@
                         newPass.placeholder = "Enter New Password"
                         confirmPass.placeholder = "Confirm Password "
                         changePassBtn.style.display = 'inline'
+
                     }else{
-                        console.log("Incorrect password entered");
+                        passAlert.style.display ='inline'
+                        passAlert.classList.replace('alert-success','alert-danger')
+                        passAlert.textContent = "Password does not match"
+                        setTimeout(() => {
+                            passAlert.style.display ='none'
+                        }, 1500);
                     }
         }
                     
                 
-           async function changePassword(){
+        async function changePassword(){
             try {
                 const currentPassVal = currentPass.value
                 const newPassVal = newPass.value
@@ -1207,13 +1225,21 @@
                         }, 1000);
                         
                     }
-                   
+
 
             } catch (error) {
                 console.log("Coudnt change password");
             }
-           } 
-        
+        } 
+
+        async function cancelBtnFn(){
+            const changeReadonly = document.querySelectorAll('.readonly');
+            changeReadonly.forEach((x) => {
+                    x.readOnly = true;
+                });
+                cancelBtn.style.display = "none"
+                location.reload();
+        }
 
 
 
