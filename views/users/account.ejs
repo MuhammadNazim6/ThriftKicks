@@ -47,9 +47,11 @@
 
                                     <li>
                                         <% if(typeof user !=='undefined' ) { %>
-                                            <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                shopping_cart
-                                                </span></a>
+                                            <a class="cursor_cart" href="/cart">
+                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge"><%if(typeof cart !== 'undefined'){%><%=cart.products.length%><%}else{%> 0 <%}%></span></div>
+
+                                            </a>
+                                             
                                             <% } else { %>
                                                 <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
                                                     shopping_cart
@@ -61,10 +63,12 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a>
+                        <!-- <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a> -->
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
-                        <a href=""><img src="assets/icon/cart.png" alt="" /> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <span style="vertical-align: -6px;"class="material-symbols-outlined">
+                            logout
+                            </span>
+                        <a class="list-group-item text-bold" href="/logout"> Logout</a>
                     </div>
                 </div>
             </div>

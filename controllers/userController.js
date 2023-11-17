@@ -4,6 +4,7 @@ const OrdersModel = require('../models/ordersModel')
 const mailer = require("../services/mail");
 const bcrypt = require("bcrypt");
 const otplib = require("otplib");
+const uuid = require('uuid');
 const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
 const Cart = UserAddressModel.Cart;
@@ -240,6 +241,9 @@ const verifyLogin = async (req, res) => {
 // loading home
 const loadHome = async (req, res) => {
   try {
+    
+    const user_id = req.session.user_id;
+    
     var search = "";
     if (req.query.search) {
       search = req.query.search;
@@ -272,6 +276,12 @@ const loadHome = async (req, res) => {
       ],
     }).countDocuments();
 
+    //for badge
+    const cart = await Cart.findOne({userId: user_id})
+    .populate("userId")
+    .populate("products.productId");
+
+
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id });
       res.render("users/home", {
@@ -279,6 +289,7 @@ const loadHome = async (req, res) => {
         products: products,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
+        cart : cart
       });
     } else {
       res.render("users/home", {
@@ -296,9 +307,14 @@ const loadHome = async (req, res) => {
 //load user account details
 const loadAccount = async (req, res) => {
   try {
-    const userData = await User.findById({ _id: req.session.user_id });
-    const address = await Address.find({ userId: req.session.user_id });
-    res.render("users/account", { user: userData, address: address });
+    const userId = req.session.user_id;
+    const userData = await User.findById({ _id: userId });
+    const address = await Address.find({ userId: userId });
+    const cart = await Cart.findOne({userId: userId })
+    .populate("userId")
+    .populate("products.productId");
+
+    res.render("users/account", { user: userData, address: address ,cart:cart });
   } catch (error) {
     console.log(error.message);
   }
@@ -348,6 +364,12 @@ const loadShop = async (req, res) => {
       ],
     }).countDocuments();
 
+// for badge
+    const cart = await Cart.findOne({userId: req.session.user_id})
+    .populate("userId")
+    .populate("products.productId");
+
+
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id });
       res.render("users/shop", {
@@ -355,6 +377,7 @@ const loadShop = async (req, res) => {
         products: products,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
+        cart: cart
       });
     } else {
       res.render("users/shop", {
@@ -442,6 +465,7 @@ const addtoCart = async (req, res) => {
       console.log("New cart added to user");
       res.json({
         message: "Created a new Cart and added to cart successfully",
+        length: cartAdded.products.length
       });
 
       //if cart is present
@@ -454,12 +478,17 @@ const addtoCart = async (req, res) => {
       if (productExist) {
         console.log("Product found");
 
-        const result = await Cart.updateOne(
-          { userId: user_id, "products.productId": product_id },
-          { $inc: { "products.$.quantity": 1 } } // Use "$" to identify the matched array element
-        );
+        // const result = await Cart.updateOne(
+        //   { userId: user_id, "products.productId": product_id },
+        //   { $inc: { "products.$.quantity": 1 } } // Use "$" to identify the matched array element
+        // );
 
         console.log("Quantity incremented successfully");
+        res.json({
+          message: "Quantity incremented successfully",
+          length: cartExist.products.length
+        });
+  
         //if same product doesnt exist in the cart
       } else {
         const newProduct = {
@@ -469,6 +498,10 @@ const addtoCart = async (req, res) => {
 
         cartExist.products.push(newProduct);
         await cartExist.save(); // Save the updated cart
+        res.json({
+          message: "Product added to the cart",
+          length: cartExist.products.length
+        });
         console.log("Product added to the cart");
       }
     }
@@ -499,7 +532,7 @@ const cartIncreaseDecrease = async (req, res) => {
 //delete product in cart function
 const deleteCartProduct = async (req, res, next) => {
   try {
-    console.log("reachinggggggg");
+    
     const user_id = req.session.user_id;
     const product_id = req.params.prodId;
 
@@ -507,7 +540,7 @@ const deleteCartProduct = async (req, res, next) => {
       { userId: user_id },
       { $pull: { products: { productId: product_id } } }
     );
-    res.redirect("/cart");
+    // res.redirect("/cart");
     next();
   } catch (error) {
     console.log(error.message);
@@ -545,22 +578,68 @@ const loadCheckout = async (req, res) => {
 };
 
 
+//Total amount calculation of products in cart
+const calculateTotalPrice = async (userId) => {
+  try {
+    const cart = await Cart.findOne({ userId: userId }).populate(
+      "products.productId"
+    );
+
+    if (!cart) {
+      console.log("User does not have a cart.");
+    }
+
+    let totalPrice = 0;
+    for (const cartProduct of cart.products) {
+      const { productId, quantity } = cartProduct;
+      const productSubtotal = productId.actualPrice * quantity;
+      totalPrice += productSubtotal;
+    }
+
+    console.log('Total Price:', totalPrice);
+    return totalPrice;
+  } catch (error) {
+    console.error("Error calculating total price:", error.message);
+    return 0;
+  }
+};
+
+
+//generating a unique tracking id
+const generateTrackId = async ()=>{
+  try {
+    const randomUUID = uuid.v4();
+    console.log('Random UUID:', randomUUID);
+    return randomUUID;
+
+  } catch (error) {
+    console.log("could not generate tracking id")
+    console.log(error.message);
+  }
+}
+
+
 //Order placing
 const placeOrder = async (req,res)=>{
   try {
     const { paymentSelected , addressSelected } = req.body;
-    // console.log(paymentSelected);console.log(addressSelected);console.log("Hello reaching");  
     const userId = req.session.user_id;
     const userData = await User.findOne({_id:userId})
     const shippingAddress = await Address.findOne({_id:addressSelected})
     const cart = await Cart.findOne({userId:userId})
-  
-    console.log(shippingAddress.country); 
-    console.log( shippingAddress.fullname);
-    console.log(shippingAddress.mobile);
-    console.log(shippingAddress.pincode);
-    console.log(shippingAddress.city);
-    console.log(shippingAddress.state);
+
+    let trackId = await generateTrackId()
+    let totalAmount = await calculateTotalPrice(userId)
+
+    const cartProducts = cart.products.map((productItem) => ({
+      productId: productItem.productId,
+      quantity: productItem.quantity,
+      OrderStatus: "pending",
+      StatusLevel: 1,
+      paymentStatus: "pending",
+      "returnOrderStatus.status": "none",
+      "returnOrderStatus.reason": "none",
+    }));
 
     const order = new Order({
         userId : userId,
@@ -572,19 +651,20 @@ const placeOrder = async (req,res)=>{
           city: shippingAddress.city,
           state: shippingAddress.state,
         },
+        products : cartProducts,
+        orderDate: new Date(),
+        totalAmount: totalAmount ,
+        paymentMethod: paymentSelected,
+        coupon : 'none',
+        trackId : trackId
 
-
-     
     });
 
     //returning a promise
-    const newOrderPlaced = await Order.save();
+    const newOrderPlaced = await order.save();
+    res.json({ message: "Order Placed successfully" });
 
-    
 console.log('done');
-
-
-
   } catch (error) {
     console.log(error.message);
   }
@@ -596,6 +676,7 @@ console.log('done');
 const showZoom = async (req, res) => {
   res.render("users/zoom");
 };
+
 
 // edit and update user data
 const editUserData = async (req, res) => {

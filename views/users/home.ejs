@@ -71,17 +71,21 @@
                                     <% } %>
 
                                     
-                            <li>
-                                <% if(typeof user !=='undefined' ) { %>
-                                    <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                        shopping_cart
-                                        </span></a>
-                                    <% } else { %>
-                                        <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                            shopping_cart
-                                            </span></a>
-                                        <% } %>
-                            </li>
+                                    <li>
+                                        <% if(typeof user !=='undefined' ) { %>
+                                            <a class="cursor_cart" href="/cart">
+                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !== 'undefined'){%><%=cart.products.length%><%}else{%> 0 <%}%></span></div>
+
+                                            </a>
+                                                <!-- <span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span>  -->
+                                            <% } else { %>
+                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span></a>
+                                                <% } %>
+                                    </li>
 
                         </ul>
                     </nav>
@@ -90,8 +94,8 @@
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a>
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
-                        <a href=""><img src="assets/icon/cart.png" alt="" /> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <!-- <a href=""><img src="assets/icon/cart.png" alt="" /> <span>0</span></a> -->
+                        <!-- <div class="price">$0.00</div> -->
                     </div>
                 </div>
             </div>
@@ -101,7 +105,7 @@
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-    <section class="hero">
+    <!-- <section class="hero">
 
     <div class="container">
         <div class="container-fluid py-4">
@@ -146,7 +150,7 @@
                 </div>
             </div>
 
-    </section>
+    </section> -->
     <!-- Hero Section End -->
 
     
@@ -387,7 +391,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        //constants 
+        const badge = document.getElementById('badge')
         
+
         document.querySelectorAll(".addtoCartButton").forEach(function (button) {
             button.addEventListener("click", addtoCart)
         })
@@ -405,7 +412,17 @@
                 throw new Error("Failed to fetch data");
             }
             const data = await response.json()
+            if(data.message)
             console.log(data.message);
+
+            if(data.length){
+                badge.textContent = data.length
+                badge.classList.add('jumping')
+                setTimeout(()=>{
+                    badge.classList.remove('jumping')
+                },500)
+                
+            }
 
         }
 

@@ -82,9 +82,11 @@
                                     <% } %>
                                     <li>
                                         <% if(typeof user !=='undefined' ) { %>
-                                            <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                shopping_cart
-                                                </span></a>
+                                            <a class="cursor_cart" href="/cart">
+                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !== 'undefined'){%><%=cart.products.length%><%}else{%> 0 <%}%></span></div>
+
+                                            </a>
+                                            
                                             <% } else { %>
                                                 <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
                                                     shopping_cart
@@ -98,8 +100,8 @@
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="assets/icon/search.png" alt=""></a>
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt=""></a>
-                        <a href="/cart"><img src="assets/icon/cart.png" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <!-- <a href="/cart"><img src="assets/icon/cart.png" alt=""> <span>0</span></a> -->
+                        <!-- <div class="price">$0.00</div> -->
                     </div>
                 </div>
             </div>
@@ -445,6 +447,10 @@
 
 
     <script>
+        //constants 
+        const badge = document.getElementById('badge')
+
+
         document.querySelectorAll(".addtoCartButton").forEach(function (button) {
             button.addEventListener("click", addtoCart)
         })
@@ -464,6 +470,13 @@
             }
             const data = await response.json()
             console.log(data.message);
+            if(data.length){
+                badge.textContent = data.length
+                badge.classList.add('jumping')
+                setTimeout(()=>{
+                    badge.classList.remove('jumping')
+                },500)
+            }
 
         }
 

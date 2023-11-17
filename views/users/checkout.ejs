@@ -53,29 +53,32 @@
                                     <% } %>
 
 
-                                        <li>
-                                            <% if(typeof user !=='undefined' ) { %>
-                                                <a class="cursor_cart" href="/cart"><span>Cart</span> <span
-                                                        style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                        shopping_cart
+                                    <li class="active">
+                                        <% if(typeof user !=='undefined' ) { %>
+                                            <a class="cursor_cart " href="/cart">
+                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%= cart.products.length %></span></div>
+
+                                            </a>
+                                              <!-- <span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span>  -->
+                                            <% } else { %>
+                                                <a class="cartButton active cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
                                                     </span></a>
-                                                <% } else { %>
-                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span
-                                                            style="vertical-align: -4px;"
-                                                            class="material-symbols-outlined">
-                                                            shopping_cart
-                                                        </span></a>
-                                                    <% } %>
-                                        </li>
+                                                <% } %>
+                                    </li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a>
+                        <!-- <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a> -->
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
-                        <a href=""><img src="assets/icon/cart.png" alt="" /> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <span style="vertical-align: -6px;"class="material-symbols-outlined">
+                            logout
+                            </span>
+                        <a class="list-group-item text-bold" href="/logout"> Logout</a>
                     </div>
                 </div>
             </div>
@@ -93,7 +96,7 @@
                         <h4>Check Out</h4>
                         <div class="breadcrumb__links">
                             <a href="/home">Home</a>
-                            <a href="/shop">Shop</a>
+                            <a href="/shop">Cart</a>
                             <span>Check Out</span>
                         </div>
                     </div>
@@ -250,7 +253,7 @@
 
                                             <div class="checkout__input__checkbox">
                                                 <label for="cod">
-                                                    Cash delivery
+                                                    Cash On delivery
                                                     <input type="radio" id="cod" name="payment" value="cod">
                                                     <span class="checkmark"></span>
                                                 </label>

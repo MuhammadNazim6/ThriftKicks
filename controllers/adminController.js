@@ -1,10 +1,12 @@
-const UserAddressModel = require("../models/userModel");
-const ProductsModel = require("../models/productsModel");
-const CategoryModel = require("../models/categoryModel");
+const UserAddressModel = require("../models/userModel")
+const ProductsModel = require("../models/productsModel")
+const CategoryModel = require("../models/categoryModel")
+const OrdersModel = require('../models/ordersModel')
 const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
 const Product = ProductsModel.Product;
 const Category = CategoryModel.Category;
+const Order = OrdersModel.Order
 const bcrypt = require("bcrypt");
 const path = require("path");
 const { log } = require("util");
@@ -480,7 +482,12 @@ const updateCategory = async (req, res) => {
 // loading Orders Page
 const loadOrdersAdmin = async (req,res)=>{
   try {
-    res.render('admin/ordersAdmin')
+    const orders = await Order.find()
+    .populate('userId')
+    .populate('products.productId')
+    .exec()
+
+    res.render('admin/ordersAdmin',{orders:orders})
   } catch (error) {
     console.log(error.message);
   }

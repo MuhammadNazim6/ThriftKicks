@@ -88,7 +88,7 @@ const orderSchema = new mongoose.Schema({
       required: true
   },
   trackId:{
-    type:Number,
+    type: String,
     require:true
   }
 })

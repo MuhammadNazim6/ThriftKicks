@@ -75,13 +75,17 @@
                                     <li><a href="/login">SignIn</a></li>
                                     <% } %>
 
-                                        <li>
+                                        <li class="active">
                                             <% if(typeof user !=='undefined' ) { %>
-                                                <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                    shopping_cart
-                                                    </span></a>
+                                                <a class="cursor_cart " href="/cart">
+                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%= cart.products.length %></span></div>
+
+                                                </a>
+                                                  <!-- <span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                        shopping_cart
+                                                        </span>  -->
                                                 <% } else { %>
-                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    <a class="cartButton active cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
                                                         shopping_cart
                                                         </span></a>
                                                     <% } %>
@@ -91,10 +95,12 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="assets/icon/search.png" alt=""></a>
-                        <a href="/wishlist"><img src="assets/icon/heart.png" alt=""></a>
-                        <a href="/cart"><img src="assets/icon/cart.png" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <!-- <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a> -->
+                        <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
+                        <span style="vertical-align: -6px;"class="material-symbols-outlined">
+                            logout
+                            </span>
+                        <a class="list-group-item text-bold" href="/logout"> Logout</a>
                     </div>
                 </div>
             </div>
@@ -134,9 +140,10 @@
                     <div class="shopping__cart__table">
                         <table>
 
-
+                            
 
                             <% if(typeof cart!=="undefined" && cart.products.length> 0) { %>
+                                <input type="hidden" value="<%= cart.products.length %>" id="productLength">
                                 <thead>
                                     <tr>
                                         <th>Product</th>
@@ -410,6 +417,9 @@
         const decreaseButtons = document.querySelectorAll('.decrease')
         const increaseButton = document.querySelectorAll('.increase')
         const deleteButton = document.querySelectorAll('.round-delete-button')
+        const productLength = document.getElementById('productLength')
+        const Plength = productLength.value
+        const cartBadge = document.getElementById('badge')
         
 
 
@@ -524,7 +534,9 @@
 
             })
             if (response) {
+                // cartBadge.textContent = cartBadge.textContent - 1;
                 location.reload(true);
+
             }
         }
 
