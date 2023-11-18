@@ -18,7 +18,7 @@ app.use(
     saveUninitialized: false, // Set saveUninitialized to true to save new but uninitialized sessions
   })
 );
-app.use(nocache());  
+app.use(nocache());
 // app.use(morgan('tiny'))
 
 app.use(express.json());
@@ -28,6 +28,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/", user_route);
 app.use("/admin", admin_route);
+// app.use("/orders",order_route)
 
 app.use((req, res, next) => { 
   res.status(404).render('users/404') 

@@ -64,13 +64,16 @@
                             <li><a href="/shop">Shop</a></li>
                             <li> <a href="#">About Us</a> </li>
 
+
                             <% if(typeof user !=='undefined' ) { %>
                                 <li><a href="/account">Account</a></li>
+
                                 <% } else { %>
                                     <li><a href="/login">SignIn</a></li>
                                     <% } %>
 
-                                    
+                    
+
                                     
                                     <li>
                                         <% if(typeof user !=='undefined' ) { %>
@@ -86,6 +89,7 @@
                                                 </span></a>
                                             <% } %>
                                     </li>
+
                         </ul>
                     </nav>
                 </div>
@@ -106,22 +110,7 @@
     <!-- Hero Section Begin -->
     <!-- <section class="hero">
 
-    <div class="container">
-        <div class="container-fluid py-4">
-            <div class="row">
-                <div class="col-8">
-                    <form class="form-inline my-2 my-lg-0">
-                        <div class="input-group border" style="height: 43px;">
-                            <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
-                                style="width: 600px;">
-                            <div class="input-group-append ">
-                                <button class="btn btn-primary " type="submit">Search</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+  
 
 
         <img src="assets/hero/hero-1.jpg" class=" my-5">
@@ -152,7 +141,22 @@
     </section> -->
     <!-- Hero Section End -->
 
-    
+    <div class="container">
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-8">
+                    <form class="form-inline my-2 my-lg-0">
+                        <div class="input-group border" style="height: 43px;">
+                            <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
+                                style="width: 600px;">
+                            <div class="input-group-append ">
+                                <button class="btn btn-primary " type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 
     <!-- Product Section Start -->

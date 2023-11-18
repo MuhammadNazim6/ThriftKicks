@@ -63,13 +63,13 @@
                             <li> <a href="#">About Us</a> </li>
 
                             <% if(typeof user !=='undefined' ) { %>
-                                <li class="active"><a href="/account">Account</a></li>
+                                <li><a href="/account">Account</a></li>
                                 <% } else { %>
                                     <li><a href="/login">SignIn</a></li>
                                     <% } %>
 
 
-                                        <li>
+                                        <li class="active">
                                             <% if(typeof user !=='undefined' ) { %>
                                                 <a class="cursor_cart" href="/cart">
                                                     <div class="cart-icon"> <i class="fas fa-shopping-cart"></i><span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
@@ -275,7 +275,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                                <!-- <a href="#"><i class="fa fa-spinner"></i> Update cart</a> -->
                             </div>
                         </div>
                     </div>

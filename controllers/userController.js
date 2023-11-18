@@ -253,7 +253,7 @@ const loadHome = async (req, res) => {
     if (req.query.page) {
       page = req.query.page;
     }
-    const limit = 4;
+    const limit = 8;
 
     const products = await Product.find({
       is_listed: true,
@@ -550,6 +550,7 @@ const deleteCartProduct = async (req, res, next) => {
   }
 };
 
+
 //loading checkout page
 const loadCheckout = async (req, res) => {
   try {
@@ -569,16 +570,59 @@ const loadCheckout = async (req, res) => {
       totalAmount += product.productId.actualPrice * product.quantity;
     });
 
-    res.render("users/checkout", {
+    //checking if stock exists
+    const userQuantity = cartDetails.products.map((prod) => ({
+      productId: prod.productId._id,
+      quantity: prod.quantity
+    }));
+    
+    const areAvailable = await areQuantitiesAvailable(userQuantity);
+    
+    if (areAvailable) {
+      console.log('All selected products are available.');
+      res.render("users/checkout", {
       user: userData,
       cart: cartDetails,
       totalAmount: totalAmount,
       address: address,
     });
+    } else {
+      console.log('One or more selected products are not available.');
+      res.redirect('/cart')
+    }
+
+
+    
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
+//function for checking if stock is available for checkout
+async function areQuantitiesAvailable(products) {
+  try {
+    const availabilityChecks = await Promise.all(
+      products.map(async (product) => {
+        const { productId, quantity } = product;
+
+        const dbProduct = await Product.findById(productId);
+
+        if (!dbProduct) {
+          console.log(`Product with ID ${productId} not found.`);
+          return false;
+        }
+
+        return dbProduct.stock >= quantity;
+      })
+    );
+
+    return availabilityChecks.every((availability) => availability);
+  } catch (error) {
+    console.error('Error checking quantities availability:', error);
+    return false;
+  }
+}
 
 
 //Total amount calculation of products in cart
