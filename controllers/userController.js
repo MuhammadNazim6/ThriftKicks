@@ -314,7 +314,10 @@ const loadAccount = async (req, res) => {
     .populate("userId")
     .populate("products.productId");
 
-    res.render("users/account", { user: userData, address: address ,cart:cart });
+    const orders = await Order.find({userId : userId})
+    .populate('products.productId')
+    
+    res.render("users/account", { user: userData, address: address ,cart:cart , orders:orders});
   } catch (error) {
     console.log(error.message);
   }
@@ -634,9 +637,6 @@ const placeOrder = async (req,res)=>{
     const cartProducts = cart.products.map((productItem) => ({
       productId: productItem.productId,
       quantity: productItem.quantity,
-      OrderStatus: "pending",
-      StatusLevel: 1,
-      paymentStatus: "pending",
       "returnOrderStatus.status": "none",
       "returnOrderStatus.reason": "none",
     }));
@@ -652,6 +652,9 @@ const placeOrder = async (req,res)=>{
           state: shippingAddress.state,
         },
         products : cartProducts,
+        OrderStatus: "Pending",
+        StatusLevel: 1,
+        paymentStatus: "Pending",
         orderDate: new Date(),
         totalAmount: totalAmount ,
         paymentMethod: paymentSelected,
@@ -660,7 +663,14 @@ const placeOrder = async (req,res)=>{
 
     });
 
-    //returning a promise
+    //deleting existing cart
+    const deletedCart = await Cart.deleteOne({_id:cart._id})
+
+    //stock adjust function calling
+    await stockAdjusted(cartProducts)
+    console.log("done");
+
+      //returning a promise
     const newOrderPlaced = await order.save();
     res.json({ message: "Order Placed successfully" });
 
@@ -670,6 +680,20 @@ console.log('done');
   }
 }
 
+
+//stock adjust function
+const stockAdjusted = async (cartProducts)=>{
+  for (const elem of cartProducts) {
+    try {
+
+      let updatedProduct = await Product.updateOne({ _id: elem.productId },
+        {$inc: { stock : -elem.quantity } });
+
+    } catch (error) {
+      console.error(`Error fetching product `)
+    }
+  }
+}
 
 
 //show zoom
@@ -709,6 +733,22 @@ const editUserData = async (req, res) => {
 const updateAddress = async (req, res) => {
   try {
     const [houseName, city, state, country, pincode] = req.body;
+    const addressRegex = /^[a-zA-Z0-9\s.,'-]+$/
+    const spRegex = /^\s*$/
+    const numRegex = /^\d+$/
+    if(!addressRegex.test(houseName) || !addressRegex.test(city) ||!addressRegex.test(state) || !addressRegex.test(country)){
+      res.json({ failmessage: "Add a Valid Address" });
+      return
+    }
+    if(spRegex.test(houseName) || spRegex.test(city) ||spRegex.test(state) || spRegex.test(country)){
+      res.json({ failmessage: "Add a Valid Address" });
+      return
+    }
+    if(numRegex.test(houseName) || numRegex.test(city) ||numRegex.test(state) || numRegex.test(country)){
+      res.json({ failmessage: "Add a Valid Address" });
+      return
+    }
+
     const user_id = req.session.user_id;
     const userData = await User.findOne({ _id: user_id });
 
@@ -887,7 +927,14 @@ const loadOtpchangepass = async (req,res)=>{
   }
 }
 
-
+// loading order placed page
+const loadOrderPlacedPage = async (req,res)=>{
+  try {
+    res.render('users/orderPlaced')
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
 
 
@@ -924,5 +971,6 @@ module.exports = {
   forgotPassEmail,
   forgetPassCheckOtp,
   loadOtpchangepass,
+  loadOrderPlacedPage
 
 };

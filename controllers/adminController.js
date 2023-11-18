@@ -487,11 +487,62 @@ const loadOrdersAdmin = async (req,res)=>{
     .populate('products.productId')
     .exec()
 
-    res.render('admin/ordersAdmin',{orders:orders})
+    const orderDate = orders.map((order) => order.orderDate.toString().slice(0,15))
+    const updatedDate = orders.map((order)=>order.updatedAt.toString().slice(0,15))
+    res.render('admin/ordersAdmin',{orders,orderDate,updatedDate})
   } catch (error) {
     console.log(error.message);
   }
 }
+
+
+//loading manage orders
+const loadManageOrder = async (req,res)=>{
+  try {
+    const order_Id = req.params.orderId;
+    const currentOrder = await Order.findOne({_id :order_Id})
+    .populate('products.productId').exec()
+    
+    res.render('admin/manageOrders',{currentOrder : currentOrder})
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+// change order status by admin fn
+const changeOrderStatus = async (req,res)=>{
+  try {
+    const { status, orderId } = req.body;
+    const order = await Order.findOne({ _id:orderId })
+
+      order.OrderStatus = status;
+      await order.save();
+      res.json({message:"Order Status Changed Successfully"})
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+//cancel order function
+const cancelOrder = async (req,res)=>{
+  try {
+    const { orderId } = req.body;
+    const order = await Order.findOne({ _id:orderId })
+    order.OrderStatus = 'Cancelled';
+    await order.save();
+    res.json({message:"Order has been Cancelled"})
+
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
 
 
 
@@ -519,5 +570,9 @@ module.exports = {
   listCategory,
   loadEditCategory,
   updateCategory,
-  loadOrdersAdmin
+  loadOrdersAdmin,
+  loadManageOrder,
+  changeOrderStatus,
+  cancelOrder
+
 };

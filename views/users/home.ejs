@@ -71,11 +71,11 @@
                                     <% } %>
 
                                     
+                                    
                                     <li>
                                         <% if(typeof user !=='undefined' ) { %>
                                             <a class="cursor_cart" href="/cart">
-                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !== 'undefined'){%><%=cart.products.length%><%}else{%> 0 <%}%></span></div>
-
+                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
                                             </a>
                                                 <!-- <span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
                                                     shopping_cart
@@ -83,10 +83,9 @@
                                             <% } else { %>
                                                 <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
                                                     shopping_cart
-                                                    </span></a>
-                                                <% } %>
+                                                </span></a>
+                                            <% } %>
                                     </li>
-
                         </ul>
                     </nav>
                 </div>
@@ -397,6 +396,9 @@
 
         document.querySelectorAll(".addtoCartButton").forEach(function (button) {
             button.addEventListener("click", addtoCart)
+            button.addEventListener('click',()=>{
+                Swal.fire("Product added to cart");
+            })
         })
 
         async function addtoCart() {
@@ -416,6 +418,7 @@
             console.log(data.message);
 
             if(data.length){
+
                 badge.textContent = data.length
                 badge.classList.add('jumping')
                 setTimeout(()=>{

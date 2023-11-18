@@ -1,7 +1,7 @@
 <%- include('../layouts/header.ejs')%>
 
 
-<!-- <div id="preloder">
+    <!-- <div id="preloder">
     <div class="loader"></div>
   </div> -->
 
@@ -45,19 +45,21 @@
                                     <% } %>
 
 
-                                    <li>
-                                        <% if(typeof user !=='undefined' ) { %>
-                                            <a class="cursor_cart" href="/cart">
-                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge"><%if(typeof cart !== 'undefined'){%><%=cart.products.length%><%}else{%> 0 <%}%></span></div>
+                                        <li>
+                                            <% if(typeof user !=='undefined' ) { %>
+                                                <a class="cursor_cart" href="/cart">
+                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i><span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
 
-                                            </a>
-                                             
-                                            <% } else { %>
-                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                    shopping_cart
-                                                    </span></a>
-                                                <% } %>
-                                    </li>
+                                                </a>
+
+                                                <% } else { %>
+                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span
+                                                            style="vertical-align: -4px;"
+                                                            class="material-symbols-outlined">
+                                                            shopping_cart
+                                                        </span></a>
+                                                    <% } %>
+                                        </li>
                         </ul>
                     </nav>
                 </div>
@@ -65,9 +67,9 @@
                     <div class="header__nav__option">
                         <!-- <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a> -->
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
-                        <span style="vertical-align: -6px;"class="material-symbols-outlined">
+                        <span style="vertical-align: -6px;" class="material-symbols-outlined">
                             logout
-                            </span>
+                        </span>
                         <a class="list-group-item text-bold" href="/logout"> Logout</a>
                     </div>
                 </div>
@@ -91,14 +93,15 @@
                         <a class="list-group-item list-group-item-action" data-toggle="list"
                             href="#account-change-password">Change password</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-social-links">Social links</a>
+                            href="#account-social-links">My Orders</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
                             href="#account-connections">Connections</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
                             href="#account-notifications">Notifications</a>
-                            
-                        <a class="list-group-item text-bold" href="/logout"><span style="vertical-align: -6px;"class="material-symbols-outlined">
-                            logout
+
+                        <a class="list-group-item text-bold" href="/logout"><span style="vertical-align: -6px;"
+                                class="material-symbols-outlined">
+                                logout
                             </span> Logout</a>
                     </div>
                 </div>
@@ -106,7 +109,7 @@
                     <h3 class="mr-4 text-end">Welcome <span>&nbsp;<%= user.firstname %></span></h3>
 
                     <div class="tab-content">
-                        
+
                         <div class="tab-pane fade active show" id="account-general">
                             <!-- <div class="card-body media align-items-center">
                             <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
@@ -130,7 +133,8 @@
                                         style="width:350px; display: none;">
                                         User Details Updated Successfully
                                     </span>
-                                    <button type="button" id="editUserBtn" class="btn btn-dark mr-5" style="width: 170px;">Edit
+                                    <button type="button" id="editUserBtn" class="btn btn-dark mr-5"
+                                        style="width: 170px;">Edit
                                         Profile</button>&nbsp;
                                     <button type="button" id="saveUserEdits" class="btn btn-primary mr-5"
                                         style="display: none;width: 170px;">Save </button>
@@ -167,61 +171,57 @@
                                         class="form-control text-lg text-bold pl-3 readonly" value="<%= user.mobile %>"
                                         readonly>
                                 </div>
+
                                 <div class="form-group">
-                                    
+
                                     <% if(typeof address !=='undefined' && address.length> 0){ %>
 
                                         <% for(let i=0;i< address.length ;i++){ %>
-                                         <label class="form-label text-lg mt-3">Address:<%=i+1%></label>
-                                            <input type="text"  name="houseName" id="houseName"
+                                            <label class="form-label text-lg mt-3">Address:<%=i+1%></label>
+                                            <input type="text" name="houseName" id="houseName"
                                                 class="form-control addressCell text-lg text-bold pl-3 houseName"
                                                 value="<%=address[i].houseName%>" readonly required>
-                                            <input type="text"  name="city" id="city"
+                                            <input type="text" name="city" id="city"
                                                 class="form-control addressCell text-lg text-bold pl-3 city"
                                                 value="<%=address[i].city%>" readonly required>
-                                            <input type="text"  name="state" id="state"
+                                            <input type="text" name="state" id="state"
                                                 class="form-control addressCell text-lg text-bold pl-3 state"
                                                 value="<%=address[i].state%>" readonly required>
-                                            <input type="text"  name="country" id="country"
+                                            <input type="text" name="country" id="country"
                                                 class="form-control addressCell text-lg text-bold pl-3 country"
                                                 value="<%=address[i].country%>" readonly required>
-                                            <input type="number"  name="pincode" id="pincode"
+                                            <input type="number" name="pincode" id="pincode"
                                                 class="form-control addressCell text-lg text-bold pl-3 pincode"
                                                 value="<%=address[i].pincode%>" readonly required>
 
-                                                <% } }%>
-                                            </div>
+                                            <% } }%>
+                                </div>
 
-                                            <button class="btn btn-dark mt-3 editAddress" id="editAddress">Edit
-                                                Address</button>
-                                            <button class="btn btn-primary mt-3" id="saveEditedAddress" style="display: none;">Save
-                                                Address</button>
-                                
-                                          
-                                            <div class="form-group address-form">
-                                               
-                                                    <input type="text"  name="houseName"
-                                                        class="form-control text-lg text-bold pl-3" value=""
-                                                        placeholder="House Name">
-                                                    <input type="text"  name="city"
-                                                        class="form-control text-lg text-bold pl-3" value=""
-                                                        placeholder="City">
-                                                    <input type="text"  name="state"
-                                                        class="form-control text-lg text-bold pl-3" value=""
-                                                        placeholder="State">
-                                                    <input type="text"  name="country"
-                                                        class="form-control text-lg text-bold pl-3" value=""
-                                                        placeholder="Country">
-                                                    <input type="number" name="pincode"
-                                                        class="form-control text-lg text-bold pl-3" value=""
-                                                        placeholder="PINCODE">
-                                                    <button class="btn btn-dark mt-3" id="addAddress">Add
-                                                        Address</button>
-                                                   
-                                                    <span id="addressAddedAlert" class="alert alert-success text-white mr-5 mb-4"
-                                style="width:350px; display:none;">
-                                 Address Added Successfully
-                            </span>
+                                <button class="btn btn-dark mt-3 editAddress" id="editAddress">Edit
+                                    Address</button>
+                                <button class="btn btn-primary mt-3" id="saveEditedAddress" style="display: none;">Save
+                                    Address</button>
+
+
+                                <div class="form-group address-form">
+
+                                    <input type="text" name="houseName" class="form-control text-lg text-bold pl-3"
+                                        value="" placeholder="House Name" required>
+                                    <input type="text" name="city" class="form-control text-lg text-bold pl-3" value=""
+                                        placeholder="City" required>
+                                    <input type="text" name="state" class="form-control text-lg text-bold pl-3" value=""
+                                        placeholder="State" required>
+                                    <input type="text" name="country" class="form-control text-lg text-bold pl-3"
+                                        value="" placeholder="Country" required>
+                                    <input type="number" name="pincode" class="form-control text-lg text-bold pl-3"
+                                        value="" placeholder="PINCODE" required>
+                                    <button class="btn btn-dark mt-3" id="addAddress">Add
+                                        Address</button>
+
+                                    <span id="addressAddedAlert" class="alert alert-success text-white mr-5 mb-4"
+                                        style="width:350px; display:none;">
+                                        Address Added Successfully
+                                    </span>
                                 </div>
                             </div>
 
@@ -242,14 +242,16 @@
                                 </div>
                                 <div class="form-group mb-5">
                                     <label class="form-label text-lg">Repeat new password</label>
-                                    <input type="password" id="confirmPass" class="form-control text-lg mb-5 bg-glass" readonly>
+                                    <input type="password" id="confirmPass" class="form-control text-lg mb-5 bg-glass"
+                                        readonly>
                                 </div>
-                                <button id="changePassBtn" class="btn btn-dark mt-3" style="display: none;"> Change Password</button>
-                                
+                                <button id="changePassBtn" class="btn btn-dark mt-3" style="display: none;"> Change
+                                    Password</button>
+
                                 <span id="passAlert" class="alert alert-success text-white mr-5 mb-4"
-                                style="width:350px; display:none;">
-                                 
-                            </span>
+                                    style="width:350px; display:none;">
+
+                                </span>
                             </div>
                         </div>
 
@@ -271,7 +273,6 @@
                                         <td>one</td>
                                     </tr>
                                 </tbody>
-
                             </table>
 
                         </div>
@@ -279,28 +280,57 @@
 
 
                         <div class="tab-pane fade" id="account-social-links">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-                                    <label class="form-label">Twitter</label>
-                                    <input type="text" class="form-control" value="https://twitter.com/user">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Facebook</label>
-                                    <input type="text" class="form-control" value="https://www.facebook.com/user">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Google+</label>
-                                    <input type="text" class="form-control" value>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">LinkedIn</label>
-                                    <input type="text" class="form-control" value>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Instagram</label>
-                                    <input type="text" class="form-control" value="https://www.instagram.com/user">
-                                </div>
+                            <div class="border-radius-xl mx-2 mx-md-3 position-relative"
+                                style="background-image: url('..asssets/img/bg-pricing.jpg'); background-size: cover;">
+
+                                <main class="main-content border-radius-lg h-100 mt-5">
+                                    <div class="container-fluid">
+
+                                        <% if (typeof orders !== 'undefined' && orders.length > 0) { %>
+                                            <table class="table table-info table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Product</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Quantity</th>
+                                                        <th scope="col">Ordered On</th>
+                                                        <th scope="col">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-group-divider">
+                                                    <% let k = 0 %>
+                                                    <% for (let i = 0; i < orders.length; i++) { %>
+                                                        <% for(let j=0; j< orders[i].products.length; j++ ){   %>
+                                                        <tr> <% k++ %>
+                                                            <td scope="row"><%= k %></td>
+                                                            <td>
+                                                        <img src="<%= orders[i].products[j].productId.image.path1 %>" style="height: 200px; width: 200px;">
+                                                            </td> 
+                                                            <td><%= orders[i].products[j].productId.productName %></td>
+                                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= orders[i].products[j].quantity %></td>
+                                                            <td><%= orders[i].orderDate.toString().slice(0,15) %></td> 
+                                                            <td class="<%= orders[i].OrderStatus === 'Pending' ? 'text-warning' : '' %>
+                                                                <%= orders[i].OrderStatus === 'Cancelled' ? 'text-danger' : '' %>
+                                                                <%= orders[i].OrderStatus === 'Out for Delivery' ? 'text-info' : '' %>
+                                                                <%= orders[i].OrderStatus === 'Shipped' ? 'text-info' : '' %>
+                                                                <%= orders[i].OrderStatus === 'Delivered' ? 'text-success' : '' %>"><%= orders[i].OrderStatus%></td> 
+                                                        </tr>
+                                                    <% } %>
+                                                    <% } %>
+
+                                                        
+
+
+                                                </tbody>
+                                            </table>
+                                        <% } %>
+                                        
+
+                                    </div>
                             </div>
+
+
                         </div>
                         <div class="tab-pane fade" id="account-connections">
                             <div class="card-body">
@@ -953,13 +983,13 @@
                 editAddressBtn.addEventListener('click', editAddress);
             }
             if (saveEditedAddressBtn) {
-                saveEditedAddressBtn.addEventListener('click',saveEditedAddress);
+                saveEditedAddressBtn.addEventListener('click', saveEditedAddress);
             }
             editUserBtn.addEventListener('click', enableEditMode);
             saveUsereditsBtn.addEventListener('click', updateUserEdits);
             addAddressBtn.addEventListener('click', updateAddress);
-            cancelBtn.addEventListener('click',cancelBtnFn)
-           
+            cancelBtn.addEventListener('click', cancelBtnFn)
+
 
             // Functions
             function enableEditMode() {
@@ -983,6 +1013,44 @@
                     const mobile = mobileIp.value;
                     const email = emailIp.value;
 
+                    if (fname.length < 4 || lname.includes(" ") || /^[0-9]+$/.test(lname)) {
+                        const alert = document.getElementById('userDataUpdatedAlert')
+                        alert.textContent = 'Enter a valid name'
+                        alert.classList.replace('alert-success', 'alert-danger')
+                        alert.style.display = 'inline';
+
+                        setTimeout(() => {
+                            alert.style.display = 'none';
+                        }, 1500);
+                        return
+                    }
+
+                    if (lname.length < 4 || fname.includes(" ") || /^[0-9]+$/.test(fname)) {
+                        const alert = document.getElementById('userDataUpdatedAlert')
+                        alert.textContent = 'Enter a valid name'
+                        alert.classList.replace('alert-success', 'alert-danger')
+                        alert.style.display = 'inline';
+
+                        setTimeout(() => {
+                            alert.style.display = 'none';
+                        }, 1500);
+                        return
+                    }
+
+                    if (mobile.length < 10 || mobile.length > 10) {
+                        const alert = document.getElementById('userDataUpdatedAlert')
+                        alert.textContent = 'Enter a valid Mobile number'
+                        alert.classList.replace('alert-success', 'alert-danger')
+                        alert.style.display = 'inline';
+
+                        setTimeout(() => {
+                            alert.style.display = 'none';
+                        }, 1500);
+                        return
+                    }
+
+
+
                     const response = await fetch(`/editUserData`, {
                         method: 'POST',
                         headers: {
@@ -999,12 +1067,16 @@
                     console.log(data.message);
 
                     if (data.message) {
-                        document.getElementById('userDataUpdatedAlert').style.display = 'inline';
+                        const alert = document.getElementById('userDataUpdatedAlert');
+                        alert.classList.replace('alert-danger', 'alert-success')
+                        alert.textContent = 'User Details Updated Successfully '
+                        alert.style.display = 'inline'
                         changeReadonly.forEach((x) => {
-                          x.readOnly = true;
-                            });
+                            x.readOnly = true;
+                        });
                         editUserBtn.style.display = 'inline';
                         saveUsereditsBtn.style.display = 'none';
+                        cancelBtn.style.display = 'none'
                         setTimeout(() => {
                             document.getElementById('userDataUpdatedAlert').style.display = 'none';
                         }, 1000);
@@ -1019,9 +1091,20 @@
                 try {
                     const emailIp = document.getElementById('email');
                     const email = emailIp.value;
-                    console.log(email+"its here");
+                    console.log(email + "its here");
                     const Address = Array.from(inputs).map((inp) => inp.value);
-                    
+                    console.log(Address + "hereeeeee");
+
+                    if (Address.some((x) => x.includes(' '))) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Enter address field",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+
                     console.log(Address);
 
                     const response = await fetch(`/updateAddress`, {
@@ -1038,10 +1121,13 @@
 
                     const data = await response.json();
                     console.log(data.message);
-
+                    if(data.failmessage){
+                        return Swal.fire(data.failmessage);
+                    }
                     if (data.message) {
                         addAddressBtn.style.display = 'none';
                         location.reload();
+
                     }
                 } catch (error) {
                     console.log("Address couldn't be updated", error);
@@ -1060,7 +1146,7 @@
                 countryInput.readOnly = false;
                 pincodeInput.readOnly = false;
                 editAddressBtn.style.display = "none"
-                saveEditedAddressBtn.style.display= "inline"
+                saveEditedAddressBtn.style.display = "inline"
             }
         });
 
@@ -1080,35 +1166,43 @@
             const pincode = pincodeInput.value;
             const country = countryInput.value;
             const email = emailIp.value;
+
             const response = await fetch(`/updateEditedAddress`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({houseName ,city , state ,country ,pincode , email}),
-                    });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ houseName, city, state, country, pincode, email }),
+            });
 
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch data');
-                    }
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
 
-                    const data = await response.json();
-                    console.log(data.message);
+            const data = await response.json();
+            console.log(data.message);
 
-                    if (data.message) {
-                    
-                    editAddressBtn.style.display = 'inline'
-                    saveEditedAddressBtn.style.display = 'none'
-                    houseNameInput.readOnly = true;
-                    cityInput.readOnly = true;
-                    stateInput.readOnly = true;
-                    countryInput.readOnly = true;
-                    pincodeInput.readOnly = true;
-                    addressAddedAlert.style.display = 'inline'
-                    setTimeout(() => {
-                        addressAddedAlert.style.display = 'none';
-                        }, 1000);
-                    }
+            if (data.message) {
+
+                editAddressBtn.style.display = 'inline'
+                saveEditedAddressBtn.style.display = 'none'
+                houseNameInput.readOnly = true;
+                cityInput.readOnly = true;
+                stateInput.readOnly = true;
+                countryInput.readOnly = true;
+                pincodeInput.readOnly = true;
+                // addressAddedAlert.style.display = 'inline'
+                // setTimeout(() => {
+                //     addressAddedAlert.style.display = 'none';
+                //     }, 1000);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your address has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         }
 
 
@@ -1121,128 +1215,135 @@
         const emailIp = document.getElementById('email');
         const changePassBtn = document.getElementById('changePassBtn')
 
-        
-        
+
+
         //events
-        checkPassBtn.addEventListener('click',checkPass)
-        changePassBtn.addEventListener('click',changePassword)
+        checkPassBtn.addEventListener('click', checkPass)
+        changePassBtn.addEventListener('click', changePassword)
 
 
 
         //functions
-        async function checkPass(){
-            currentPassVal =  currentPass.value
+        async function checkPass() {
+            currentPassVal = currentPass.value
             const email = emailIp.value;
-            const passAlert =  document.getElementById('passAlert')
+            const passAlert = document.getElementById('passAlert')
 
-            const response = await fetch(`/checkCurrPass`,{
+            const response = await fetch(`/checkCurrPass`, {
                 method: 'POST',
-                headers:{
-                        'Content-Type': 'application/json',
-                    },
-                body: JSON.stringify({currentPassVal , email}),
-                    
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ currentPassVal, email }),
+
             })
             if (!response.ok) {
-                        throw new Error('Failed to fetch data');
-                    }
+                throw new Error('Failed to fetch data');
+            }
 
-                    const data = await response.json();
-                    console.log(data.message);
+            const data = await response.json();
+            console.log(data.message);
 
-                    if (data.message === "Correct") {
-                        currentPass.readOnly = true;
-                        newPass.readOnly = false;
-                        confirmPass.readOnly = false;
-                        newPass.placeholder = "Enter New Password"
-                        confirmPass.placeholder = "Confirm Password "
-                        changePassBtn.style.display = 'inline'
+            if (data.message === "Correct") {
+                currentPass.readOnly = true;
+                newPass.readOnly = false;
+                confirmPass.readOnly = false;
+                newPass.placeholder = "Enter New Password"
+                confirmPass.placeholder = "Confirm Password "
+                changePassBtn.style.display = 'inline'
 
-                    }else{
-                        passAlert.style.display ='inline'
-                        passAlert.classList.replace('alert-success','alert-danger')
-                        passAlert.textContent = "Password does not match"
-                        setTimeout(() => {
-                            passAlert.style.display ='none'
-                        }, 1500);
-                    }
+            } else {
+                passAlert.style.display = 'inline'
+                passAlert.classList.replace('alert-success', 'alert-danger')
+                passAlert.textContent = "Password does not match"
+                setTimeout(() => {
+                    passAlert.style.display = 'none'
+                }, 1500);
+            }
         }
-                    
-                
-        async function changePassword(){
+
+
+        async function changePassword() {
             try {
                 const currentPassVal = currentPass.value
                 const newPassVal = newPass.value
                 const confirmPassVal = confirmPass.value
                 const emailIp = document.getElementById('email');
                 const email = emailIp.value
-                const passAlert =  document.getElementById('passAlert')
+                const passAlert = document.getElementById('passAlert')
 
-                if(newPassVal.length <= 5){
-                        passAlert.style.display = 'inline'
-                        passAlert.classList.replace('alert-success','alert-danger')
-                        passAlert.textContent = "Enter a strong password"
+                if (newPassVal.length <= 5) {
+                    passAlert.style.display = 'inline'
+                    passAlert.classList.replace('alert-success', 'alert-danger')
+                    passAlert.textContent = "Enter a strong password"
 
-                        setTimeout(() => {
-                            passAlert.style.display = 'none';
-                        }, 1500);
-                        return
+                    setTimeout(() => {
+                        passAlert.style.display = 'none';
+                    }, 1500);
+                    return
                 }
 
-                if(currentPassVal === newPassVal){
-                        passAlert.style.display = 'inline'
-                        passAlert.classList.replace('alert-success','alert-danger')
-                        passAlert.textContent = "Cannot change to existing password"
+                if (currentPassVal === newPassVal) {
+                    passAlert.style.display = 'inline'
+                    passAlert.classList.replace('alert-success', 'alert-danger')
+                    passAlert.textContent = "Cannot change to existing password"
 
-                        setTimeout(() => {
-                            passAlert.style.display = 'none';
-                        }, 2000);
-                        return
+                    setTimeout(() => {
+                        passAlert.style.display = 'none';
+                    }, 2000);
+                    return
                 }
-                if(newPassVal !== confirmPassVal){
-                        passAlert.style.display = 'inline'
-                        passAlert.classList.replace('alert-success','alert-danger')
-                        passAlert.textContent = "Both password dont match"
+                if (newPassVal !== confirmPassVal) {
+                    passAlert.style.display = 'inline'
+                    passAlert.classList.replace('alert-success', 'alert-danger')
+                    passAlert.textContent = "Both password dont match"
 
-                        setTimeout(() => {
-                            passAlert.style.display = 'none';
-                        }, 2000);
-                        return
+                    setTimeout(() => {
+                        passAlert.style.display = 'none';
+                    }, 2000);
+                    return
                 }
-                
-                        const response = await fetch(`/changePass`,{
-                        method: 'POST',
-                        headers:{
-                                'Content-Type': 'application/json',
-                            },
-                        body: JSON.stringify({newPassVal,email}),        
-                    })
-                    
-                    const data = await response.json();
-                    console.log(data.message);
-                    if(data.message){
-                        passAlert.style.display = 'inline'
-                        passAlert.classList.replace('alert-danger','alert-success')
-                        passAlert.textContent = data.message
-                        setTimeout(() => {
-                            passAlert.style.display = 'none';
-                        }, 1000);
-                        
-                    }
+
+                const response = await fetch(`/changePass`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ newPassVal, email }),
+                })
+
+                const data = await response.json();
+                console.log(data.message);
+                if (data.message) {
+                    // passAlert.style.display = 'inline'
+                    // passAlert.classList.replace('alert-danger','alert-success')
+                    // passAlert.textContent = data.message
+                    // setTimeout(() => {
+                    //     passAlert.style.display = 'none';
+                    // }, 1000);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                }
 
 
             } catch (error) {
                 console.log("Coudnt change password");
             }
-        } 
+        }
 
-        async function cancelBtnFn(){
+        async function cancelBtnFn() {
             const changeReadonly = document.querySelectorAll('.readonly');
             changeReadonly.forEach((x) => {
-                    x.readOnly = true;
-                });
-                cancelBtn.style.display = "none"
-                location.reload();
+                x.readOnly = true;
+            });
+            cancelBtn.style.display = "none"
+            location.reload();
         }
 
 

@@ -44,4 +44,9 @@ admin_route.post('/products/editProduct',upload.array('image',3),adminController
 
 admin_route.get('/orders', authAdmin.isLogin, adminController.loadOrdersAdmin)
 
+admin_route.get('/manageOrders/:orderId', authAdmin.isLogin, adminController.loadManageOrder)
+admin_route.post('/changeOrderStatus',adminController.changeOrderStatus)
+admin_route.post('/cancelOrder',adminController.cancelOrder)
+
+
 module.exports = admin_route; 

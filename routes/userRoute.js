@@ -49,6 +49,8 @@ user_route.post('/forgotPassEmail',userController.forgotPassEmail)
 user_route.post('/forgetPassCheckOtp',userController.forgetPassCheckOtp)
 
 user_route.get('/otpChangepass',userController.loadOtpchangepass)
+user_route.get('/orderPlaced',userController.loadOrderPlacedPage)
+
 
 
 module.exports = user_route;

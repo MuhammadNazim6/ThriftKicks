@@ -43,18 +43,6 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
-      OrderStatus:{
-        type:String,
-        require:true
-      },
-      StatusLevel:{
-        type: Number,
-        required: true
-      },
-      paymentStatus:{
-        type:String,
-        require:true
-      },
       returnOrderStatus:{
         status:{
           type:String
@@ -63,14 +51,21 @@ const orderSchema = new mongoose.Schema({
           type:String
         }
         
-      },
-      updatedAt:{
-        type:Date,
-        default:Date.now
       }
-      
     }
   ],
+  OrderStatus:{
+    type:String,
+    require:true
+  },
+  StatusLevel:{
+    type: Number,
+    required: true
+  },
+  paymentStatus:{
+    type:String,
+    require:true
+  },
   orderDate: {
     type: Date,
     default: Date.now,
@@ -90,6 +85,10 @@ const orderSchema = new mongoose.Schema({
   trackId:{
     type: String,
     require:true
+  },
+  updatedAt:{
+    type:Date,
+    default:Date.now
   }
 })
 

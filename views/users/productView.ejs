@@ -41,24 +41,28 @@
                 <nav class="header__menu mobile-menu">
                     <ul>
                         <li><a href="/home">Home</a></li>
-                        <li class="active"><a href="/shop">Shop</a></li>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="/shop">Shop</a></li>
+                        <li> <a href="#">About Us</a> </li>
 
                         <% if(typeof user !=='undefined' ) { %>
-                                <li><a href="/account">Account</a></li>
-                                <% } else { %>
-                                    <li><a href="/login">SignIn</a></li>
-                                    <% } %>
+                            <li class="active"><a href="/account">Account</a></li>
+                            <% } else { %>
+                                <li><a href="/login">SignIn</a></li>
+                                <% } %>
 
 
                                     <li>
                                         <% if(typeof user !=='undefined' ) { %>
-                                            <a class="cursor_cart" href="/cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                shopping_cart
-                                                </span></a>
+                                            <a class="cursor_cart" href="/cart">
+                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i><span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
+
+                                            </a>
+
                                             <% } else { %>
-                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                    shopping_cart
+                                                <a class="cartButton cursor_cart"><span>Cart</span> <span
+                                                        style="vertical-align: -4px;"
+                                                        class="material-symbols-outlined">
+                                                        shopping_cart
                                                     </span></a>
                                                 <% } %>
                                     </li>
@@ -69,8 +73,7 @@
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
                     <a href="#"><img src="img/icon/heart.png" alt=""></a>
-                    <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
+                    
                 </div>
             </div>
         </div>

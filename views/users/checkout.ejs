@@ -527,19 +527,23 @@
                     throw new Error('Failed to fetch data');
                 }
 
-                // const data = await response.json();
-                // console.log(data.message);
-                // if (data.message) {
-                //     addressAlert.style.display = 'inline'
-                //     addressAlert.classList.replace('alert-danger', 'alert-success')
-                //     addressAlert.textContent = data.message
-                //     setTimeout(() => {
-                //         addressAlert.style.display = 'none';
-                //     }, 1000);
-                //     setTimeout(() => {
-                //         location.reload();
-                //     }, 1000)
-                // }
+                const data = await response.json();
+                console.log(data.message);
+                if (data.message) {
+                    Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: data.message,
+                    showConfirmButton: false,
+                    // timer: 1500
+                    });
+
+                    setTimeout(()=>{
+                        window.location.href = '/orderPlaced';
+                    },2000)
+                }
+
+            
             } catch (error) {
                 console.log(error.message);
             }

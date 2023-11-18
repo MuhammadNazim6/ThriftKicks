@@ -60,33 +60,27 @@
                         <ul>
                             <li><a href="/home">Home</a></li>
                             <li><a href="/shop">Shop</a></li>
-                            <li><a href="#">About us</a>
-                                <ul class="dropdown">
-                                    <li><a href="./about.html">About Us</a></li>
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="/cart">Shopping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
+                            <li> <a href="#">About Us</a> </li>
+
                             <% if(typeof user !=='undefined' ) { %>
-                                <li><a href="/account">Account</a></li>
+                                <li class="active"><a href="/account">Account</a></li>
                                 <% } else { %>
                                     <li><a href="/login">SignIn</a></li>
                                     <% } %>
 
-                                        <li class="active">
+
+                                        <li>
                                             <% if(typeof user !=='undefined' ) { %>
-                                                <a class="cursor_cart " href="/cart">
-                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%= cart.products.length %></span></div>
+                                                <a class="cursor_cart" href="/cart">
+                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i><span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
 
                                                 </a>
-                                                  <!-- <span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                        shopping_cart
-                                                        </span>  -->
+
                                                 <% } else { %>
-                                                    <a class="cartButton active cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                        shopping_cart
+                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span
+                                                            style="vertical-align: -4px;"
+                                                            class="material-symbols-outlined">
+                                                            shopping_cart
                                                         </span></a>
                                                     <% } %>
                                         </li>
@@ -200,7 +194,7 @@
                                                                 data-stock="<%= cart.products[i].productId.stock %>"
                                                                 prodId="<%= cart.products[i].productId._id %>"
                                                                 data-index="<%=i%>"
-                                                                data-price="<%= cart.products[i].productId.actualPrice %>">
+                                                                data-price="<%= cart.products[i].productId.actualPrice %>" readonly>
 
                                                             <button class="btn btn-dark inline increase"
                                                                 id="increase">+</button>
@@ -442,7 +436,7 @@
                 if (quantityValue !== 1) {
                     changeQuantity(-1, prodId, inputTag, priceCell, priceOfProduct ,numericPrice);
                 } else {
-                    alert("A minimum value required");
+                    Swal.fire("Minimum quantity is 1 !");
                 }
             })
         })
@@ -464,7 +458,7 @@
                 if (quantityValue !== productStock) {
                     changeQuantity(1, prodId, inputTag, priceCell, priceOfProduct ,numericPrice);
                 } else {
-                    alert("Stock limit reached");
+                    Swal.fire("Stock limit reached");
                 }
             })
         })

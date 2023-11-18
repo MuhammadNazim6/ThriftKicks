@@ -83,7 +83,7 @@
                                     <li>
                                         <% if(typeof user !=='undefined' ) { %>
                                             <a class="cursor_cart" href="/cart">
-                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !== 'undefined'){%><%=cart.products.length%><%}else{%> 0 <%}%></span></div>
+                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
 
                                             </a>
                                             
@@ -453,6 +453,9 @@
 
         document.querySelectorAll(".addtoCartButton").forEach(function (button) {
             button.addEventListener("click", addtoCart)
+            button.addEventListener('click',()=>{
+                Swal.fire("Product added to cart");
+            })
         })
 
         async function addtoCart() {
