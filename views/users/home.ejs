@@ -89,6 +89,7 @@
                                                 </span></a>
                                             <% } %>
                                     </li>
+                                    <!-- <li><a href="/orders">Orders</a></li> -->
 
                         </ul>
                     </nav>
@@ -265,7 +266,7 @@
     </section>
     <!-- Banner Section End -->
 
-
+    </div>
 
 
 
@@ -401,7 +402,7 @@
         document.querySelectorAll(".addtoCartButton").forEach(function (button) {
             button.addEventListener("click", addtoCart)
             button.addEventListener('click',()=>{
-                Swal.fire("Product added to cart");
+                
             })
         })
 
@@ -418,7 +419,9 @@
                 throw new Error("Failed to fetch data");
             }
             const data = await response.json()
-            if(data.message)
+            if(data.message){
+                Swal.fire(data.message);
+            }
             console.log(data.message);
 
             if(data.length){

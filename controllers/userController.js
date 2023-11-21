@@ -12,6 +12,7 @@ const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
 let OTP;
 
+
 // Generate a new OTP secret
 const generateOtp = async () => {
   try {
@@ -200,6 +201,7 @@ const loadLogin = async (req, res) => {
     res.render("users/login");
   } catch (error) {
     console.log(error.message);
+    res.status(404).render('users/404') 
   }
 };
 
@@ -300,6 +302,7 @@ const loadHome = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(404).render('users/404') 
   }
 };
 
@@ -320,6 +323,8 @@ const loadAccount = async (req, res) => {
     res.render("users/account", { user: userData, address: address ,cart:cart , orders:orders});
   } catch (error) {
     console.log(error.message);
+    res.status(404).render('users/404') 
+
   }
 };
 
@@ -330,6 +335,8 @@ const userLogout = async (req, res) => {
     res.redirect("/");
   } catch (error) {
     console.log(error.message);
+    res.status(404).render('users/404') 
+
   }
 };
 
@@ -391,6 +398,8 @@ const loadShop = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(404).render('users/404') 
+
   }
 };
 
@@ -398,11 +407,14 @@ const loadShop = async (req, res) => {
 const loadcart = async (req, res) => {
   try {
     const user_id = req.session.user_id;
-
     const userData = await User.findById({ _id: user_id });
     const cart = await Cart.findOne({ userId: user_id })
       .populate("userId")
       .populate("products.productId");
+    
+      // checking if query exists
+      const stockQuery = req.query.nostock;
+  
 
     //finding sum of all products in the cart
 
@@ -414,16 +426,31 @@ const loadcart = async (req, res) => {
         }
         totalAmount += product.productId.actualPrice * product.quantity;
       });
-      res.render("users/shopping-cart", {
-        user: userData,
-        cart: cart,
-        totalAmount: totalAmount,
-      });
+
+          if(!stockQuery){
+            res.render("users/shopping-cart", {
+              user: userData,
+              cart: cart,
+              totalAmount: totalAmount,
+            });
+          }else{
+            
+            res.render("users/shopping-cart", {
+              user: userData,
+              cart: cart,
+              totalAmount: totalAmount,
+              nostock : "nostock"
+            });
+          }
+      
     } else {
       res.render("users/shopping-cart", { user: userData });
     }
+
   } catch (error) {
     console.log(error.message);
+    res.status(404).render('users/404') 
+
   }
 };
 
@@ -478,22 +505,25 @@ const addtoCart = async (req, res) => {
         (element) => element.productId.toString() === product_id
       );
 
+    const prod = await Product.findOne({_id : product_id})
+        if(prod.stock === 0 ){
+        return res.json({
+            message: "Product currently Out of Stock",
+            length: cartExist.products.length
+          });
+        }
+
+        
       if (productExist) {
-        console.log("Product found");
-
-        // const result = await Cart.updateOne(
-        //   { userId: user_id, "products.productId": product_id },
-        //   { $inc: { "products.$.quantity": 1 } } // Use "$" to identify the matched array element
-        // );
-
-        console.log("Quantity incremented successfully");
-        res.json({
-          message: "Quantity incremented successfully",
+  
+      res.json({
+          message: "Product already added to cart",
           length: cartExist.products.length
         });
   
         //if same product doesnt exist in the cart
       } else {
+        
         const newProduct = {
           productId: product_id,
           quantity: quantity,
@@ -505,11 +535,12 @@ const addtoCart = async (req, res) => {
           message: "Product added to the cart",
           length: cartExist.products.length
         });
-        console.log("Product added to the cart");
+        
       }
     }
   } catch (error) {
     console.log(error.message);
+
   }
 };
 
@@ -529,6 +560,7 @@ const cartIncreaseDecrease = async (req, res) => {
     res.json({ message: "Changed quantity successfully" });
   } catch (error) {
     console.log(error.message);
+
   }
 };
 
@@ -547,197 +579,20 @@ const deleteCartProduct = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
+
   }
 };
 
 
-//loading checkout page
-const loadCheckout = async (req, res) => {
-  try {
-    const userId = req.session.user_id;
-    const userData = await User.findOne({ _id: userId });
-    const cartDetails = await Cart.findOne({ userId: userId })
-      .populate("userId")
-      .populate("products.productId");
-
-    const address = await Address.find({ userId: userId });
-    //finding sum of all products in the cart
-    let totalAmount = 0;
-    cartDetails.products.forEach((product, index) => {
-      if (index === 0) {
-        totalAmount = 0;
-      }
-      totalAmount += product.productId.actualPrice * product.quantity;
-    });
-
-    //checking if stock exists
-    const userQuantity = cartDetails.products.map((prod) => ({
-      productId: prod.productId._id,
-      quantity: prod.quantity
-    }));
-    
-    const areAvailable = await areQuantitiesAvailable(userQuantity);
-    
-    if (areAvailable) {
-      console.log('All selected products are available.');
-      res.render("users/checkout", {
-      user: userData,
-      cart: cartDetails,
-      totalAmount: totalAmount,
-      address: address,
-    });
-    } else {
-      console.log('One or more selected products are not available.');
-      res.redirect('/cart')
-    }
 
 
-    
-  } catch (error) {
-    console.log(error.message);
-  }
-};
 
 
-//function for checking if stock is available for checkout
-async function areQuantitiesAvailable(products) {
-  try {
-    const availabilityChecks = await Promise.all(
-      products.map(async (product) => {
-        const { productId, quantity } = product;
-
-        const dbProduct = await Product.findById(productId);
-
-        if (!dbProduct) {
-          console.log(`Product with ID ${productId} not found.`);
-          return false;
-        }
-
-        return dbProduct.stock >= quantity;
-      })
-    );
-
-    return availabilityChecks.every((availability) => availability);
-  } catch (error) {
-    console.error('Error checking quantities availability:', error);
-    return false;
-  }
-}
 
 
-//Total amount calculation of products in cart
-const calculateTotalPrice = async (userId) => {
-  try {
-    const cart = await Cart.findOne({ userId: userId }).populate(
-      "products.productId"
-    );
-
-    if (!cart) {
-      console.log("User does not have a cart.");
-    }
-
-    let totalPrice = 0;
-    for (const cartProduct of cart.products) {
-      const { productId, quantity } = cartProduct;
-      const productSubtotal = productId.actualPrice * quantity;
-      totalPrice += productSubtotal;
-    }
-
-    console.log('Total Price:', totalPrice);
-    return totalPrice;
-  } catch (error) {
-    console.error("Error calculating total price:", error.message);
-    return 0;
-  }
-};
 
 
-//generating a unique tracking id
-const generateTrackId = async ()=>{
-  try {
-    const randomUUID = uuid.v4();
-    console.log('Random UUID:', randomUUID);
-    return randomUUID;
 
-  } catch (error) {
-    console.log("could not generate tracking id")
-    console.log(error.message);
-  }
-}
-
-
-//Order placing
-const placeOrder = async (req,res)=>{
-  try {
-    const { paymentSelected , addressSelected } = req.body;
-    const userId = req.session.user_id;
-    const userData = await User.findOne({_id:userId})
-    const shippingAddress = await Address.findOne({_id:addressSelected})
-    const cart = await Cart.findOne({userId:userId})
-
-    let trackId = await generateTrackId()
-    let totalAmount = await calculateTotalPrice(userId)
-
-    const cartProducts = cart.products.map((productItem) => ({
-      productId: productItem.productId,
-      quantity: productItem.quantity,
-      "returnOrderStatus.status": "none",
-      "returnOrderStatus.reason": "none",
-    }));
-
-    const order = new Order({
-        userId : userId,
-        shippingAddress:{
-          country: shippingAddress.country,
-          fullName: shippingAddress.fullname,
-          mobile: shippingAddress.mobile,
-          pincode: shippingAddress.pincode,
-          city: shippingAddress.city,
-          state: shippingAddress.state,
-        },
-        products : cartProducts,
-        OrderStatus: "Pending",
-        StatusLevel: 1,
-        paymentStatus: "Pending",
-        orderDate: new Date(),
-        totalAmount: totalAmount ,
-        paymentMethod: paymentSelected,
-        coupon : 'none',
-        trackId : trackId
-
-    });
-
-    //deleting existing cart
-    const deletedCart = await Cart.deleteOne({_id:cart._id})
-
-    //stock adjust function calling
-    await stockAdjusted(cartProducts)
-    console.log("done");
-
-      //returning a promise
-    const newOrderPlaced = await order.save();
-    res.json({ message: "Order Placed successfully" });
-
-console.log('done');
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-
-//stock adjust function
-const stockAdjusted = async (cartProducts)=>{
-  for (const elem of cartProducts) {
-    try {
-
-      let updatedProduct = await Product.updateOne({ _id: elem.productId },
-        {$inc: { stock : -elem.quantity } });
-
-    } catch (error) {
-      console.error(`Error fetching product `)
-    }
-  }
-}
 
 
 //show zoom
@@ -971,14 +826,6 @@ const loadOtpchangepass = async (req,res)=>{
   }
 }
 
-// loading order placed page
-const loadOrderPlacedPage = async (req,res)=>{
-  try {
-    res.render('users/orderPlaced')
-  } catch (error) {
-    console.log(error.message);
-  }
-}
 
 
 
@@ -1000,9 +847,7 @@ module.exports = {
   addtoCart,
   cartIncreaseDecrease,
   deleteCartProduct,
-  loadCheckout,
-  placeOrder,
-
+  
   showZoom,
 
   editUserData,
@@ -1015,6 +860,5 @@ module.exports = {
   forgotPassEmail,
   forgetPassCheckOtp,
   loadOtpchangepass,
-  loadOrderPlacedPage
 
 };

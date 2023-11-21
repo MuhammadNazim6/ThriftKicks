@@ -61,7 +61,7 @@
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">notifications</i>
               </div>
-              <span class="nav-link-text ms-1">Notifications</span>
+              <span class="nav-link-text ms-1">Add Coupon</span>
             </a>
           </li>
           <li class="nav-item mt-3">
@@ -631,7 +631,7 @@
                 }
               })
               .then((data) => {
-                // Handle a successful response, e.g., display a success message or update the UI.
+                // Handling a successful response
                 console.log(data.message);
                 if (currentState === "blocked") {
                   this.textContent = "Block";
@@ -647,7 +647,7 @@
 
               })
               .catch((error) => {
-                // Handle errors, e.g., display an error message.
+                
                 console.error(error);
               });
           });

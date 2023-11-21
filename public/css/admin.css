@@ -544,6 +544,12 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
   .jumping{
     animation: jump 0.6s ease 1;
   }
+
+
+  /* //delete and view order details button */
+  .orderBtn{
+      width: 200px;
+  }
   
 
   

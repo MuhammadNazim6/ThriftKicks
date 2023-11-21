@@ -64,7 +64,7 @@
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">notifications</i>
               </div>
-              <span class="nav-link-text ms-1">Notifications</span>
+              <span class="nav-link-text ms-1">Add Coupon</span>
             </a>
           </li>
           <li class="nav-item mt-3">
@@ -182,10 +182,10 @@
                       <tbody class="table-group-divider">
 
                    
-                      <% for(let i=0;i<orders.length;i++){   %>
+                      <% for(let i=orders.length-1;i>=0;i--){   %>
                     
                         <tr>
-                          <th scope="row">&nbsp;&nbsp;&nbsp;&nbsp;<%= i+1 %></th>
+                          <th scope="row">&nbsp;&nbsp;&nbsp;&nbsp;<%= orders.length-i %></th>
                           <td><%= orders[i]._id %></td>
                           <td>&nbsp;&nbsp;&nbsp;&nbsp;Rs <%= orders[i].totalAmount %></td>
                           <td><%= orderDate[i] %></td>

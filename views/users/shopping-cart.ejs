@@ -179,12 +179,30 @@
 
                                                 </div>
                                             </td>
+                                            
                                             <td class="quantity__item">
+                                                <% if(typeof nostock !== 'undefined'){ %>
+                                                
+                                                    <% if (cart.products[i].quantity > cart.products[i].productId.stock) { %>
+                                                        <script>
+                                                          document.addEventListener('DOMContentLoaded', function () {
+                                                            Swal.fire({
+                                                              icon: 'warning',
+                                                              title: 'Stock Alert for <%= cart.products[i].productId.productName %>',
+                                                              html: 'Stock available: <%= cart.products[i].productId.stock %>',
+                                                              confirmButtonText: 'OK'
+                                                            });
+                                                          });
+                                                        </script>
+                                                      <% } %>
+    
+                                                    <% } %>
                                                 <div class="quantity">
                                                     <div class="pro-qty-2">
 
-
+                                                        
                                                         <div class="quantity-selector">
+                                                            
                                                             <button class="btn btn-dark decrease"
                                                                 id="decrease">-</button>
 
@@ -200,20 +218,23 @@
                                                                 id="increase">+</button>
 
                                                         </div>
-
+                                                        
                                                     </div>
+                                                    
                                                 </div>
+                                                
                                             </td>
                                             <td id="price<%= i %>" class="cart__price">₹ <span class="prices">
                                                     <%= cart.products[i].quantity*cart.products[i].productId.actualPrice
                                                         %>
                                                 </span>
+                                                
                                             </td>
                                             <td class="cart__close"><i
                                                     class="fa fa-close round-delete-button deleteProd"
                                                     data-prodId="<%=cart.products[i].productId._id %>"></i></td>
                                         </tr>
-
+                                        
                                         <% } %>
 
 
@@ -455,7 +476,7 @@
                 let numericPrice = parseInt(totalAmount.textContent);
                 
                 
-                if (quantityValue !== productStock) {
+                if (quantityValue < productStock ) {
                     changeQuantity(1, prodId, inputTag, priceCell, priceOfProduct ,numericPrice);
                 } else {
                     Swal.fire("Stock limit reached");
