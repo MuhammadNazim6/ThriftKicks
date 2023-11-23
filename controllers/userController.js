@@ -255,7 +255,7 @@ const loadHome = async (req, res) => {
     if (req.query.page) {
       page = req.query.page;
     }
-    const limit = 8;
+    const limit = 4;
 
     const products = await Product.find({
       is_listed: true,

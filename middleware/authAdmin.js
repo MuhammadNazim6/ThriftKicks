@@ -19,8 +19,9 @@ const isLogin = async (req, res, next) => {
 // if logout
 const isLogout = async (req, res, next) => {
   try {
-    if (req.session.user_id && req.body.email == "nazimnazz66@gmail.com") {
-      res.redirect("/");
+
+    if (req.session.user_id ) {
+      res.redirect("admin/dashboard");
     }
 
     next();

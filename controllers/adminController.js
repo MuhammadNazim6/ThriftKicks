@@ -517,6 +517,7 @@ const changeOrderStatus = async (req,res)=>{
     const order = await Order.findOne({ _id:orderId })
 
       order.OrderStatus = status;
+      order.updatedAt = Date.now()
       await order.save();
       res.json({message:"Order Status Changed Successfully"})
 
@@ -532,6 +533,7 @@ const cancelOrder = async (req,res)=>{
     const { orderId } = req.body;
     const order = await Order.findOne({ _id:orderId })
     order.OrderStatus = 'Cancelled';
+    order.updatedAt = Date.now()
     await order.save();
     res.json({message:"Order has been Cancelled"})
 

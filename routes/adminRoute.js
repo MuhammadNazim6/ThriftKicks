@@ -5,7 +5,7 @@ const authAdmin = require("../middleware/authAdmin")
 const upload = require('../multer.js')
 
 admin_route.get("/", authAdmin.isLogout, adminController.loadAdminLogin);
-admin_route.post("/" , adminController.verifyLogin);
+admin_route.post("/" , authAdmin.isLogout, adminController.verifyLogin);
 
 admin_route.get("/dashboard", authAdmin.isLogin, adminController.loadDashboard);
 

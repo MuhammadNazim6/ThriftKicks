@@ -33,6 +33,7 @@ font-family: 'Open Sans', sans-serif;
   margin-left: -3px;
   background-color:#bdbdbd;
   border-color: #bcbcbc;
+  border-radius: 0px;
 }
 .addtocart-button:hover{
   color: #ffffff;
