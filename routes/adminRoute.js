@@ -1,8 +1,10 @@
 const express = require("express")
 const adminController = require("../controllers/adminController")
+const couponController = require("../controllers/couponsController")
 const admin_route = express()
 const authAdmin = require("../middleware/authAdmin")
 const upload = require('../multer.js')
+
 
 admin_route.get("/", authAdmin.isLogout, adminController.loadAdminLogin);
 admin_route.post("/" , authAdmin.isLogout, adminController.verifyLogin);
@@ -47,6 +49,10 @@ admin_route.get('/orders', authAdmin.isLogin, adminController.loadOrdersAdmin)
 admin_route.get('/manageOrders/:orderId', authAdmin.isLogin, adminController.loadManageOrder)
 admin_route.post('/changeOrderStatus', authAdmin.isLogin,adminController.changeOrderStatus)
 admin_route.post('/cancelOrder', authAdmin.isLogin ,adminController.cancelOrder)
+
+admin_route.get('/coupons', authAdmin.isLogin , couponController.loadCoupons)
+admin_route.get('/coupons/addCoupon', authAdmin.isLogin , couponController.loadAddCoupon)
+admin_route.post('/coupons/addCoupon',authAdmin.isLogin , couponController.addCoupon)
 
 
 module.exports = admin_route; 

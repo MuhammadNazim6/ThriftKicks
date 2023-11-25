@@ -52,7 +52,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white active bg-gradient-secondary" href="/admin/categories">
+            <a class="nav-link text-white " href="/admin/categories">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
               </div>
@@ -60,7 +60,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white " href="/admin/coupons">
+            <a class="nav-link text-white active bg-gradient-secondary " href="/admin/coupons">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">notifications</i>
               </div>
@@ -100,9 +100,8 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                 <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-                <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Categories</li>
+                <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Coupons</li>
               </ol>
-              <h6 class="font-weight-bolder mb-0">Categories</h6>
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
               <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -152,11 +151,11 @@
             <div class=" my-4">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-secondary shadow-dark border-radius-lg pt-4 pb-3">
-                  <h6 class="text-white text-capitalize ps-3">Categories</h6>
+                  <h6 class="text-white text-capitalize ps-3">Coupons</h6>
                 </div>
 
-                <a href="/admin/products/addCategory"><button class="btn btn-dark btn-lg my-4">Add New
-                    Category</button></a>
+                <a href="/admin/coupons/addCoupon"><button class="btn btn-dark btn-lg my-4"> 
+                  Add Coupon</button></a>
 
               </div>
 
@@ -165,44 +164,9 @@
 
                 <main class="main-content border-radius-lg h-100">
                   <div class="container-fluid">
-                    <table class="table table-bordered table-striped table-hover">
-                      <tr>
-                        <th class="text-dark">Category Name</th>
-                        <th class="text-dark">Description</th>
-                        <th class="text-dark">Actions</th>
-                      </tr>
-                      <% if(category.length> 0){ for(let i=0; i < category.length; i++){ %>
-                          <tr>
-                            <td class="text-dark text-lg text-bold">
-                              <%= category[i].categoryName %>
-                            </td>
-                            <td class="text-wrap description-size text-dark">
-                              <%= category[i].description %>
-                            </td>
 
+                    
 
-                            <td>
-                              <a href="/admin/categories/editCategory?id=<%=category[i]._id %>"
-                                ><button class="btn btn-dark">Edit</button></a>
-
-                              <button data-category-id="<%= category[i]._id %>"
-                                data-state="<% if(category[i].is_listed === true){%>listed<%} else {%>unlisted<%} %>"
-                                class="btn unlistButton custom-button
-                              <%  if(category[i].is_listed === true){%> btn-danger <% } else { %> btn-success <% } %> mx-3 
-                              ">
-                                <% if(category[i].is_listed===true){%> Unlist <% } else { %> List <% } %>
-                              </button>
-                            </td>
-
-
-                          </tr>
-
-                          <% } } else { %>
-                            <tr>
-                              <td colspan="3">No Categories Found</td>
-                            </tr>
-                            <% } %>
-                    </table>
                   </div>
               </div>
             </div>
@@ -300,45 +264,6 @@
         </div>
       </div>
     </div>
-
-    <script>
-      document.querySelectorAll(".unlistButton").forEach(function (button) {
-        button.addEventListener("click", listunlistCategory)
-      })
-
-      async function listunlistCategory() {
-        const catId = this.getAttribute("data-category-id");
-        const currentState = this.getAttribute("data-state");
-        let url;
-        if (currentState === "listed") {
-          url = `/admin/api/unlistCat/${catId}`;
-        } else {
-          url = `/admin/api/listCat/${catId}`;
-        }
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json()
-        console.log(data.message);
-        if (currentState === "listed") {
-          this.textContent = "List";
-          this.setAttribute("data-state", "unlisted");
-          this.classList.remove("btn-danger");
-          this.classList.add("btn-success");
-        } else {
-          this.textContent = "Unlist";
-          this.setAttribute("data-state", "listed");
-          this.classList.remove("btn-success");
-          this.classList.add("btn-danger");
-        }
-      }
-
-    </script>
+  
 
     <%- include('../layouts/footer.ejs')%>

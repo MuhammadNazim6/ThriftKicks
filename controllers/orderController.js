@@ -154,6 +154,7 @@ const placeOrder = async (req,res)=>{
 
     const cartProducts = cart.products.map((productItem) => ({
       productId: productItem.productId,
+      ProductOrderStatus: "ordered" ,
       quantity: productItem.quantity,
       "returnOrderStatus.status": "none",
       "returnOrderStatus.reason": "none",

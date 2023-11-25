@@ -43,6 +43,10 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      ProductOrderStatus: {
+        type:String,
+        require:true
+      },
       returnOrderStatus:{
         status:{
           type:String
@@ -93,11 +97,54 @@ const orderSchema = new mongoose.Schema({
 })
 
 
+
+
+const couponSchema = new mongoose.Schema({
+  code: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  discount_amount: {
+    type: Number,
+    required: true,
+  },
+  validFrom: {
+    type: Date,
+    required: true,
+  },
+  validTo: {
+    type: Date,
+    required: true,
+  },
+  description: {
+    type: String,
+    require:true
+  },
+  minimumSpend: {
+    type: Number,
+    require:true
+  },
+  maxUsers: {
+    type: Number,
+    require:true
+  },
+  usersUsed: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Reference to the User model for tracking users who used the coupon
+    },
+  ],
+});
+
+
+
+
 const Order = mongoose.model("Order",orderSchema);
-
-
+const Coupon = mongoose.model("Coupon",couponSchema);
 
 module.exports = {
-  Order
+  Order,
+  Coupon
 
 };

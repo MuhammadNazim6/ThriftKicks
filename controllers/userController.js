@@ -494,7 +494,7 @@ const addtoCart = async (req, res) => {
       const cartAdded = await newCart.save();
       console.log("New cart added to user");
       res.json({
-        message: "Created a new Cart and added to cart successfully",
+        message: "Product added to the cart",
         length: cartAdded.products.length
       });
 
