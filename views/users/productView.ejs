@@ -1,177 +1,195 @@
 <%- include('../layouts/header.ejs')%>
-<script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
 
-<style>
-.medium-zoom-image {
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+    <style>
+        .medium-zoom-image {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-.productZoom:hover {
-  cursor: zoom-in;
-}</style>
+        .productZoom:hover {
+            cursor: zoom-in;
+        }
 
-<!-- Header Section Begin -->
-<header class="header">
-    <div class="header__top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-7">
-                    <div class="header__top__left">
-                        <p>Free shipping, 30-day return or refund guarantee.</p>
+        .img-thumb {
+            width: 120px;
+            height: 120px;
+            padding: 5px;
+
+        }
+
+        .img-thumb>img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .image-div {
+            width: 400px;
+            height: 400px;
+            border: 2px solid rgb(255, 255, 255);
+            position: relative;
+        }
+
+        .image-div>img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lens {
+            top: 0;
+            ;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgb(209, 158, 17);
+            position: absolute;
+            background-color: rgba(209, 158, 17, 0.4);
+            opacity: 0;
+        }
+
+        .active {
+            opacity: 1;
+        }
+
+        .zoom {
+            position: absolute;
+            left: calc(100% + 50px);
+            top: 0;
+            width: 400px;
+            height: 400px;
+            background-size: cover;
+            border: 2px solid rgba(255, 255, 255, 0.644);
+            display: none;
+        }
+
+        .zoom-active {
+            display: block;
+        }
+
+        .mainCont {
+            margin-top: 80px;
+            margin-left: 130px;
+        }
+
+        .img-list {
+            margin-right: 60px;
+        }
+
+        .image-div {
+            margin-bottom: 60px;
+        }
+    </style>
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Free shipping, 30-day return or refund guarantee.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-5">
-                    <div class="header__top__right">
-                        
-                     
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-3">
-              <div class="header__logo">
-                <a class="navbar-brand logo-size" href="/home"><img src="assets/logos/thriftedkicks.png" alt="Thriffy" /></a>
-            </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <nav class="header__menu mobile-menu">
-                    <ul>
-                        <li><a href="/home">Home</a></li>
-                        <li><a href="/shop">Shop</a></li>
-                        <li> <a href="#">About Us</a> </li>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a class="navbar-brand logo-size" href="/home"><img src="assets/logos/thriftedkicks.png"
+                                alt="Thriffy" /></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li class="active"><a href="/home">Home</a></li>
+                            <li><a href="/shop">Shop</a></li>
+                            <li><a href="#">About Us</a> </li>
 
-                        <% if(typeof user !=='undefined' ) { %>
-                            <li class="active"><a href="/account">Account</a></li>
-                            <% } else { %>
-                                <li><a href="/login">SignIn</a></li>
-                                <% } %>
+                            <% if(typeof user !=='undefined' ) { %>
+                                <li class=""><a href="/account">Account</a></li>
+                                <% } else { %>
+                                    <li><a href="/login">SignIn</a></li>
+                                    <% } %>
 
 
                                     <li>
                                         <% if(typeof user !=='undefined' ) { %>
                                             <a class="cursor_cart" href="/cart">
-                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i><span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
-
+                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
                                             </a>
 
                                             <% } else { %>
-                                                <a class="cartButton cursor_cart"><span>Cart</span> <span
-                                                        style="vertical-align: -4px;"
-                                                        class="material-symbols-outlined">
-                                                        shopping_cart
-                                                    </span></a>
-                                                <% } %>
+                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                </span></a>
+                                            <% } %>
                                     </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                    <a href="#"><img src="img/icon/heart.png" alt=""></a>
-                    
+                        </ul>
+                    </nav>
                 </div>
-            </div>
-        </div>
-        <div class="canvas__open"><i class="fa fa-bars"></i></div>
-    </div>
-</header>
-<!-- Header Section End -->
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+                        <a href="#"><img src="img/icon/heart.png" alt=""></a>
 
-
-
-<!-- Shop Details Section Begin -->
-<section class="shop-details">
-    <div class="product__details__pic">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="product__details__breadcrumb">
-                        <a href="/home">Home</a>
-                        <a href="/shop">Shop</a>
-                        <span>Product Details</span>
                     </div>
                 </div>
             </div>
-
-         <% if(product){  %>
-          
-
-            <div class="row">
-              <div class="col-lg-3 col-md-3">
-                  <ul class="nav nav-tabs" role="tablist">
-                      <li class="nav-item">
-                          <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
-                              <div id="button1" class="product__thumb__pic set-bg " >
-                                <img src="<%= product.image.path1 %>" data-zoom-src="<%= product.image.path1 %>">
-                              </div>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
-                              <div  id="button2" class="product__thumb__pic set-bg ">
-                                <img src="<%= product.image.path2 %>" data-zoom-src="<%= product.image.path2 %>">
-                              </div>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
-                              <div  id="button3" class="product__thumb__pic set-bg " >
-                                <img src="<%= product.image.path3 %>" data-zoom-src="<%= product.image.path3 %>">
-                              </div>
-                          </a>
-                      </li>
-                  </ul>
-              </div>
-
-
-
-              <div class="col-lg-6 col-md-9">
-                  <div class="tab-content zoom">
-                      <div class="" id="tabs-1" role="tabpanel">
-                          <div class="original">
-                              <img class="zoomable-image" src="<%= product.image.path1 %>" id="image1" alt="">
-                              <img class="zoomable-image" src="<%= product.image.path2 %>" id="image2" alt="">
-                              <img class="zoomable-image" src="<%= product.image.path3 %>" id="image3" alt="">
-                          </div>
-                          <div class="viewer">
-                            <img src="<%= product.image.path1 %>" id="zimage1" >
-                            <img src="<%= product.image.path2 %>" id="zimage2" >
-                            <img src="<%= product.image.path3 %>" id="zimage3" >
-                          </div>
-                          <div class="magnifier"></div>
-                      </div>
-
-                  
-                      <div class="tab-pane" id="tabs-4" role="tabpanel">
-                          <div class="product__details__pic__item">
-                              <img src="assets/shop-details/product-big-4.png" alt="">
-                              <a href="https://www.youtube.com/watch?v=8PJ3_p7VqHw&list=RD8PJ3_p7VqHw&start_radio=1" class="video-popup"><i class="fa fa-play"></i></a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-     <%  }   %>
-
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
         </div>
-    </div>
+    </header>
+    <!-- Header Section End -->
 
 
 
+    <!-- Shop Details Section Begin -->
+    <section class="shop-details">
 
-    <div class="product__details__content">
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="col-lg-8">
-                    <div class="product__details__text">
-                        <h4><%= product.productName %></h4>
-                        <!-- <div class="rating">
+        <div class="container d-flex mainCont">
+            <div class="img-list">
+                <div class="img-thumb">
+                    <img src="<%= product.image.path1 %>" alt="" onclick="changeImage(this)">
+                </div>
+                <div class="img-thumb">
+                    <img src="<%= product.image.path2 %>" alt="" onclick="changeImage(this)">
+                </div>
+                <div class="img-thumb">
+                    <img src="<%= product.image.path3 %>" alt="" onclick="changeImage(this)">
+                </div>
+            </div>
+            <div class="image-div ml-5">
+                <img src="<%= product.image.path1 %>" alt="">
+                <div class="lens">
+
+                </div>
+                <div class="zoom">
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="product__details__content">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="product__details__text">
+                            <h4>
+                                <%= product.productName %>
+                            </h4>
+
+                            <!-- <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -179,172 +197,155 @@
                             <i class="fa fa-star-o"></i>
                             <span> - 5 Reviews</span>
                         </div> -->
-                        <h3>₹ <%= product.actualPrice %>/-</h3>
-                        <p><%= product.description %></p>
-                        <div class="product__details__option">
-                            <div class="product__details__option__size">
-                                <span>Size:<%= product.size %></span>
-                            </div>
-                            <div class="product__details__option__size">
-                                <span class="text-lg text-bold text-info"><%if((product.stock < 5) && (product.stock > 0)){%>Limited Stock<% }else if(product.stock === 0){%>Not In Stock<%}else{%>In Stock<%}%></span>
 
-                            </div>
-                            <!-- <div class="product__details__option__color">
-                                <span>Color:</span>
-                                <label class="c-1" for="sp-1">
-                                    <input type="radio" id="sp-1">
-                                </label>
-                                <label class="c-2" for="sp-2">
-                                    <input type="radio" id="sp-2">
-                                </label>
-                                <label class="c-3" for="sp-3">
-                                    <input type="radio" id="sp-3">
-                                </label>
-                                <label class="c-4" for="sp-4">
-                                    <input type="radio" id="sp-4">
-                                </label>
-                                <label class="c-9" for="sp-9">
-                                    <input type="radio" id="sp-9">
-                                </label>
-                            </div> -->
-                        </div>
-                        <div class="product__details__cart__option">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1" id="quantity" name="quantity">
+                            <h3>₹ <%= product.actualPrice %>/-</h3>
+                            <p>
+                                <%= product.description %>
+                            </p>
+                            <div class="product__details__option">
+                                <div class="product__details__option__size">
+                                    <span>Size:<%= product.size %></span>
                                 </div>
+                                <div class="product__details__option__size">
+                                    <span class="text-lg text-bold text-info">
+                                        <%if((product.stock < 5) && (product.stock> 0)){%>Limited Stock<% }else
+                                                if(product.stock===0){%>Not In Stock<%}else{%>In Stock<%}%>
+                                    </span>
+
+                                </div>
+                        
                             </div>
-                            <button data-product-id="<%= product._id %>" href="" class="primary-btn <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">add to cart</button>
-                        </div>
-                        <div class="product__details__btns__option">
-                            <a href=""><i class="fa fa-heart"></i> add to wishlist</a>
-                            <!-- <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a> -->
-                        </div>
-                        <div class="product__details__last__option">
-                            <h5><span>Guaranteed Safe Checkout</span></h5>
-                            <img src="img/shop-details/details-payment.png" alt="">
-                            <!-- <ul>
-                                <li><span>SKU:</span> 3812912</li>
-                                <li><span>Categories:</span> Clothes</li>
-                                <li><span>Tag:</span> Clothes, Skin, Body</li>
-                            </ul> -->
+                            <div class="product__details__cart__option">
+                        
+                                <button data-product-id="<%= product._id %>" href=""
+                                    class="primary-btn <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">add
+                                to cart</button>
+                    
+                            </div>
+                            <div class="product__details__btns__option">
+                                <a href=""><i class="fa fa-heart"></i> add to wishlist</a>
+                            </div>
+                            <div class="product__details__last__option">
+                                <h5><span>Guaranteed Safe Checkout</span></h5>
+                                <img src="img/shop-details/details-payment.png" alt="">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-5"
-                                role="tab">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Customer
-                                Previews(5)</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Additional
-                                information</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-5" role="tabpanel">
-                                <div class="product__details__tab__content">
-                                    <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                                        solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                                        ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                                    pharetras loremos.</p>
-                                    <div class="product__details__tab__content__item">
-                                        <h5>Products Infomation</h5>
-                                        <p>A Pocket PC is a handheld computer, which features many of the same
-                                            capabilities as a modern PC. These handy little devices allow
-                                            individuals to retrieve and store e-mail messages, create a contact
-                                            file, coordinate appointments, surf the internet, exchange text messages
-                                            and more. Every product that is labeled as a Pocket PC must be
-                                            accompanied with specific software to operate the unit and must feature
-                                        a touchscreen and touchpad.</p>
-                                        <p>As is the case with any new technology product, the cost of a Pocket PC
-                                            was substantial during it’s early release. For approximately $700.00,
-                                            consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                            These days, customers are finding that prices have become much more
-                                            reasonable now that the newness is wearing off. For approximately
-                                        $350.00, a new Pocket PC can now be purchased.</p>
-                                    </div>
-                                    <div class="product__details__tab__content__item">
-                                        <h5>Material used</h5>
-                                        <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                            from synthetic materials, not natural like wool. Polyester suits become
-                                            creased easily and are known for not being breathable. Polyester suits
-                                            tend to have a shine to them compared to wool and cotton suits, this can
-                                            make the suit look cheap. The texture of velvet is luxurious and
-                                            breathable. Velvet is a great choice for dinner party jacket and can be
-                                        worn all year round.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="tabs-6" role="tabpanel">
-                                <div class="product__details__tab__content">
-                                    <div class="product__details__tab__content__item">
-                                        <h5>Products Infomation</h5>
-                                        <p>A Pocket PC is a handheld computer, which features many of the same
-                                            capabilities as a modern PC. These handy little devices allow
-                                            individuals to retrieve and store e-mail messages, create a contact
-                                            file, coordinate appointments, surf the internet, exchange text messages
-                                            and more. Every product that is labeled as a Pocket PC must be
-                                            accompanied with specific software to operate the unit and must feature
-                                        a touchscreen and touchpad.</p>
-                                        <p>As is the case with any new technology product, the cost of a Pocket PC
-                                            was substantial during its early release. For approximately $700.00,
-                                            consumers could purchase oe of top-of-the-line Pocket PCs in 2003.
-                                            These days, customers are finding that prices have become much more
-                                            reasonable now that the newness is wearing off. For approximately
-                                        $350.00, a new Pocket PC can now be purchased.</p>
-                                    </div>
-                                    <div class="product__details__tab__content__item">
-                                        <h5>Material used</h5>
-                                        <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                            from synthetic materials, not natural like wool. Polyester suits become
-                                            creased easily and are known for not being breathable. Polyester suits
-                                            tend to have a shine to them compared to wool and cotton suits, this can
-                                            make the suit look cheap. The texture of velvet is luxurious and
-                                            breathable. Velvet is a great choice for dinner party jacket and can be
-                                        worn all year round.</p>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
+                                        role="tab">Description</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Customer
+                                        Previews(5)</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Additional
+                                        information</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
+                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
+                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
+                                            pharetras loremos.</p>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Products Infomation</h5>
+                                            <p>A Pocket PC is a handheld computer, which features many of the same
+                                                capabilities as a modern PC. These handy little devices allow
+                                                individuals to retrieve and store e-mail messages, create a contact
+                                                file, coordinate appointments, surf the internet, exchange text messages
+                                                and more. Every product that is labeled as a Pocket PC must be
+                                                accompanied with specific software to operate the unit and must feature
+                                                a touchscreen and touchpad.</p>
+                                            <p>As is the case with any new technology product, the cost of a Pocket PC
+                                                was substantial during it’s early release. For approximately $700.00,
+                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
+                                                These days, customers are finding that prices have become much more
+                                                reasonable now that the newness is wearing off. For approximately
+                                                $350.00, a new Pocket PC can now be purchased.</p>
+                                        </div>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Material used</h5>
+                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
+                                                from synthetic materials, not natural like wool. Polyester suits become
+                                                creased easily and are known for not being breathable. Polyester suits
+                                                tend to have a shine to them compared to wool and cotton suits, this can
+                                                make the suit look cheap. The texture of velvet is luxurious and
+                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                worn all year round.</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane" id="tabs-7" role="tabpanel">
-                                <div class="product__details__tab__content">
-                                    <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                                        solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                                        ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                                    pharetras loremos.</p>
-                                    <div class="product__details__tab__content__item">
-                                        <h5>Products Infomation</h5>
-                                        <p>A Pocket PC is a handheld computer, which features many of the same
-                                            capabilities as a modern PC. These handy little devices allow
-                                            individuals to retrieve and store e-mail messages, create a contact
-                                            file, coordinate appointments, surf the internet, exchange text messages
-                                            and more. Every product that is labeled as a Pocket PC must be
-                                            accompanied with specific software to operate the unit and must feature
-                                        a touchscreen and touchpad.</p>
-                                        <p>As is the case with any new technology product, the cost of a Pocket PC
-                                            was substantial during its early release. For approximately $700.00,
-                                            consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                            These days, customers are finding that prices have become much more
-                                            reasonable now that the newness is wearing off. For approximately
-                                        $350.00, a new Pocket PC can now be purchased.</p>
+                                <div class="tab-pane" id="tabs-6" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Products Infomation</h5>
+                                            <p>A Pocket PC is a handheld computer, which features many of the same
+                                                capabilities as a modern PC. These handy little devices allow
+                                                individuals to retrieve and store e-mail messages, create a contact
+                                                file, coordinate appointments, surf the internet, exchange text messages
+                                                and more. Every product that is labeled as a Pocket PC must be
+                                                accompanied with specific software to operate the unit and must feature
+                                                a touchscreen and touchpad.</p>
+                                            <p>As is the case with any new technology product, the cost of a Pocket PC
+                                                was substantial during its early release. For approximately $700.00,
+                                                consumers could purchase oe of top-of-the-line Pocket PCs in 2003.
+                                                These days, customers are finding that prices have become much more
+                                                reasonable now that the newness is wearing off. For approximately
+                                                $350.00, a new Pocket PC can now be purchased.</p>
+                                        </div>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Material used</h5>
+                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
+                                                from synthetic materials, not natural like wool. Polyester suits become
+                                                creased easily and are known for not being breathable. Polyester suits
+                                                tend to have a shine to them compared to wool and cotton suits, this can
+                                                make the suit look cheap. The texture of velvet is luxurious and
+                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                worn all year round.</p>
+                                        </div>
                                     </div>
-                                    <div class="product__details__tab__content__item">
-                                        <h5>Material used</h5>
-                                        <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                            from synthetic materials, not natural like wool. Polyester suits become
-                                            creased easily and are known for not being breathable. Polyester suits
-                                            tend to have a shine to them compared to wool and cotton suits, this can
-                                            make the suit look cheap. The texture of velvet is luxurious and
-                                            breathable. Velvet is a great choice for dinner party jacket and can be
-                                        worn all year round.</p>
+                                </div>
+                                <div class="tab-pane" id="tabs-7" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
+                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
+                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
+                                            pharetras loremos.</p>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Products Infomation</h5>
+                                            <p>A Pocket PC is a handheld computer, which features many of the same
+                                                capabilities as a modern PC. These handy little devices allow
+                                                individuals to retrieve and store e-mail messages, create a contact
+                                                file, coordinate appointments, surf the internet, exchange text messages
+                                                and more. Every product that is labeled as a Pocket PC must be
+                                                accompanied with specific software to operate the unit and must feature
+                                                a touchscreen and touchpad.</p>
+                                            <p>As is the case with any new technology product, the cost of a Pocket PC
+                                                was substantial during its early release. For approximately $700.00,
+                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
+                                                These days, customers are finding that prices have become much more
+                                                reasonable now that the newness is wearing off. For approximately
+                                                $350.00, a new Pocket PC can now be purchased.</p>
+                                        </div>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Material used</h5>
+                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
+                                                from synthetic materials, not natural like wool. Polyester suits become
+                                                creased easily and are known for not being breathable. Polyester suits
+                                                tend to have a shine to them compared to wool and cotton suits, this can
+                                                make the suit look cheap. The texture of velvet is luxurious and
+                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                worn all year round.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -353,11 +354,37 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <div class="modal fade" id="loginSignupModal" tabindex="-1" role="dialog" aria-labelledby="loginSignupModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 600px">
+        <div class="modal-content" style="background-color: #302e2e; color: #fff">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="loginSignupModalLabel">
+                    Login or Sign Up
+                </h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" style="color: #fff">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- modal staring -->
+            <div class="modal-body text-center">
+                <p style="color: #fff">
+                    Welcome to our website! To access Cart and other features, please log
+                    in or sign up.
+                </p>
+            </div>
+            <div class="modal-footer">
+    
+                <a href="/login" class="btn btn-primary">Login</a>
+                <a href="/register" class="btn btn-info">Sign Up</a>
+            </div>
+        </div>
     </div>
-</section>
+    </div>
 
-
-<
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">
@@ -413,77 +440,117 @@
                             document.write(new Date().getFullYear());
                         </script>2020
                         All rights reserved | This template is made with <i class="fa fa-heart-o"
-                        aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                     </p>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>
             </div>
         </div>
-    </div>
-</footer>
-<!-- Footer Section End -->
+        </div>
+        </footer>
+        <!-- Footer Section End -->
 
-<!-- Search Begin -->
-<div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
-        </form>
-    </div>
-</div>
-<!-- Search End -->
+        <!-- Search Begin -->
+        <div class="search-model">
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                <div class="search-close-switch">+</div>
+                <form class="search-model-form">
+                    <input type="text" id="search-input" placeholder="Search here.....">
+                </form>
+            </div>
+        </div>
+        <!-- Search End -->
 
 
 
-<script>
-        // document.querySelectorAll(".addtoCartButton").forEach(function (button) {
-        //     button.addEventListener("click", addtoCart)
-        // })
-        // document.query
-        // async function addtoCart() {
-        //     const prodId = this.getAttribute("data-product-id");
-        //     const response = await fetch(`/api/addtoCart/${prodId}`, {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         // body: JSON.stringify(dataToSend)
-        //     })
-        //     if (!response.ok) {
-        //         throw new Error("Failed to fetch data");
-        //     }
-        //     const data = await response.json()
-        //     console.log(data.message);
+        <script>
 
-        // }
+             //constants 
+            const badge = document.getElementById('badge')
 
-        document.addEventListener('DOMContentLoaded', function () {
-    const zoom = mediumZoom('.zoomable-image', {
-      background: '#fff',
-      scrollOffset: 0,
-    });
-  });
 
-  document.querySelectorAll(".addtoCartButton").forEach(function (button) {
-    button.addEventListener("click", addtoCart);
-  });
+            document.addEventListener('DOMContentLoaded', function () {
+                const zoom = mediumZoom('.zoomable-image', {
+                    background: '#fff',
+                    scrollOffset: 0,
+                });
+            });
 
-  async function addtoCart() {
-    const prodId = this.getAttribute("data-product-id");
-    const response = await fetch(`/api/addtoCart/${prodId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // body: JSON.stringify(dataToSend)
-    });
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await response.json();
-    console.log(data.message);
-  }
-</script>
+            document.querySelectorAll(".addtoCartButton").forEach(function (button) {
+                button.addEventListener("click", addtoCart);
+            });
 
-<%- include('../layouts/footer.ejs')%>
+            async function addtoCart() {
+                const prodId = this.getAttribute("data-product-id");
+                const response = await fetch(`/api/addtoCart/${prodId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    // body: JSON.stringify(dataToSend)
+                });
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data");
+                }
+                const data = await response.json();
+                if(data.message){
+                    Swal.fire(data.message);
+                }
+                 if(data.length){
+
+                badge.textContent = data.length
+                badge.classList.add('jumping')
+                setTimeout(()=>{
+                    badge.classList.remove('jumping')
+                },500)
+                
+            }
+                console.log(data.message);
+            }
+
+
+            //IMAGE ZOOM FUNCTION
+            const container = document.querySelector('.image-div')
+            const image = document.querySelector('.image-div img')
+            const lens = document.querySelector('.lens');
+            const zoom = document.querySelector('.zoom');
+
+
+            container.addEventListener('mousemove', move)
+            container.addEventListener('mouseout', remove)
+            function move(e) {
+                const container_rect = container.getBoundingClientRect();
+
+                let x = e.pageX - container_rect.left - lens.offsetWidth / 2;
+                let y = e.pageY - container_rect.top - lens.offsetHeight / 2;
+                let maxX = container_rect.width - lens.offsetWidth;
+                let maxY = container_rect.height - lens.offsetHeight;
+                if (x > maxX) x = maxX
+                if (x < 0) x = 0
+
+                if (y > maxY) y = maxY
+                if (y < 0) y = 0
+
+                lens.style.cssText = `top: ${y}px; left: ${x}px;`
+                let cx = container_rect.width / lens.offsetWidth;
+                let cy = container_rect.height / lens.offsetHeight;
+                zoom.style.cssText = `
+    background: url(${image.src}) -${x * cx}px -${y * cy}px /
+    ${container_rect.width * cx}px ${container_rect.height * cy}px
+    no-repeat;
+    `
+                lens.classList.add('active');
+                zoom.classList.add('zoom-active')
+            }
+
+            function remove() {
+                lens.classList.remove('active')
+                zoom.classList.remove('zoom-active')
+            }
+
+            function changeImage(item) {
+                image.src = item.src;
+            }
+        </script>
+
+        <%- include('../layouts/footer.ejs')%>

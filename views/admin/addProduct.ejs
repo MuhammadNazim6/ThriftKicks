@@ -1,5 +1,22 @@
 <%- include('../layouts/header.ejs')%>
+<style>
+  img{
+  display: block;
+  width: 600px;
+  max-width: 100%;
+}
 
+.container{
+  display: flex;
+  justify-content: center;
+ justify-items: center;
+}
+
+#output{
+  margin: 0 5px;
+}
+
+</style>
 
   <div class="mt-n3">
     <!-- Navbar -->
@@ -116,16 +133,41 @@
               <!-- Image Upload -->
 
               <div class="form-group">
-                <label for="image">Product Image:</label>
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" multiple
-                    required>
-                  <label class="custom-file-label" for="image">Choose Images</label>
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="image1">Product Image 1:</label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="image1" name="image" accept="image/*" multiple
+                        required>
+                      <label class="custom-file-label" for="image1">Choose Image</label>
+                      <div class="imagePreview d-flex m-5" id="imagePreview1"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="image2">Product Image 2:</label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="image2" name="image" accept="image/*" multiple
+                        required>
+                      <label class="custom-file-label" for="image2">Choose Image</label>
+                      <div class="imagePreview d-flex m-5" id="imagePreview2"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="image3">Product Image 3:</label>
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="image3" name="image" accept="image/*" multiple
+                        required>
+                      <label class="custom-file-label" for="image3">Choose Image</label>
+                      <div class="imagePreview d-flex m-5" id="imagePreview3"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
 
-            <!-- stock detail -->
+              <!-- stock detail -->
               <div class="form-group">
                 <label for="stock">Stock Details:</label>
                 <input type="number" class="form-control bg-light" id="stock" name="stock" required>
@@ -163,8 +205,77 @@
                   </div>
                   <% } %>
 
-
           </div>
 
+
+          <script>
+            
+            const imageInput1 = document.getElementById('image1')
+            const imageInput2 = document.getElementById('image2')
+            const imageInput3 = document.getElementById('image3')
+
+            imageInput1.addEventListener('change', function (event) {
+              previewFn(event, 'imagePreview1');
+              cropFn(event)
+
+            });
+            imageInput2.addEventListener('change', function (event) {
+              previewFn(event, 'imagePreview2');
+            });
+            imageInput3.addEventListener('change', function (event) {
+              previewFn(event, 'imagePreview3');
+            });
+
+            function previewFn(event, preview) {
+              const previewContainer = document.getElementById(preview);
+              previewContainer.innerHTML = ''; // Clear previous preview
+
+              const files = event.target.files;
+              for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                // Check if the file is an image
+                if (file.type.startsWith('image/')) {
+                  const reader = new FileReader();
+
+                  reader.onload = function () {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = reader.result;
+                    previewContainer.appendChild(imgElement);
+                  };
+
+                  reader.readAsDataURL(file);
+                }
+              }
+            }
+
+
+
+            //for image crop 
+            
+            async function cropFn(){
+              console.log("hello");
+              const image = await document.getElementById('imagePreview1')
+              const myImg = await image.querySelector('img')
+              console.log(myImg);
+
+              const cropper = new Cropper(myImg ,{
+              aspectRatio: 0,
+              viewMode: 0,
+            })
+            console.log(cropper);
+            }
+            
+
+
+            document.getElementById('cropImageBtn').addEventListener('click',
+              function () {
+                var croppedImage = cropper.getCroppedCanvas().toDataURL("image/png")
+
+                document.getElementById('output').src = croppedImage;
+              })
+
+
+          </script>
 
           <%- include('../layouts/footer.ejs')%>

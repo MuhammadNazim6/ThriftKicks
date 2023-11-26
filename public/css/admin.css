@@ -553,4 +553,9 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
   }
   
 
+  /* prduct page admin css */
+.imagePreview{
+  height: 200px;
+  width: 200px;
+}
   

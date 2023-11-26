@@ -66,7 +66,7 @@
 
 
                             <% if(typeof user !=='undefined' ) { %>
-                                <li><a href="/account">Account</a></li>
+                                <li> <a href="/account">Account</a> </li>
 
                                 <% } else { %>
                                     <li><a href="/login">SignIn</a></li>
@@ -80,16 +80,13 @@
                                             <a class="cursor_cart" href="/cart">
                                                     <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
                                             </a>
-                                                <!-- <span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                    shopping_cart
-                                                    </span>  -->
+
                                             <% } else { %>
                                                 <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
                                                     shopping_cart
                                                 </span></a>
                                             <% } %>
                                     </li>
-                                    <!-- <li><a href="/orders">Orders</a></li> -->
 
                         </ul>
                     </nav>
@@ -151,11 +148,8 @@
                     </div>
                 </div>
             </div>
-
     </section>
     <!-- Hero Section End -->
-
-   
 
 
     <!-- Product Section Start -->
@@ -189,7 +183,7 @@
                                         <button data-product-id="<%= products[i]._id %>"
                                             class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
                                             to Cart</button>
-                                        <!-- <button class="btn btn-dark  buy-button cartButton">Buy Now</button> -->
+                                        
                                     </div>
                                 </div>
                             </div> 
@@ -396,7 +390,6 @@
     <script>
         //constants 
         const badge = document.getElementById('badge')
-        
 
         document.querySelectorAll(".addtoCartButton").forEach(function (button) {
             button.addEventListener("click", addtoCart)

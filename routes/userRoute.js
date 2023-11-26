@@ -5,7 +5,6 @@ const user_route = express();
 const path = require("path")
 const auth = require("../middleware/auth")
 
-user_route.get('/zoom',userController.showZoom)
 
 user_route.get("/register", auth.isLogout, userController.loadRegister)
 user_route.post("/register", auth.isLogout ,userController.verifyEmail,userController.insertUser)

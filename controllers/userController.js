@@ -461,8 +461,15 @@ const loadProductView = async (req, res) => {
     const userId = req.session.user_id;
     const user = await User.findOne({ _id: userId });
     const product = await Product.findOne({ _id: product_id });
-
-    res.render("users/productView", { product: product, user: user });
+    // for badge
+    const cart = await Cart.findOne({userId: req.session.user_id})
+    .populate("userId")
+    .populate("products.productId");
+if(user){
+  res.render("users/productView", { product: product, user: user ,cart});
+}else{
+  res.render("users/productView", { product: product });
+}
   } catch (error) {
     console.log(error.message);
     res.status(404).render('users/404') 
@@ -474,7 +481,6 @@ const addtoCart = async (req, res) => {
   try {
     const user_id = req.session.user_id;
     const user = await User.findOne({ _id: user_id }); //current user details
-    console.log("User name is " + user.firstname + " " + user.lastname);
 
     const product_id = req.params.prodId; //current product id
     const quantity = req.body.quantity ?? 1;
@@ -508,7 +514,7 @@ const addtoCart = async (req, res) => {
     const prod = await Product.findOne({_id : product_id})
         if(prod.stock === 0 ){
         return res.json({
-            message: "Product currently Out of Stock",
+            message: "Product currently out of Stock",
             length: cartExist.products.length
           });
         }
@@ -575,7 +581,7 @@ const deleteCartProduct = async (req, res, next) => {
       { userId: user_id },
       { $pull: { products: { productId: product_id } } }
     );
-    // res.redirect("/cart");
+
     next();
   } catch (error) {
     console.log(error.message);
@@ -585,20 +591,6 @@ const deleteCartProduct = async (req, res, next) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-//show zoom
-const showZoom = async (req, res) => {
-  res.render("users/zoom");
-};
 
 
 // edit and update user data
@@ -848,8 +840,6 @@ module.exports = {
   cartIncreaseDecrease,
   deleteCartProduct,
   
-  showZoom,
-
   editUserData,
   updateAddress,
   updateEditedAddress,
