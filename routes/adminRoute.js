@@ -54,5 +54,7 @@ admin_route.get('/coupons', authAdmin.isLogin , couponController.loadCoupons)
 admin_route.get('/coupons/addCoupon', authAdmin.isLogin , couponController.loadAddCoupon)
 admin_route.post('/coupons/addCoupon',authAdmin.isLogin , couponController.addCoupon)
 
+admin_route.post('/coupon/delete', authAdmin.isLogin , couponController.deleteCoupon)
+
 
 module.exports = admin_route; 

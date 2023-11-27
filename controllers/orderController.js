@@ -53,8 +53,6 @@ const loadCheckout = async (req, res) => {
       res.redirect('/cart?nostock=1')
     }
 
-
-    
   } catch (error) {
     console.log(error.message);
   }

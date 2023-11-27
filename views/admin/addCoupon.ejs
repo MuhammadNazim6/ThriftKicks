@@ -1,271 +1,284 @@
 <%- include('../layouts/header.ejs')%>
 
-<div class="mt-n3">
-  <!-- Navbar -->
-  <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
-    <div class="container-fluid py-1 px-3">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-          <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-          <li class="breadcrumb-item text-sm text-dark active" aria-current="page"><a class="text-dark" href="/admin/products">Category</a></li>
-          <li class="breadcrumb-item text-sm text-dark active" aria-current="addProduct">Add-Coupon</li>
-        </ol>
-      </nav>
-      <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-         
-        </div>
-        <ul class="navbar-nav  justify-content-end">
-         
-          <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-              <div class="sidenav-toggler-inner">
-                <i class="sidenav-toggler-line"></i>
-                <i class="sidenav-toggler-line"></i>
-                <i class="sidenav-toggler-line"></i>
-              </div>
-            </a>
-          </li>
-          <li class="nav-item px-3 d-flex align-items-center">
-            <a href="javascript:;" class="nav-link text-body p-0">
-              <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
-            </a>
-          </li>
-          <li class="nav-item dropdown pe-2 d-flex align-items-center">
-            <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa fa-bell cursor-pointer"></i>
-            </a>
-            <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-              
-              
-              
-            </ul>
-          </li>
-          <li class="nav-item d-flex align-items-center">
-            <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
-              <i class="fa fa-user me-sm-1"></i>
-              <span class="d-sm-inline d-none">Sign In</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!-- End Navbar -->
-</div>
+  <div class="mt-n3">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+      data-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page"><a class="text-dark"
+                href="/admin/products">Category</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="addProduct">Add-Coupon</li>
+          </ol>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
 
-
-<div class="container-fluid py-4">
-  <div class="row">
-    <div class="col-12">
-      <div class="card my-4">
-        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-secondary shadow-dark border-radius-lg pt-4 pb-3">
-            <h6 class="text-white text-capitalize ps-3">Add Coupon</h6>
           </div>
+          <ul class="navbar-nav  justify-content-end">
+
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0">
+                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fa fa-bell cursor-pointer"></i>
+              </a>
+              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+
+
+
+              </ul>
+            </li>
+            <li class="nav-item d-flex align-items-center">
+              <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">Sign In</span>
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+  </div>
 
 
-        <div class="container mt-5">
-          <h2 class="text-center mb-4">Add Coupon</h2>
-          <form class="text-lg" >
-              <div class="row">
-                  <!-- Coupon Code -->
-                  <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="text-md" for="couponCode">Coupon Code :</label>
-                          <div class="input-group">
-                              <input type="text" class="form-control bg-light text-bold text-lg" id="couponCode" name="couponCode" style="height: 40px; width: 100px;" required readonly>
-                              <div class="input-group-append">
-                                  <button class="btn btn-dark" id="generateCode" type="button">Generate</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-  
-                  <!-- Discount -->
-                  <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="text-md" for="discount">Discount Amount :</label>
-                          <select class="form-control text-md bg-glass" id="discount" name="discount">
-                              <option class="text-lg" value="100">Rs 100</option>
-                              <option class="text-lg" value="200">Rs 200</option>
-                              <option class="text-lg" value="300">Rs 300</option>
-                              <option class="text-lg" value="400">Rs 400</option>
-                              <option class="text-lg" value="500">Rs 500</option>
-                              <option class="text-lg" value="1000">Rs 1000</option>
-                          </select>
-                      </div>
-                  </div>
-              </div>
-  
-              <div class="row">
-                  <!-- Valid From -->
-                  <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="text-lg mr-4" for="validFrom">Valid From :</label>
-                          <input type="date" class="form-control bg-glass" id="validFrom">
-                      </div>
-                  </div>
-  
-                  <!-- Valid To -->
-                  <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="text-lg mr-5" for="validTo">Valid To :</label>
-                          <input type="date" class="form-control bg-glass" id="validTo">
-                      </div>
-                  </div>
-                  
-              </div>
-  
-              <div class="row">
-                  <!-- Minimum Spend -->
-                  <div class="col-md-6">
-                      <div class="form-group">
-                          <label class="text-lg mr-5" for="minSpend">Minimum Spend:</label>
-                          <select class="form-control bg-glass text-md" id="minSpend" name="minSpend">
-                              <option class="text-lg" value="2000">Rs 2000</option>
-                              <option class="text-lg" value="3000">Rs 3000</option>
-                              <option class="text-lg" value="4000">Rs 4000</option>
-                              <option class="text-lg" value="5000">Rs 5000</option>
-                              <option class="text-lg" value="8000">Rs 8000</option>
-                              <option class="text-lg" value="10000">Rs 10000</option>
-                          </select>
-                      </div>
-                  </div>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-secondary shadow-dark border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">Add Coupon</h6>
+            </div>
+          </div>
 
-                  <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="text-lg mr-5" for="maxUse">Max No. of coupon usage:</label>
-                        <select class="form-control bg-glass text-md" id="maxUse" name="maxUse">
-                          <option class="text-lg" value="50">50</option>
-                          <option class="text-lg" value="100">100</option>
-                          <option class="text-lg" value="200">200</option>
-                          <option class="text-lg" value="500">500</option>
-                          <option class="text-lg" value="inf">No limit</option>
-                      </select>
+
+          <div class="container mt-5">
+            <h2 class="text-center mb-4">Add Coupon</h2>
+            <form class="text-lg">
+              <div class="row">
+                <!-- Coupon Code -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="text-md" for="couponCode">Coupon Code :</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control bg-light text-bold text-lg" id="couponCode"
+                        name="couponCode" style="height: 40px; width: 100px;" required readonly>
+                      <div class="input-group-append">
+                        <button class="btn btn-dark" id="generateCode" type="button">Generate</button>
+                      </div>
                     </div>
-                    
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="text-md mr-5" for="description">Coupon Name</label>
+                    <input id="description" name="description" class="form-control bg-glass text-lg"></input>
+                  </div>
+                </div>
+
+                <!-- Discount -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="text-md" for="discount">Discount Amount :</label>
+                    <select class="form-control text-md bg-glass" id="discount" name="discount">
+                      <option class="text-lg" value="100">Rs 100</option>
+                      <option class="text-lg" value="200">Rs 200</option>
+                      <option class="text-lg" value="300">Rs 300</option>
+                      <option class="text-lg" value="400">Rs 400</option>
+                      <option class="text-lg" value="500">Rs 500</option>
+                      <option class="text-lg" value="1000">Rs 1000</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-  
+              
+
+              <div class="row">
+                <!-- Valid From -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="text-lg mr-4" for="validFrom">Valid From :</label>
+                    <input type="date" class="form-control bg-glass" id="validFrom">
+
+                  </div>
+                </div>
+
+                <!-- Valid To -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="text-lg mr-5" for="validTo">Valid To :</label>
+                    <input type="date" class="form-control bg-glass" id="validTo">
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="row">
+                <!-- Minimum Spend -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="text-lg mr-5" for="minSpend">Minimum Spend:</label>
+                    <select class="form-control bg-glass text-md" id="minSpend" name="minSpend">
+                      <option class="text-lg" value="2000">Rs 2000</option>
+                      <option class="text-lg" value="3000">Rs 3000</option>
+                      <option class="text-lg" value="4000">Rs 4000</option>
+                      <option class="text-lg" value="5000">Rs 5000</option>
+                      <option class="text-lg" value="8000">Rs 8000</option>
+                      <option class="text-lg" value="10000">Rs 10000</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="text-lg mr-5" for="maxUse">Max No. of coupon usage:</label>
+                    <select class="form-control bg-glass text-md" id="maxUse" name="maxUse">
+                      <option class="text-lg" value="50">50</option>
+                      <option class="text-lg" value="100">100</option>
+                      <option class="text-lg" value="200">200</option>
+                      <option class="text-lg" value="500">500</option>
+                      <option class="text-lg" value="1000">No limit</option>
+                    </select>
+                  </div>
+                </div>
+                
+              </div>
+
               <!-- Submit Button -->
-              <button type="button" id="submitBtn" class="btn btn-dark">Add Coupon</button>
-  
-          </form>
+              <button type="button" id="submitBtn" class="btn btn-dark mt-4">Add Coupon</button>
+
+            </form>
+          </div>
+
+        </div>
       </div>
+    </div>
+  </div>
 
-        </div>
-        </div>
-        </div>
-        </div>
-        
 
-          <script>
-            const generateCode = document.getElementById('generateCode')
-            const couponCode = document.getElementById('couponCode') 
-            const discount = document.getElementById('discount')
-            const validFrom = document.getElementById('validFrom')
-            const validTo = document.getElementById('validTo')
-            const minSpend = document.getElementById('minSpend')
-            const submitBtn = document.getElementById('submitBtn')
-            const maxUse = document.getElementById('maxUse')
-
-        
-
-        //events
-            generateCode.addEventListener('click',getCode)
-            submitBtn.addEventListener('click',addCouponFn)
-            
-            async function getCode(){
-              const randomCode = await generateRandomCode(10);
-              couponCode.value = randomCode;
-            }
+  <script>
+    const generateCode = document.getElementById('generateCode')
+    const couponCode = document.getElementById('couponCode')
+    const discount = document.getElementById('discount')
+    const validFrom = document.getElementById('validFrom')
+    const validTo = document.getElementById('validTo')
+    const minSpend = document.getElementById('minSpend')
+    const submitBtn = document.getElementById('submitBtn')
+    const maxUse = document.getElementById('maxUse')
+    const description = document.getElementById('description')
 
 
 
-            function generateRandomCode(length) {
-                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                let randomCode = '';
-                for (let i = 0; i < length; i++) {
-                    const randomIndex = Math.floor(Math.random() * characters.length);
-                    randomCode += characters.charAt(randomIndex);
-                }
-                return randomCode;
-            }
-    
 
-            async function addCouponFn(){
-              try {
-                if(couponCode.value === ""){
-                  return Swal.fire("Generate a coupon code");
-                }
-                if(validFrom.value === ""){
-                  return Swal.fire("Add a from date");
-                }
-                if(validTo.value === ""){
-                  return Swal.fire("Add a to date");
-                }
-                
+    //events
+    generateCode.addEventListener('click', getCode)
+    submitBtn.addEventListener('click', addCouponFn)
 
-                const couponCodeVal = couponCode.value
-                const discountVal = discount.value
-                const validFromDate = validFrom.value
-                const validToDate = validTo.value
-                const minSpendVal = minSpend.value
-                const maxUseVal = maxUse.value;
-
-                const response = await fetch(`/admin/coupons/addCoupon`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    
-                },
-                body: JSON.stringify({ couponCodeVal , discountVal , validFromDate , validToDate , minSpendVal , maxUseVal})
-                
-            })
-            if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            }
-            const data = await response.json()
-            if(data.message){
-                Swal.fire(data.message);
-            }
-            console.log(data.message);
-
-                
-
-              } catch (error) {
-                console.log("Could'nt complete add coupon function");
-              }
-            }
+    async function getCode() {
+      const randomCode = await generateRandomCode(10);
+      couponCode.value = randomCode;
+    }
 
 
-            //add coupon function
-            async function addtoCart() {
-            const prodId = this.getAttribute("data-product-id");
-            const response = await fetch(`/api/addtoCart/${prodId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                
-            })
-            if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            }
-            const data = await response.json()
-            if(data.message){
-                Swal.fire(data.message);
-            }
-            console.log(data.message);
+
+    function generateRandomCode(length) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let randomCode = '';
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        randomCode += characters.charAt(randomIndex);
+      }
+      return randomCode;
+    }
 
 
+    async function addCouponFn() {
+      try {
+        if (couponCode.value === "") {
+          return Swal.fire("Generate a coupon code");
         }
-            
-        </script>
-        
-            
+        if (validFrom.value === "") {
+          return Swal.fire("Add a from date");
+        }
+        if (validTo.value === "") {
+          return Swal.fire("Add a to date");
+        }
+
+        const couponCodeVal = couponCode.value
+        const discountVal = discount.value
+        const validFromDate = validFrom.value
+        const validToDate = validTo.value
+        const minSpendVal = minSpend.value
+        const maxUserVal = maxUse.value;
+        const couponDescr = description.value
+
+        const response = await fetch(`/admin/coupons/addCoupon`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+
+          },
+          body: JSON.stringify({ couponCodeVal, discountVal, validFromDate, validToDate, minSpendVal, couponDescr, maxUserVal })
+
+        })
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json()
+        if (data.message) {
+          Swal.fire(data.message);
+        }
+        console.log(data.message);
 
 
-<%- include('../layouts/footer.ejs')%>
+
+      } catch (error) {
+        console.log("Could'nt complete add coupon function");
+      }
+    }
+
+
+    //add coupon function
+    async function addtoCart() {
+      const prodId = this.getAttribute("data-product-id");
+      const response = await fetch(`/api/addtoCart/${prodId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+      })
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json()
+      if (data.message) {
+        Swal.fire(data.message);
+  
+      }
+    }
+
+  </script>
+
+
+
+
+  <%- include('../layouts/footer.ejs')%>

@@ -53,21 +53,26 @@
                                     <% } %>
 
 
-                                    <li class="active">
-                                        <% if(typeof user !=='undefined' ) { %>
-                                            <a class="cursor_cart " href="/cart">
-                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%= cart.products.length %></span></div>
+                                        <li class="active">
+                                            <% if(typeof user !=='undefined' ) { %>
+                                                <a class="cursor_cart " href="/cart">
+                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i> <span
+                                                            class="badge" id="badge">
+                                                            <%= cart.products.length %>
+                                                        </span></div>
 
-                                            </a>
-                                              <!-- <span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                </a>
+                                                <!-- <span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
                                                     shopping_cart
                                                     </span>  -->
-                                            <% } else { %>
-                                                <a class="cartButton active cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                    shopping_cart
-                                                    </span></a>
-                                                <% } %>
-                                    </li>
+                                                <% } else { %>
+                                                    <a class="cartButton active cursor_cart"><span>Cart</span> <span
+                                                            style="vertical-align: -4px;"
+                                                            class="material-symbols-outlined">
+                                                            shopping_cart
+                                                        </span></a>
+                                                    <% } %>
+                                        </li>
                         </ul>
                     </nav>
                 </div>
@@ -75,9 +80,9 @@
                     <div class="header__nav__option">
                         <!-- <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a> -->
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
-                        <span style="vertical-align: -6px;"class="material-symbols-outlined">
+                        <span style="vertical-align: -6px;" class="material-symbols-outlined">
                             logout
-                            </span>
+                        </span>
                         <a class="list-group-item text-bold" href="/logout"> Logout</a>
                     </div>
                 </div>
@@ -109,12 +114,22 @@
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
+            <h6 class="coupon__code"> Have a coupon? Enter your code here</h6>
             <div class="checkout__form">
+                <div class="col-lg-4">
+                    <div class="cart__discount">
+                        <form action="#">
+                            <input id="couponCode" class="text-dark text-lg" type="text" placeholder="Coupon code">
+                            <button id="applyCoupon" type="button">Apply</button>
+                        </form>
+                    </div>
+                </div>
                 <form action="">
                     <div class="row">
                         <div class="col-lg-8 col-md-6 addressReload">
-                            <!-- <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                                    here</a> to enter your code</h6> -->
+
+
+
                             <h6 class="checkout__title">Billing Details</h6>
 
                             <input type="hidden" name="email" id="email"
@@ -231,6 +246,7 @@
                                     </span>
 
                         </div>
+
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
                                 <h4 class="order__title">Your order</h4>
@@ -245,7 +261,7 @@
 
                                             <ul class="checkout__total__all">
                                                 <li>Subtotal <span>₹ <%= totalAmount %></span></li>
-                                                <li>Total <span>₹ <%= totalAmount %></span></li>
+                                                <li>Total <span id="totalAmount">₹ <%= totalAmount %></span></li>
                                             </ul>
 
                                             <p>.</p>
@@ -278,9 +294,10 @@
 
                             </div>
                             <div class="d-flex justify-content-center align-items-center">
-                                <span id="placeOrderAlert" class="alert-success text-white mt-4 text-lg text-center pt-1"
+                                <span id="placeOrderAlert"
+                                    class="alert-success text-white mt-4 text-lg text-center pt-1"
                                     style="width:350px; display:none; border-radius: 5px; height: 40px;">
-        
+
                                 </span>
 
                             </div>
@@ -497,30 +514,30 @@
 
                 if (typeof addressSelected === 'undefined') {
                     placeOrderAlert.style.display = 'inline'
-                    placeOrderAlert.classList.replace('alert-success','alert-danger')
+                    placeOrderAlert.classList.replace('alert-success', 'alert-danger')
                     placeOrderAlert.textContent = 'Choose an address'
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         placeOrderAlert.style.display = 'none'
-                    },2000)
+                    }, 2000)
                     return
                 }
 
                 if (typeof paymentSelected === 'undefined') {
                     placeOrderAlert.style.display = 'inline'
-                    placeOrderAlert.classList.replace('alert-success','alert-danger')
+                    placeOrderAlert.classList.replace('alert-success', 'alert-danger')
                     placeOrderAlert.textContent = 'Choose a Payment Method'
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         placeOrderAlert.style.display = 'none'
-                    },2000)
+                    }, 2000)
                     return
                 }
-            
-                 const response = await fetch(`/checkout`, {
+
+                const response = await fetch(`/checkout`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ paymentSelected , addressSelected })
+                    body: JSON.stringify({ paymentSelected, addressSelected })
                 });
 
                 if (!response.ok) {
@@ -531,24 +548,73 @@
                 console.log(data.message);
                 if (data.message) {
                     Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: data.message,
-                    showConfirmButton: false,
-                    // timer: 1500
+                        position: "center",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        // timer: 1500
                     });
 
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         window.location.href = '/orderPlaced';
-                    },2000)
+                    }, 2000)
                 }
 
-            
+
             } catch (error) {
                 console.log(error.message);
             }
         }
 
+
+
+        //apply coupon code
+        const applyCoupon = document.getElementById('applyCoupon')
+        const couponCodeElem = document.getElementById('couponCode')
+        const totalAmount = document.getElementById('totalAmount')
+
+        applyCoupon.addEventListener('click', applyCouponFn)
+        
+
+
+        async function applyCouponFn() {
+            const couponCode = couponCodeElem.value
+            console.log("coupon", couponCode);
+            const response = await fetch('/applyCoupon', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ couponCode }),
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            if (data.noCoupon){
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: data.noCoupon,
+                });
+            }
+            if(data.validity){
+                Swal.fire({
+                    text: data.validity,
+                });
+            }
+            if(data.message){
+                Swal.fire({
+                    text: data.message,
+                });
+            }
+            if(data.discount_amount){
+                totalAmount.textContent = "₹ "+data.discount_amount
+                Swal.fire({
+                    text:'Coupon applied successfully',
+                });
+            }
+        }
 
 
 

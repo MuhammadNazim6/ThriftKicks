@@ -1,6 +1,7 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const orderController = require('../controllers/orderController')
+const couponController = require("../controllers/couponsController")
 const user_route = express();
 const path = require("path")
 const auth = require("../middleware/auth")
@@ -54,6 +55,8 @@ user_route.get('/orderPlaced', auth.isLogin, orderController.loadOrderPlacedPage
 
 user_route.get('/orderDetails',auth.isLogin , orderController.loadOrderDetailsPage)
 user_route.post('/cancelOrder', auth.isLogin ,orderController.cancelOrder)
+
+user_route.post('/applyCoupon', auth.isLogin , couponController.applyCoupon)
 
 
 module.exports = user_route;

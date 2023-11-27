@@ -117,7 +117,7 @@ const couponSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  description: {
+  couponName: {
     type: String,
     require:true
   },

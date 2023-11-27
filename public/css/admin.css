@@ -154,11 +154,11 @@ font-family: 'Open Sans', sans-serif;
 }
 
 .cart_image{
-  height: 180px;
-  width: 180px;
+  height: 120px;
+  width: 120px;
 }
 .imaage{
-  border-radius: 10px;
+  border-radius: 1px;
 }
 .no_products_incart{
   height: 250px;

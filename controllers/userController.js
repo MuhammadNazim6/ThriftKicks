@@ -684,7 +684,7 @@ const updateEditedAddress = async (req, res) => {
 
       console.log("First address updated successfully");
     }
-    res.json({ message: "Address Addes Successfully" });
+    res.json({ message: "Address Added Successfully" });
   } catch (error) {
     console.log(error.message);
   }

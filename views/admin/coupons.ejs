@@ -10,8 +10,7 @@
       <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
           aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" 
-          target="_blank">
+        <a class="navbar-brand m-0" target="_blank">
           <img src="/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
           <span class="ms-1 font-weight-bold text-white">Thrift Kicks</span>
         </a>
@@ -154,8 +153,8 @@
                   <h6 class="text-white text-capitalize ps-3">Coupons</h6>
                 </div>
 
-                <a href="/admin/coupons/addCoupon"><button class="btn btn-dark btn-lg my-4"> 
-                  Add Coupon</button></a>
+                <a href="/admin/coupons/addCoupon"><button class="btn btn-outline-info btn-lg my-4">
+                    Add Coupon</button></a>
 
               </div>
 
@@ -165,7 +164,60 @@
                 <main class="main-content border-radius-lg h-100">
                   <div class="container-fluid">
 
-                    
+                    <table class="table table-bordered table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th class="text-dark">Coupon Code</th>
+                          <th class="text-dark">Name</th>
+                          <th class="text-dark">Discount Amount</th>
+                          <th class="text-dark">Minimum Order</th>
+                          <th class="text-dark">Valid From</th>
+                          <th class="text-dark">Valid To</th>
+                          <th class="text-dark">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <% if(typeof coupons !=='undefined' ){ coupons.forEach(coupon=>{ %>
+                          <tr class="coupon-container" data-coupId="<%= coupon._id %>">
+                            <td class="text-dark text-md text-bold">
+                              <%= coupon.code %>
+                            </td>
+                            <td class="text-dark text-md">
+                              <%= coupon.couponName %>
+                            </td>
+                            <td class="text-dark text-md">
+                              <span class="ml-4">Rs <%= coupon.discount_amount %></span>
+                            </td>
+                            <td class="text-dark text-md">
+                              <span class="ml-4">Rs <%= coupon.minimumSpend %></span>
+                            </td>
+                            <td class="text-dark text-md">
+                              <%= coupon.validFrom.toString().slice(0,15) %>
+                            </td>
+                            <td class="text-dark text-md">
+                              <%= coupon.validTo.toString().slice(0,15) %>
+                            </td>
+                            <td class="text-dark text-md">
+                              <button data-couponid="<%= coupon._id %>" class="btn-danger deleteCouponBtn">
+                                Delete</button>
+
+                            </td>
+
+
+
+                          </tr>
+                          <% }) %>
+
+                            <% }else { %>
+                              <tr>
+                                <td colspan="6">No Coupons Found</td>
+                              </tr>
+                              <% } %>
+
+                      </tbody>
+                    </table>
+
 
                   </div>
               </div>
@@ -264,6 +316,60 @@
         </div>
       </div>
     </div>
-  
+
+
+    <script>
+      const deleteCouponBtns = document.querySelectorAll('.deleteCouponBtn')
+
+      deleteCouponBtns.forEach((btn) => {
+        btn.addEventListener('click', ()=> deleteCouponFn(btn));
+        
+      });
+
+      async function deleteCouponFn(btn){
+        try {
+          const couponId = btn.dataset.couponid;
+          const divToRemove = document.querySelector(`.coupon-container[data-coupId="${couponId}"]`);
+
+          Swal.fire({
+          title: "Are you sure you want to delete this coupon?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Delete Coupon !"
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+
+          const response = await fetch('/admin/coupon/delete',{
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ couponId })
+          })
+          if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            if (data.message) { 
+              console.log('helo');
+              Swal.fire(data.message);
+              divToRemove.remove()
+              
+            }
+
+        }
+        
+      })
+
+          
+
+        } catch (error) {
+          console.log("couldnt delete coupon");
+        }
+      }
+    </script>
 
     <%- include('../layouts/footer.ejs')%>
