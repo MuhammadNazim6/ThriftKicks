@@ -442,26 +442,16 @@
             <td class="text-dark"><%= users[i].email %></td>
             <td class="text-dark"><%= users[i].mobile %></td>
             <td class="text-dark">
-              <!-- <a href=" /admin/users/edit-user?id=<%=users[i]._id %>"><button
-                              class="btn btn-dark">Edit</button></a> -->
+  
                               
                             <button data-user-id="<%= users[i]._id %>"
-                              data-state="<% if(users[i].isBlocked === true){%>blocked<% } else { %>unblocked<% } %>"
+                              data-state="<%= users[i].isBlocked ? 'blocked' : 'unblocked' %>"
                               class="btn blockUserButton custom-button
-                <%  if(users[i].isBlocked === true){%> btn-success <% } else { %> btn-danger <% } %> mx-3 
-                ">
+                <%  if(users[i].isBlocked === true){%> btn-success <% } else { %> btn-danger <% } %> mx-3">
                               <% if(users[i].isBlocked===true){%> Unblock <% } else { %> Block <% } %>
                             </button>
 
 
-
-
-
-
-                            <!-- <a href="/admin/delete-user?id=<%= users[i]._id %>"
-                              onclick="return confirm('Are you sure you want to delete <%= users[i].name %>')"
-                              class="btn btn-danger">
-                              <i class="fa-solid fa-trash">Delete</i></a> -->
                         </td>
                       </tr>
 
@@ -618,7 +608,7 @@
             }
             // Send an AJAX request to block the user.
             fetch(url, {
-              method: "POST",
+              method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
               },
@@ -636,13 +626,20 @@
                 if (currentState === "blocked") {
                   this.textContent = "Block";
                   this.setAttribute("data-state", "unblocked");
-                  this.classList.remove("btn-success");
-                  this.classList.add("btn-danger");
+                  this.classList.replace("btn-success","btn-danger");
+                  Swal.fire({
+                      text: data.message,
+                      icon: "success"
+                    });
+            
                 } else {
                   this.textContent = "Unblock";
                   this.setAttribute("data-state", "blocked");
-                  this.classList.remove("btn-danger");
-                  this.classList.add("btn-success");
+                  this.classList.replace("btn-danger","btn-success");
+                  Swal.fire({
+                      text: data.message,
+                      icon: "warning"
+                    });
                 }
 
               })

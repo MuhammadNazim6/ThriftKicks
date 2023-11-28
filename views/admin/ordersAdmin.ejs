@@ -172,7 +172,7 @@
                           <th scope="col">Total Amount</th>
                           <th scope="col">Ordered On</th>
                           <th scope="col">Updated On</th>
-                          <th scope="col">Status</th>
+                          <!-- <th scope="col">Status</th> -->
                           <th scope="col">Manage</th>
                         </tr>
                       </thead>
@@ -184,14 +184,14 @@
                         <tr>
                           <th scope="row">&nbsp;&nbsp;&nbsp;&nbsp;<%= orders.length-i %></th>
                           <td><%= orders[i]._id %></td>
-                          <td>&nbsp;&nbsp;&nbsp;&nbsp;Rs <%= orders[i].totalAmount %></td>
+                          <td class="text-bold">&nbsp;&nbsp;&nbsp;&nbsp;Rs <%= orders[i].totalAmount %></td>
                           <td><%= orderDate[i] %></td>
                           <td>&nbsp;&nbsp;<%= updatedDate[i] %></td>
-                          <td class="text-bold <%= orders[i].OrderStatus === 'Pending' ? 'text-warning' : '' %>
+                          <!-- <td class="text-bold <%= orders[i].OrderStatus === 'Pending' ? 'text-warning' : '' %>
                             <%= orders[i].OrderStatus === 'Cancelled' ? 'text-danger' : '' %>
                             <%= orders[i].OrderStatus === 'Out for Delivery' ? 'text-info' : '' %>
                             <%= orders[i].OrderStatus === 'Shipped' ? 'text-info' : '' %>
-                            <%= orders[i].OrderStatus === 'Delivered' ? 'text-success' : '' %>"><%= orders[i].OrderStatus %></td>
+                            <%= orders[i].OrderStatus === 'Delivered' ? 'text-success' : '' %>"><%= orders[i].OrderStatus %></td> -->
                           <td><a href="/admin/manageOrders/<%= orders[i]._id %>"><button class="btn btn-info">Manage</button></a></td>
                         </tr>
                       

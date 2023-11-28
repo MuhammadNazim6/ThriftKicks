@@ -10,6 +10,8 @@ const Address = UserAddressModel.Address;
 const Cart = UserAddressModel.Cart;
 const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
+const Coupon = OrdersModel.Coupon;
+
 
 
 
@@ -41,7 +43,7 @@ const loadCheckout = async (req, res) => {
     const areAvailable = await areQuantitiesAvailable(userQuantity);
     
     if (areAvailable) {
-      console.log('All selected products are available.');
+      
       res.render("users/checkout", {
       user: userData,
       cart: cartDetails,
@@ -141,51 +143,61 @@ const stockAdjusted = async (cartProducts)=>{
 //Order placing
 const placeOrder = async (req,res)=>{
   try {
-    const { paymentSelected , addressSelected } = req.body;
+    const { paymentSelected , addressSelected , couponId} = req.body;
     const userId = req.session.user_id;
     const userData = await User.findOne({_id:userId})
     const shippingAddress = await Address.findOne({_id:addressSelected})
     const cart = await Cart.findOne({userId:userId})
+    const coupon = couponId !== '' ? couponId : 'none';
 
     let trackId = await generateTrackId()
     let totalAmount = await calculateTotalPrice(userId)
+    console.log(couponId);
+    
+    if(couponId){
+      const coupon = await Coupon.findOne({_id:couponId})
+      totalAmount = totalAmount - coupon.discount_amount
+          //coupon used by adding
+          coupon.usersUsed.push(userId)
+          await coupon.save()
+    }
 
-    const cartProducts = cart.products.map((productItem) => ({
-      productId: productItem.productId,
-      ProductOrderStatus: "ordered" ,
-      quantity: productItem.quantity,
-      "returnOrderStatus.status": "none",
-      "returnOrderStatus.reason": "none",
-    }));
-
-    const order = new Order({
-        userId : userId,
-        shippingAddress:{
-          country: shippingAddress.country,
-          fullName: shippingAddress.fullname,
-          mobile: shippingAddress.mobile,
-          pincode: shippingAddress.pincode,
-          city: shippingAddress.city,
-          state: shippingAddress.state,
-        },
-        products : cartProducts,
-        OrderStatus: "Pending",
-        StatusLevel: 1,
-        paymentStatus: "Pending",
-        orderDate: new Date(),
-        totalAmount: totalAmount ,
-        paymentMethod: paymentSelected,
-        coupon : 'none',
-        trackId : trackId
-
-    });
+      const cartProducts = cart.products.map((productItem) => ({
+        productId: productItem.productId,
+        ProductOrderStatus: "Ordered" ,
+        quantity: productItem.quantity,
+        "returnOrderStatus.status": "none",
+        "returnOrderStatus.reason": "none",
+      }));
+  
+      const order = new Order({
+          userId : userId,
+          shippingAddress:{
+            country: shippingAddress.country,
+            fullName: shippingAddress.fullname,
+            mobile: shippingAddress.mobile,
+            pincode: shippingAddress.pincode,
+            city: shippingAddress.city,
+            state: shippingAddress.state,
+          },
+          products : cartProducts,
+          OrderStatus: "Pending",
+          StatusLevel: 1,
+          paymentStatus: "Pending",
+          orderDate: new Date(),
+          totalAmount: totalAmount ,
+          paymentMethod: paymentSelected,
+          coupon : coupon,
+          trackId : trackId
+  
+      });
+    
 
     //deleting existing cart
     const deletedCart = await Cart.deleteOne({_id:cart._id})
 
     //stock adjust function calling
     await stockAdjusted(cartProducts)
-    console.log("done");
 
       //returning a promise
     const newOrderPlaced = await order.save();
@@ -237,15 +249,56 @@ const cancelOrder = async (req,res)=>{
   }
 }
 
+//changing product order status
+const changeProdOrderStatus = async ( req, res)=>{
+  try {
+    const {productId , status , orderId} = req.body
+    const order = await Order.findById(orderId)
+    const productToUpdate = order.products.find(product => product.productId.toString() === productId);
+    productToUpdate.ProductOrderStatus = status
 
+    await order.save();  
+    res.json({message:"Product order status changed to "+status})
 
+  } catch (error) {
+    console.log("Couldn't change product order status");
+  }
+}
 
+//cancel product from order
+const cancelProdOrder = async (req,res)=>{
+  try {
+    const {productId , orderId} = req.body
+    const order = await Order.findById(orderId)
+    const product = await Product.findById(productId)
+    const productToUpdate = order.products.find(product => product.productId.toString() === productId);
+    productToUpdate.ProductOrderStatus = "Cancelled"
+    console.log(order.totalAmount);
+    order.totalAmount = order.totalAmount - product.actualPrice
+    
+    console.log(order.totalAmount);
+    console.log(product.actualPrice);
+    await order.save();  
+    console.log(product.stock);
+    console.log(productToUpdate.quantity);
+    product.stock = product.stock + productToUpdate.quantity
+    console.log(product.stock);
+    await product.save();
+    console.log("Till here");
+    res.json({message:"Product order cancelled"})
+
+  } catch (error) {
+    console.log("Could not cancel the product order");
+  }
+}
 module.exports = {
   loadCheckout,
   placeOrder,
   loadOrderPlacedPage,
   loadOrderDetailsPage,
-  cancelOrder
+  cancelOrder,
+  changeProdOrderStatus,
+  cancelProdOrder
   
 
 

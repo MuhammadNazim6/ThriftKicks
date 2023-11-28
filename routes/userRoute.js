@@ -58,5 +58,7 @@ user_route.post('/cancelOrder', auth.isLogin ,orderController.cancelOrder)
 
 user_route.post('/applyCoupon', auth.isLogin , couponController.applyCoupon)
 
+user_route.patch('/orders/cancelProdOrder' ,auth.isLogin , orderController.cancelProdOrder)
+
 
 module.exports = user_route;

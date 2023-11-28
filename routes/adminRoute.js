@@ -1,6 +1,7 @@
 const express = require("express")
 const adminController = require("../controllers/adminController")
 const couponController = require("../controllers/couponsController")
+const orderController = require('../controllers/orderController')
 const admin_route = express()
 const authAdmin = require("../middleware/authAdmin")
 const upload = require('../multer.js')
@@ -20,8 +21,8 @@ admin_route.get("/users/edit-user", authAdmin.isLogin, adminController.editUserl
 //updating user edits
 admin_route.post("/users/edit-user", authAdmin.isLogin, adminController.updateUsers)
 //blocking user
-admin_route.post("/api/block-user/:userId", authAdmin.isLogin , adminController.blockUser)
-admin_route.post("/api/unblock-user/:userId", authAdmin.isLogin , adminController.unblockUser)
+admin_route.patch("/api/block-user/:userId", authAdmin.isLogin , adminController.blockUser)
+admin_route.patch("/api/unblock-user/:userId", authAdmin.isLogin , adminController.unblockUser)
 
 admin_route.post('/api/unlistCat/:catId', authAdmin.isLogin ,adminController.unlistCategory)
 admin_route.post('/api/listCat/:catId', authAdmin.isLogin ,adminController.listCategory)
@@ -55,6 +56,7 @@ admin_route.get('/coupons/addCoupon', authAdmin.isLogin , couponController.loadA
 admin_route.post('/coupons/addCoupon',authAdmin.isLogin , couponController.addCoupon)
 
 admin_route.post('/coupon/delete', authAdmin.isLogin , couponController.deleteCoupon)
-
+admin_route.patch('/orders/changeProdStatus', authAdmin.isLogin ,orderController.changeProdOrderStatus )
+admin_route.patch('/orders/cancelProdOrder' ,authAdmin.isLogin , orderController.cancelProdOrder)
 
 module.exports = admin_route; 

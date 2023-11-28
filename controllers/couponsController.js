@@ -83,8 +83,8 @@ const applyCoupon = async (req,res)=>{
   try {
     const {couponCode} = req.body
     const coupon = await Coupon.findOne({code : couponCode})
+    const couponId = coupon?._id
     const totalAmount = await calculateTotalPrice(req.session.user_id)
-  
     if(!coupon){
       return res.json({ noCoupon: "Coupon doesn't exist" });
     }
@@ -100,10 +100,12 @@ const applyCoupon = async (req,res)=>{
     if(coupon.usersUsed.includes(req.session.user_id)){
       return res.json({message:"You already used this coupon"})
     }
-
     //applying discount
-    const discount_amount = totalAmount - coupon.discount_amount
-    res.json({discount_amount})
+    const reductionAmount = coupon.discount_amount
+    const discount_amount = totalAmount - reductionAmount 
+
+
+    res.json({discount_amount , reductionAmount ,couponId})
   } catch (error) {
     console.log("Unable to apply coupon");
   }
@@ -122,7 +124,7 @@ const calculateTotalPrice = async (userId) => {
 
     let totalPrice = 0;
     for (const cartProduct of cart.products) {
-      const { productId, quantity } = cartProduct;
+      const { productId, quantity  } = cartProduct;
       const productSubtotal = productId.actualPrice * quantity;
       totalPrice += productSubtotal;
     }

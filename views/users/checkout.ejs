@@ -261,11 +261,13 @@
 
                                             <ul class="checkout__total__all">
                                                 <li>Subtotal <span>₹ <%= totalAmount %></span></li>
+                                                <li id="minusAmount" style="display:none;">Coupon Discount <span
+                                                        id="targetSpan"></span></li>
                                                 <li>Total <span id="totalAmount">₹ <%= totalAmount %></span></li>
+                                                
                                             </ul>
 
-                                            <p>.</p>
-
+                                            <input id="hiddenCouponId" type="hidden">
 
                                             <div class="checkout__input__checkbox">
                                                 <label for="cod">
@@ -438,6 +440,7 @@
         const addAddressBtn = document.getElementById('addAddressButton');
         const placeOrderBtn = document.getElementById('placeOrderBtn')
         const placeOrderAlert = document.getElementById('placeOrderAlert')
+        const hiddenCouponId = document.getElementById('hiddenCouponId')
 
 
 
@@ -499,6 +502,7 @@
                 let addressSelected;
                 var paymentOptions = Array.from(document.getElementsByName("payment"))
                 var addressIds = Array.from(document.getElementsByName('address'))
+                let couponId = hiddenCouponId.value
 
                 addressIds.forEach(function (option) {
                     if (option.checked) {
@@ -537,7 +541,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ paymentSelected, addressSelected })
+                    body: JSON.stringify({ paymentSelected, addressSelected ,couponId})
                 });
 
                 if (!response.ok) {
@@ -552,7 +556,7 @@
                         icon: "success",
                         title: data.message,
                         showConfirmButton: false,
-                        // timer: 1500
+                        
                     });
 
                     setTimeout(() => {
@@ -572,9 +576,10 @@
         const applyCoupon = document.getElementById('applyCoupon')
         const couponCodeElem = document.getElementById('couponCode')
         const totalAmount = document.getElementById('totalAmount')
+        const minusAmount = document.getElementById('minusAmount')
 
         applyCoupon.addEventListener('click', applyCouponFn)
-        
+
 
 
         async function applyCouponFn() {
@@ -591,31 +596,34 @@
                 throw new Error("Failed to fetch data");
             }
             const data = await response.json()
-            if (data.noCoupon){
+            if (data.noCoupon) {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
                     text: data.noCoupon,
                 });
             }
-            if(data.validity){
+            if (data.validity) {
                 Swal.fire({
                     text: data.validity,
                 });
             }
-            if(data.message){
+            if (data.message) {
                 Swal.fire({
                     text: data.message,
                 });
             }
-            if(data.discount_amount){
-                totalAmount.textContent = "₹ "+data.discount_amount
-                Swal.fire({
-                    text:'Coupon applied successfully',
-                });
+            if (data.discount_amount) {
+                const couponId = data.couponId
+                hiddenCouponId.value = couponId
+                totalAmount.textContent = "₹ " + data.discount_amount
+                minusAmount.style.display = 'inline'
+                minusAmount.querySelector('#targetSpan').textContent = '- ₹ ' +data.reductionAmount
+                    Swal.fire({
+                        text: 'Coupon applied successfully',
+                    });
             }
         }
-
 
 
     </script>
