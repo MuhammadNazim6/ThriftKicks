@@ -1,0 +1,417 @@
+<%- include('../layouts/header.ejs')%>
+
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <!-- <a href="#">Sign in</a>
+            <a href="#">FAQs</a> -->
+            </div>
+            <div class="offcanvas__top__hover">
+                <span>Usd <i class="arrow_carrot-down"></i></span>
+                <ul>
+                    <li>USD</li>
+                    <li>EUR</li>
+                    <li>USD</li>
+                </ul>
+            </div>
+        </div>
+        <div class="offcanvas__nav__option">
+            <a href="#" class="search-switch"><img src="assets/icon/search.png" alt=""></a>
+            <a href="#"><img src="assets/icon/heart.png" alt=""></a>
+            <a href="#"><img src="assets/icon/cart.png" alt=""> <span>0</span></a>
+            <div class="price">$0.00</div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Free shipping, 30-day return or refund guarantee.</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Free shipping, 30-day return or refund guarantee.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a class="navbar-brand logo-size" href="/home"><img src="assets/logos/thriftedkicks.png"
+                                alt="Thriffy" /></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="/home">Home</a></li>
+                            <li><a href="/shop">Shop</a></li>
+                            <li> <a href="#">About Us</a> </li>
+
+                            <% if(typeof user !=='undefined' ) { %>
+                                <li><a href="/account">Account</a></li>
+                                <% } else { %>
+                                    <li><a href="/login">SignIn</a></li>
+                                    <% } %>
+
+
+                                        <li class="active">
+                                            <% if(typeof user !=='undefined' ) { %>
+                                                <a class="cursor_cart" href="/cart">
+                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i><span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
+
+                                                </a>
+
+                                                <% } else { %>
+                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span
+                                                            style="vertical-align: -4px;"
+                                                            class="material-symbols-outlined">
+                                                            shopping_cart
+                                                        </span></a>
+                                                    <% } %>
+                                        </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <% if(typeof user !== 'undefined'){ %>
+                            <a href="/myOrders">My orders</a>
+                        <%  }  %>
+                        <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
+                        <!-- <span style="vertical-align: -6px;"class="material-symbols-outlined">
+                            logout
+                            </span>
+                        <a class="list-group-item text-bold" href="/logout"> Logout</a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Wishlist</h4>
+                        <div class="breadcrumb__links">
+                            <a href="/home">Home</a>
+                            <span>Wishlist</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+
+
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart p-5">
+        <div class="container p-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table ml-5 pl-5">
+                        <table>
+
+                            <% if(typeof wishlist !=="undefined" && wishlist.products.length> 0) { %>
+                                <input type="hidden" value="<%= wishlist.products.length %>" id="productLength">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(let i=0;i<wishlist.products.length ; i++){ %>
+
+
+                                        <tr>
+                                            <td class="product__cart__item">
+                                                <div class="cart_image">
+
+                                                    <a href="/productView?id=<%=wishlist.products[i].productId._id %>">
+                                                        <img class="imaage card-image"
+                                                            src="<%= wishlist.products[i].productId.image.path1 %>" alt="">
+                                                    </a>
+
+
+                                                </div>
+                                                <div class="product__cart__item__text">
+
+                                                    <a href="/productView?id=<%=wishlist.products[i].productId._id %>">
+                                                        <span>
+                                                            <%= wishlist.products[i].productId.productName %>
+                                                        </span>
+                                                    </a>
+
+                                                    <h6>
+                                                        <%= wishlist.products[i].productId.size %>
+                                                    </h6>
+                                                    <h6>₹ <%= wishlist.products[i].productId.actualPrice %>
+                                                    </h6>
+
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                              <button class="btn-dark p-2 mr-5 addtoCartButton" style="width: 150px;" data-product-id="<%= wishlist.products[i].productId._id %>" >Add to cart</button>
+                                            </td>
+
+                                            <td>
+                                              <button class="btn-dark p-2 ml-5 removeBtn" style="width: 150px;" data-prodId="<%= wishlist.products[i].productId._id %>" >Remove</button>
+                                            </td>
+                                            
+          
+
+                                        </tr>
+                                        
+                                        <% } %>
+
+
+                          
+
+                                </tbody>
+
+                                <% } else{ %>
+                                    <img src="/assets/userside_images/wishlist.jpg">
+                                    <% } %>
+
+                        </table>
+
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 mt-5">
+                            <div class="continue__btn">
+                                <a href="/home">Continue Shopping</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn update__btn">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+
+
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src=" " alt=""></a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="  " alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.countdown.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
+
+
+<script>
+
+  //add to cart function
+  const badge = document.getElementById('badge')
+
+  document.querySelectorAll(".addtoCartButton").forEach(function (button) {
+            button.addEventListener("click", (addtoCart))
+            
+        })
+
+
+    async function addtoCart() {
+            const prodId = this.getAttribute("data-product-id");
+            const response = await fetch(`/api/addtoCart/${prodId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+                console.log("sdfbsdb");
+            }
+            const data = await response.json()
+            if (data.message) {
+                Swal.fire({
+                    text: data.message,
+                });
+            }
+            console.log(data.message);
+            if (data.length) {
+
+                badge.textContent = data.length
+                badge.classList.add('jumping')
+                setTimeout(() => {
+                    badge.classList.remove('jumping')
+                }, 500)
+
+            }
+        }
+
+        //remove product from wishlist
+        const removeBtn = document.querySelectorAll('.removeBtn')
+        removeBtn.forEach((btn)=>{
+          btn.addEventListener('click',addWishlistFn)
+        })
+
+
+        async function addWishlistFn(){
+            try {
+                
+                const prodId = this.getAttribute('data-prodId')
+                const response = await fetch(`/addtoWishlist`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({prodId})
+                
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+          
+            if (data.remMessage) {
+              const row = this.parentElement.parentElement
+              row.remove()
+
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "info",
+                title: "Product removed from wishlist"
+                });
+                
+            }
+            } catch (error) {
+                console.log("Unable to add to wishlist");
+            
+            }
+        }
+
+
+
+</script>
+
+
+
+
+
+
+    <%- include('../layouts/footer.ejs')%>

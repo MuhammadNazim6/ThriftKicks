@@ -53,12 +53,17 @@ user_route.get('/checkout', auth.isLogin,orderController.loadCheckout)
 user_route.post('/checkout',auth.isLogin, orderController.placeOrder)
 user_route.get('/orderPlaced', auth.isLogin, orderController.loadOrderPlacedPage)
 
+user_route.get('/myOrders' , auth.isLogin ,orderController.loadMyorders)
 user_route.get('/orderDetails',auth.isLogin , orderController.loadOrderDetailsPage)
 user_route.post('/cancelOrder', auth.isLogin ,orderController.cancelOrder)
 
 user_route.post('/applyCoupon', auth.isLogin , couponController.applyCoupon)
 
 user_route.patch('/orders/cancelProdOrder' ,auth.isLogin , orderController.cancelProdOrder)
+
+user_route.patch('/addtoWishlist', auth.isLogin , orderController.addtoWishlist)
+
+user_route.get('/wishlist',auth.isLogin , userController.loadWishlist)
 
 
 module.exports = user_route;

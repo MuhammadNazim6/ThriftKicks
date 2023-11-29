@@ -97,10 +97,11 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="assets/icon/search.png" alt=""></a>
+                        <% if(typeof user !== 'undefined'){ %>
+                            <a href="/myOrders">My orders</a>
+                        <%  }  %>
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt=""></a>
-                        <!-- <a href="/cart"><img src="assets/icon/cart.png" alt=""> <span>0</span></a> -->
-                        <!-- <div class="price">$0.00</div> -->
+                
                     </div>
                 </div>
             </div>
@@ -278,8 +279,34 @@
             
             <div class="card m-3 " style="width: 15rem; height:30rem">
                 <a href="/productView?id=<%=products[i]._id %>">
-                    <img src="<%= products[i].image.path1 %>" class="card-image"
-                        alt="">
+        
+                        <div class="hoverable">
+                            <a href="/productView?id=<%=products[i]._id %>">
+                                <img src="<%= products[i].image.path1 %>" class="card-image"
+                                    onmouseout="unhoverCardImage()">
+                            </a>
+                            <div class="icon wishlistIcon  
+                            
+                            <%   if(typeof wishlist !== 'undefined'){  %>
+
+                            <% let isInWishlist = false; %>
+                            <% for (let j = 0; j < wishlist.products.length; j++) {
+                                const x = wishlist.products[j];
+                                if (x.productId.toString() === products[i]._id.toString()) {
+                                    isInWishlist = true;
+                                    break;
+                                }
+                            } %>
+                            <%= isInWishlist ? 'text-danger' : '' %>" 
+
+                            <% } %>
+
+
+                            onmouseover="hoverCardImage()" data-prodId="<%= products[i]._id %>">
+                                <i class="fa fa-heart"></i>
+                            </div>
+                        </div>
+                
                 </a>
                 <div class="card-body">
                     <h6>
@@ -482,6 +509,79 @@
                 },500)
             }
 
+        }
+
+
+           //wishlist functionalities
+        function hoverCardImage() {
+            document.querySelector('.card-image').style.filter = 'brightness(80%)';
+        }
+        function unhoverCardImage() {
+            document.querySelector('.card-image').style.filter = 'brightness(100%)';
+        }
+
+        const wishlistIcons = document.querySelectorAll('.wishlistIcon')
+        wishlistIcons.forEach((icon)=>{
+            icon.addEventListener('click',addWishlistFn)
+        })
+
+        async function addWishlistFn(){
+            try {
+                
+                const prodId = this.getAttribute('data-prodId')
+                const response = await fetch(`/addtoWishlist`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({prodId})
+                
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            if (data.message) {
+                this.classList.add('text-danger')
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "success",
+                title: "Product added to wishlist"
+                });
+
+            }
+            if (data.remMessage) {
+                this.classList.remove('text-danger')
+                this.style.color = 'white'
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "info",
+                title: "Product removed from wishlist"
+                });
+            }
+            } catch (error) {
+                console.log("Unable to add to wishlist");
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "Center",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "warning",
+                text: "Login or Signup for adding to wishlist"
+                });
+            }
         }
 
     </script>

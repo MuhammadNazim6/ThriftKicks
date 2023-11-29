@@ -10,6 +10,8 @@ const Address = UserAddressModel.Address;
 const Cart = UserAddressModel.Cart;
 const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
+const Wishlist = UserAddressModel.Wishlist;
+
 let OTP;
 
 
@@ -283,6 +285,9 @@ const loadHome = async (req, res) => {
     .populate("userId")
     .populate("products.productId");
 
+    //for wishlist
+    const wishlist = await Wishlist.findOne({userId:user_id})
+
 
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id });
@@ -291,7 +296,8 @@ const loadHome = async (req, res) => {
         products: products,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
-        cart : cart
+        cart : cart,
+        wishlist
       });
     } else {
       res.render("users/home", {
@@ -379,6 +385,8 @@ const loadShop = async (req, res) => {
     .populate("userId")
     .populate("products.productId");
 
+    //wishlist load
+    const wishlist = await Wishlist.findOne({userId:req.session.user_id})
 
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id });
@@ -387,7 +395,8 @@ const loadShop = async (req, res) => {
         products: products,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
-        cart: cart
+        cart: cart,
+        wishlist
       });
     } else {
       res.render("users/shop", {
@@ -402,6 +411,7 @@ const loadShop = async (req, res) => {
 
   }
 };
+
 
 //loading shopping cart
 const loadcart = async (req, res) => {
@@ -465,8 +475,11 @@ const loadProductView = async (req, res) => {
     const cart = await Cart.findOne({userId: req.session.user_id})
     .populate("userId")
     .populate("products.productId");
+
+    //for wishlist
+    const wishlist = await Wishlist.findOne({userId:userId})
 if(user){
-  res.render("users/productView", { product: product, user: user ,cart});
+  res.render("users/productView", { product: product, user: user ,cart ,wishlist});
 }else{
   res.render("users/productView", { product: product });
 }
@@ -581,6 +594,14 @@ const deleteCartProduct = async (req, res, next) => {
       { userId: user_id },
       { $pull: { products: { productId: product_id } } }
     );
+
+     //for badge
+     const cart = await Cart.findOne({userId: user_id})
+     .populate("userId")
+     .populate("products.productId");
+    
+
+     res.json({length: cart.products.length})
 
     next();
   } catch (error) {
@@ -818,7 +839,27 @@ const loadOtpchangepass = async (req,res)=>{
   }
 }
 
+//loading wishlist
+const loadWishlist = async (req,res)=>{
+  try {
+    
+    const userId = req.session.user_id
+    const user = await User.findOne({_id:userId})
+    const wishlist = await Wishlist.findOne({userId: userId})
+    .populate("products.productId")
 
+    //for badge
+    const cart = await Cart.findOne({userId: userId})
+    .populate("userId")
+    .populate("products.productId");
+
+    res.render('users/wishlist',{wishlist , user ,cart})
+  } catch (error) {
+    console.log(error.message);
+    res.status(404).render('users/404') 
+
+  }
+}
 
 
 module.exports = {
@@ -839,7 +880,6 @@ module.exports = {
   addtoCart,
   cartIncreaseDecrease,
   deleteCartProduct,
-  
   editUserData,
   updateAddress,
   updateEditedAddress,
@@ -850,5 +890,7 @@ module.exports = {
   forgotPassEmail,
   forgetPassCheckOtp,
   loadOtpchangepass,
+  loadWishlist
+  
 
 };

@@ -69,32 +69,32 @@
                                     <% } %>
 
 
-                                        <li class="active">
-                                            <% if(typeof user !=='undefined' ) { %>
-                                                <a class="cursor_cart" href="/cart">
-                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i><span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
+                                    <li>
+                                        <% if(typeof user !=='undefined' ) { %>
+                                            <a class="cursor_cart" href="/cart">
+                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
 
-                                                </a>
-
-                                                <% } else { %>
-                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span
-                                                            style="vertical-align: -4px;"
-                                                            class="material-symbols-outlined">
-                                                            shopping_cart
-                                                        </span></a>
-                                                    <% } %>
-                                        </li>
+                                            </a>
+                                            
+                                            <% } else { %>
+                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span></a>
+                                                <% } %>
+                                    </li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
-                        <!-- <a href="#" class="search-switch"><img src="assets/icon/search.png" alt="" /></a> -->
+                        <% if(typeof user !== 'undefined'){ %>
+                            <a href="/myOrders">My orders</a>
+                        <%  }  %>
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
-                        <span style="vertical-align: -6px;"class="material-symbols-outlined">
+                        <!-- <span style="vertical-align: -6px;"class="material-symbols-outlined">
                             logout
                             </span>
-                        <a class="list-group-item text-bold" href="/logout"> Logout</a>
+                        <a class="list-group-item text-bold" href="/logout"> Logout</a> -->
                     </div>
                 </div>
             </div>
@@ -519,7 +519,7 @@
                     const confirmButton = document.querySelector('.confirm');
                     confirmButton.addEventListener('click', async function () {
                         // User confirmed, proceed with deletion
-                        await deleteCartProduct(prodId);
+                        await deleteCartProduct(prodId , button);
 
                         // Close the modal after deletion
                         $('#productDelete').modal('hide');
@@ -528,11 +528,11 @@
             });
         });
 
+        const badge = document.getElementById('badge')
 
         //FETCH of cart product delete
-        async function deleteCartProduct(prodId) {
+        async function deleteCartProduct(prodId , button) {
             const confirm = await document.querySelector(".confirm");
-            console.log(confirm);
             const response = await fetch(`/deleteProduct/${prodId}`, {
                 method: "POST",
                 headers: {
@@ -540,11 +540,28 @@
                 },
 
             })
-            if (response) {
-                // cartBadge.textContent = cartBadge.textContent - 1;
-                location.reload(true);
 
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
             }
+            
+            const data = await response.json()
+            if (data.message) {
+                Swal.fire({
+                    text: data.message,
+                });
+            }
+             if (data.length) {
+
+                badge.textContent = data.length
+                badge.classList.add('jumping')
+                setTimeout(() => {
+                    badge.classList.remove('jumping')
+                }, 500)
+                button.parentElement.parentElement.remove()
+            }
+        
         }
 
 

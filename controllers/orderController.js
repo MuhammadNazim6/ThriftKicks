@@ -11,6 +11,7 @@ const Cart = UserAddressModel.Cart;
 const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
 const Coupon = OrdersModel.Coupon;
+const Wishlist = UserAddressModel.Wishlist;
 
 
 
@@ -220,6 +221,21 @@ const loadOrderPlacedPage = async (req,res)=>{
   }
 }
 
+
+//loading my orders
+const loadMyorders = async (req,res)=>{
+  try {
+    const userId = req.session.user_id;
+    const orders = await Order.find({userId : userId})
+    .populate('products.productId')   
+
+    res.render('users/myOrders',{orders})
+    
+  } catch (error) {
+    console.log("Couldn't load my orders");
+    console.log(error.message)
+  }
+}
 //laoding order placed page
 const loadOrderDetailsPage = async (req,res)=>{
   try {
@@ -291,14 +307,81 @@ const cancelProdOrder = async (req,res)=>{
     console.log("Could not cancel the product order");
   }
 }
+
+
+//const adding to wishlist
+const addtoWishlist  = async (req,res)=>{
+  try {
+    const {prodId} = req.body
+    const user_id = req.session.user_id
+    const WListExist = await Wishlist.findOne({ userId: user_id });
+    //if no wishlist for user
+    if (!WListExist) {
+      const wishlist = new Wishlist({
+        userId: user_id,
+        products: [
+          {
+            productId: prodId,
+          },
+        ],
+        
+      });
+      const WlistAdded = await wishlist.save();
+      console.log("New wishlist added to user");
+
+      res.json({
+        message: "Item added to the wishlist",
+      });
+
+    }else{
+      const itemExistWl = WListExist.products.find(
+        (element) => element.productId.toString() === prodId
+      );
+
+      //remove from wishlist
+      if(itemExistWl){
+      
+          const result = await Wishlist.updateOne(
+            { userId: user_id },
+            { $pull: { products: { productId: prodId } } }
+          );
+          res.json({
+            remMessage:"Item removed"
+          })
+          
+      }else{
+        const newItem = {
+          productId : prodId
+          }
+          WListExist.products.push(newItem)
+          await WListExist.save()
+    
+          res.json({
+            message: "Item added to the wishlist",
+          });
+    
+        }
+    
+      }
+      
+    
+  } catch (error) {
+    console.log("Unable to add to wishlist");
+  }
+}
+
+
+
 module.exports = {
   loadCheckout,
   placeOrder,
   loadOrderPlacedPage,
+  loadMyorders,
   loadOrderDetailsPage,
   cancelOrder,
   changeProdOrderStatus,
-  cancelProdOrder
+  cancelProdOrder,
+  addtoWishlist
   
 
 

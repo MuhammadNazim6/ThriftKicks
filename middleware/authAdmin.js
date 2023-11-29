@@ -1,12 +1,9 @@
-const UserAddressModel = require("../models/userModel");
-const User = UserAddressModel.User;
+
 //if login
 const isLogin = async (req, res, next) => {
   try {
-    const admin = await User.findOne({is_admin : 1})
-    const logging = await User.findOne({_id:req.session.user_id})
 
-    if (req.session.user_id && admin.email == logging.email) {
+    if (req.session.admin) {
     } else {
       res.redirect("/admin");
     }
@@ -20,7 +17,7 @@ const isLogin = async (req, res, next) => {
 const isLogout = async (req, res, next) => {
   try {
 
-    if (req.session.user_id ) {
+    if (req.session.admin ) {
       res.redirect("admin/dashboard");
     }
 

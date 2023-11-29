@@ -185,7 +185,7 @@ font-family: 'Open Sans', sans-serif;
   cursor: pointer;
 }
 .card-image:hover{
-  filter:brightness(110%)
+  filter:brightness(80%)
 }
 
 .round-delete-button {
@@ -559,3 +559,28 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
   width: 200px;
 }
   
+/* Css for wishlist icon hover  */
+
+.hoverable {
+  position: relative;
+  display: inline-block;
+  padding: 10px;
+}
+
+.icon {
+  position: absolute;
+  top: 12%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  color: white;
+  font-size: 28px;
+}
+
+.hoverable:hover .icon {
+  opacity: 1;
+  cursor: pointer;
+  
+}
+

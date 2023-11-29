@@ -197,7 +197,7 @@
                             <i class="fa fa-star-o"></i>
                             <span> - 5 Reviews</span>
                         </div> -->
-
+                        <input type="hidden" id="prodId" value="<%= product._id %>">
                             <h3>₹ <%= product.actualPrice %>/-</h3>
                             <p>
                                 <%= product.description %>
@@ -222,8 +222,29 @@
                                 to cart</button>
                     
                             </div>
+
+                            
                             <div class="product__details__btns__option">
-                                <a href=""><i class="fa fa-heart"></i> add to wishlist</a>
+                                
+
+                                    <% if (typeof wishlist !== 'undefined') { %>
+                                  
+                                      <% let isInWishlist = false; %>
+                                      <% for (let j = 0; j < wishlist.products.length; j++) {
+                                        const x = wishlist.products[j];
+                                        if (x.productId.toString() === product._id.toString()) {
+                                          isInWishlist = true;
+                                          break;
+                                        }
+                                      } %>
+                                  
+                                      <a id="addtoWishlist" type="button"> <i class="fa fa-heart"></i> <%= isInWishlist ? 'Remove from wishlist' : ' Add to wishlist' %> </a>
+                                     
+                                  
+                                    <% } %>
+                                  
+                                    
+                                  
                             </div>
                             <div class="product__details__last__option">
                                 <h5><span>Guaranteed Safe Checkout</span></h5>
@@ -494,7 +515,9 @@
                 }
                 const data = await response.json();
                 if(data.message){
-                    Swal.fire(data.message);
+                    Swal.fire({
+                    text: data.message,
+                });
                 }
                  if(data.length){
 
@@ -551,6 +574,82 @@
             function changeImage(item) {
                 image.src = item.src;
             }
+            
+            
+            
+        // Add to wishlist
+        const addtoWishlist = document.getElementById('addtoWishlist')
+        addtoWishlist.addEventListener('mouseover',()=>{
+            addtoWishlist.style.color = 'red'
+        })
+        addtoWishlist.addEventListener('mouseout',()=>{
+            addtoWishlist.style.color = 'grey'
+        })
+        addtoWishlist.addEventListener('click',addtoWishlistFn)
+
+
+        async function addtoWishlistFn(){
+            try {
+                const prodId = document.getElementById('prodId').value
+
+                const response = await fetch(`/addtoWishlist`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({prodId})
+                
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            if (data.message) {
+                addtoWishlist.innerHTML = '<i class="fa fa-heart"></i> Remove from wishlist'
+                
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "success",
+                title: "Product added to wishlist"
+                });
+            }
+            if (data.remMessage) {
+                addtoWishlist.innerHTML = '<i class="fa fa-heart"></i> add to wishlist'
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "info",
+                title: "Product removed from wishlist"
+                });
+                
+            } 
+            } catch (error) {
+                console.log("Unable to add to wishlist");
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "Center",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "warning",
+                text: "Login or Signup for adding to wishlist"
+                });
+            }
+        }
         </script>
+
+
+        
+
 
         <%- include('../layouts/footer.ejs')%>

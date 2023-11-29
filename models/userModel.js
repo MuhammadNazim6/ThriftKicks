@@ -106,12 +106,48 @@ const cartSchema = new mongoose.Schema({
 });
 
 
+// wishlist 
+const wishlistSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
+    required: true,
+  },
+  products: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+      },
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    required: true,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+    required: true,
+  },
+});
+
+
+
+
 const User = mongoose.model("User", userSchema);
 const Address = mongoose.model("Address", addressSchema);
 const Cart = mongoose.model("Cart",cartSchema)
+const Wishlist = mongoose.model("Wishlist",wishlistSchema)
+
+
 
 module.exports = {
   User,
   Address,
-  Cart
+  Cart,
+  Wishlist
+
 };

@@ -46,7 +46,7 @@ const verifyLogin = async (req, res) => {
             message: "Email and password incorrect",
           });
         } else {
-          req.session.user_id = userData._id;
+          req.session.admin = userData._id;
           res.redirect("admin/dashboard");
         }
       } else {
