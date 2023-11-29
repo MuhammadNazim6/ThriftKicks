@@ -226,10 +226,12 @@ const loadOrderPlacedPage = async (req,res)=>{
 const loadMyorders = async (req,res)=>{
   try {
     const userId = req.session.user_id;
+    const user = await User.findById(userId)
+    const cart = await Cart.findOne({ userId:userId })
     const orders = await Order.find({userId : userId})
     .populate('products.productId')   
 
-    res.render('users/myOrders',{orders})
+    res.render('users/myOrders',{orders , user, cart})
     
   } catch (error) {
     console.log("Couldn't load my orders");
