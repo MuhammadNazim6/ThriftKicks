@@ -65,5 +65,8 @@ user_route.patch('/addtoWishlist', auth.isLogin , orderController.addtoWishlist)
 
 user_route.get('/wishlist',auth.isLogin , userController.loadWishlist)
 
+//verify payment route
+user_route.post('/verify_payment',orderController.verifyPaymentFn)
+
 
 module.exports = user_route;

@@ -191,7 +191,7 @@
                                             <% } %>
 
                                             onmouseover="hoverCardImage()" data-prodId="<%= products[i]._id %>" >
-                                                <i class="fa fa-heart"></i>
+                                                <i class="fa fa-heart heartIcon"></i>
                                             </div>
 
                                             
@@ -461,10 +461,18 @@
 
         //wishlist functionalities
         function hoverCardImage() {
-            document.querySelector('.card-image').style.filter = 'brightness(80%)';
+            document.querySelectorAll('.card-image').forEach((elem)=>{
+                elem.addEventListener('mouseover',()=>{
+                    style.filter = 'brightness(80%)'
+                })
+            })
         }
         function unhoverCardImage() {
-            document.querySelector('.card-image').style.filter = 'brightness(100%)';
+            document.querySelector('.card-image').forEach((elem)=>{
+                elem.addEventListener('mouseover',()=>{
+                    style.filter = 'brightness(100%)';
+                })
+            })
         }
 
         const wishlistIcons = document.querySelectorAll('.wishlistIcon')

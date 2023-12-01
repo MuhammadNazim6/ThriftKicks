@@ -54,11 +54,19 @@
                 <tr> 
                     <td scope="row"><%= i+1 %></td>
                     <td>
+                      <a href="/productView?id=<%=order.products[i].productId._id %>">
                 <img src="<%= order.products[i].productId.image.path1 %>" style="height: 200px; width: 200px;">
+                      </a>
                     </td> 
-                    <td><%= order.products[i].productId.productName %></td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= order.products[i].quantity %></td>
-                    <td><%= order.orderDate.toString().slice(0,15) %></td> 
+                    
+                    <td class="p-4">
+                      <a href="/productView?id=<%=order.products[i].productId._id %>">
+                      <%= order.products[i].productId.productName %>
+                    </a>
+                    </td>
+                    
+                    <td class="p-4">&nbsp;&nbsp;<%= order.products[i].quantity %></td>
+                    <td class="p-4"><%= order.orderDate.toString().slice(0,15) %></td> 
                     <td class="orderStatusElem text-bold <%= order.products[i].ProductOrderStatus === 'Ordered' ? 'text-dark' : '' %>
                         <%= order.products[i].ProductOrderStatus === 'Cancelled' ? 'text-danger' : '' %>
                         <%= order.products[i].ProductOrderStatus === 'Out for Delivery' ? 'text-info' : '' %>

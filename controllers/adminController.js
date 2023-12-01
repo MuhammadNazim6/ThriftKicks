@@ -544,7 +544,14 @@ const cancelOrder = async (req,res)=>{
 }
 
 
-
+///loading banners
+const loadBanners = async (req,res)=>{
+  try {
+    res.render('admin/banners')
+  } catch (error) {
+    res.status(404).render('users/404') 
+  }
+}
 
 
 module.exports = {
@@ -575,5 +582,6 @@ module.exports = {
   loadManageOrder,
   changeOrderStatus,
   cancelOrder,
+  loadBanners
 
 };

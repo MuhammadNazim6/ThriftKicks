@@ -449,7 +449,9 @@
                 if (quantityValue !== 1) {
                     changeQuantity(-1, prodId, inputTag, priceCell, priceOfProduct ,numericPrice);
                 } else {
-                    Swal.fire("Minimum quantity is 1 !");
+                    Swal.fire({
+                    text:"Minimum quantity is 1 !"});
+                    
                 }
             })
         })
@@ -471,7 +473,8 @@
                 if (quantityValue < productStock ) {
                     changeQuantity(1, prodId, inputTag, priceCell, priceOfProduct ,numericPrice);
                 } else {
-                    Swal.fire("Stock limit reached");
+                    Swal.fire({
+                    text:"Stock limit reached"});
                 }
             })
         })
@@ -552,7 +555,7 @@
                     text: data.message,
                 });
             }
-             if (data.length) {
+            if (data.length) {
 
                 badge.textContent = data.length
                 badge.classList.add('jumping')

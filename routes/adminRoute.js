@@ -59,4 +59,6 @@ admin_route.post('/coupon/delete', authAdmin.isLogin , couponController.deleteCo
 admin_route.patch('/orders/changeProdStatus', authAdmin.isLogin ,orderController.changeProdOrderStatus )
 admin_route.patch('/orders/cancelProdOrder' ,authAdmin.isLogin , orderController.cancelProdOrder)
 
+admin_route.get('/banners',authAdmin.isLogin, adminController.loadBanners)
+
 module.exports = admin_route; 

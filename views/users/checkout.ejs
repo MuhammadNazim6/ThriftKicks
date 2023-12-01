@@ -264,7 +264,7 @@
                                                 <li id="minusAmount" style="display:none;">Coupon Discount <span
                                                         id="targetSpan"></span></li>
                                                 <li>Total <span id="totalAmount">₹ <%= totalAmount %></span></li>
-                                                
+
                                             </ul>
 
                                             <input id="hiddenCouponId" type="hidden">
@@ -272,14 +272,14 @@
                                             <div class="checkout__input__checkbox">
                                                 <label for="cod">
                                                     Cash On delivery
-                                                    <input type="radio" id="cod" name="payment" value="cod">
+                                                    <input type="radio" id="cod" name="payment" value="COD">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </div>
                                             <div class="checkout__input__checkbox">
                                                 <label for="upi">
                                                     UPI
-                                                    <input type="radio" id="upi" name="payment" value="upi">
+                                                    <input type="radio" id="upi" name="payment" value="UPI">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </div>
@@ -287,7 +287,7 @@
                                                 <label for="netbanking">
                                                     Net banking
                                                     <input type="radio" id="netbanking" name="payment"
-                                                        value="netbanking">
+                                                        value="Net Banking">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </div>
@@ -434,6 +434,8 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <script>
 
         //constants
@@ -541,7 +543,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ paymentSelected, addressSelected ,couponId})
+                    body: JSON.stringify({ paymentSelected, addressSelected, couponId })
                 });
 
                 if (!response.ok) {
@@ -556,19 +558,84 @@
                         icon: "success",
                         title: data.message,
                         showConfirmButton: false,
-                        
+
                     });
 
                     setTimeout(() => {
                         window.location.href = '/orderPlaced';
                     }, 2000)
+                } else {
+        
+                    razorpayPayment(data.response , data.userData)
                 }
-
 
             } catch (error) {
                 console.log(error.message);
             }
         }
+
+        function razorpayPayment(order , userData) {
+        console.log(userData);
+            var options = {
+                "key": "rzp_test_hrcgmUAQIlTJWz",
+                "amount": order.amount, 
+                "currency": "INR",
+                "name": "Thrift Kicks",
+                "description": "Test Transaction",
+                "order_id": order.id,
+                "handler": function (response) {
+
+                verifyPayment(response, order);
+                
+                },
+                "prefill": {
+                    "name": userData.firstname+" "+userData.lastname,
+                    "email": userData.email,
+                    "contact": userData.mobile
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+    
+            var rzp1 = new Razorpay(options)
+            rzp1.open()
+            
+        }
+    
+    
+
+        async function verifyPayment(payment, order) {
+        
+            try {
+                const response = await fetch('/verify_payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ payment, order }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} - ${response.statusText}`);
+                }
+
+                const responseData =  await response.json();
+                if(responseData.status){
+                    window.location.href = '/orderPlaced';
+                }else{
+                    alert('payment failed')
+                }
+
+            } catch (error) {
+                console.error('Error during verification:', error);
+                
+            }
+        }
+
 
 
 
@@ -618,10 +685,10 @@
                 hiddenCouponId.value = couponId
                 totalAmount.textContent = "₹ " + data.discount_amount
                 minusAmount.style.display = 'inline'
-                minusAmount.querySelector('#targetSpan').textContent = '- ₹ ' +data.reductionAmount
-                    Swal.fire({
-                        text: 'Coupon applied successfully',
-                    });
+                minusAmount.querySelector('#targetSpan').textContent = '- ₹ ' + data.reductionAmount
+                Swal.fire({
+                    text: 'Coupon applied successfully',
+                });
             }
         }
 

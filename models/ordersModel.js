@@ -11,6 +11,10 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    houseName: {
+      type: String,
+      required: true,
+    },
     fullName: {
       type: String,
       required: true,

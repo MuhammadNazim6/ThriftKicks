@@ -1,10 +1,12 @@
-const UserAddressModel = require("../models/userModel");
-const ProductsModel = require("../models/productsModel");
+const UserAddressModel = require("../models/userModel")
+const ProductsModel = require("../models/productsModel")
 const OrdersModel = require('../models/ordersModel')
-const mailer = require("../services/mail");
-const bcrypt = require("bcrypt");
-const otplib = require("otplib");
-const uuid = require('uuid');
+const mailer = require("../services/mail")
+const bcrypt = require("bcrypt")
+const otplib = require("otplib")
+const uuid = require('uuid')
+const crypto = require('crypto')
+const Razorpay = require('razorpay')
 const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
 const Cart = UserAddressModel.Cart;
@@ -12,6 +14,10 @@ const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
 const Coupon = OrdersModel.Coupon;
 const Wishlist = UserAddressModel.Wishlist;
+var instance = new Razorpay({
+  key_id: 'rzp_test_hrcgmUAQIlTJWz',
+  key_secret: 'e6rN7GFxw4rzGXDHyQ9oFGy6',
+});
 
 
 
@@ -176,10 +182,12 @@ const placeOrder = async (req,res)=>{
           shippingAddress:{
             country: shippingAddress.country,
             fullName: shippingAddress.fullname,
+            houseName: shippingAddress.houseName,
             mobile: shippingAddress.mobile,
             pincode: shippingAddress.pincode,
             city: shippingAddress.city,
             state: shippingAddress.state,
+          
           },
           products : cartProducts,
           OrderStatus: "Pending",
@@ -202,7 +210,26 @@ const placeOrder = async (req,res)=>{
 
       //returning a promise
     const newOrderPlaced = await order.save();
-    res.json({ message: "Order Placed successfully" });
+
+    if(paymentSelected == 'COD'){
+      res.json({ message: "Order Placed successfully" });
+
+    }else{
+      const orderId = newOrderPlaced._id
+
+      generateRazorpay(orderId , totalAmount)
+      .then((response) => {
+        res.json({response , userData})
+  
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    }
+    
+    
+    
 
 console.log('done');
   } catch (error) {
@@ -210,7 +237,28 @@ console.log('done');
   }
 }
 
+//generate razorpay
+const generateRazorpay = ((orderId , totalAmount)=>{
+  return new Promise ((resolve,reject)=>{
 
+    var options = {
+      amount: totalAmount * 100,  // amount in the smallest currency unit
+      currency: "INR",
+      receipt: orderId
+    };
+    instance.orders.create(options, function(err, order) {
+      if(err){
+        console.log(err);
+
+      }else{
+        console.log("New Order : ", order);
+        resolve(order)
+      }
+      
+    });
+
+  })
+})
 
 // loading order placed page
 const loadOrderPlacedPage = async (req,res)=>{
@@ -231,7 +279,7 @@ const loadMyorders = async (req,res)=>{
     const orders = await Order.find({userId : userId})
     .populate('products.productId')   
 
-    res.render('users/myOrders',{orders , user, cart})
+    res.render('users/myOrders',{orders , user, cart })
     
   } catch (error) {
     console.log("Couldn't load my orders");
@@ -241,6 +289,7 @@ const loadMyorders = async (req,res)=>{
 //laoding order placed page
 const loadOrderDetailsPage = async (req,res)=>{
   try {
+  
     const orderId = req.query.ordId;
     const order = await Order.findOne({_id : orderId})
     .populate('products.productId')
@@ -373,6 +422,47 @@ const addtoWishlist  = async (req,res)=>{
 }
 
 
+//verify payment function
+const verifyPaymentFn = async (req,res)=>{
+  try {
+   
+    const details = req.body;
+    let hmac = crypto.createHmac('sha256','e6rN7GFxw4rzGXDHyQ9oFGy6')
+
+    hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id)
+    hmac  = hmac.digest('hex')
+    if(hmac  == details.payment.razorpay_signature){
+
+      changePaymentStatus(details.order.receipt)
+      res.json({status:true})
+    }else{
+      res.json({status:false})
+
+    }
+
+  } catch (error) {
+    console.log("Could not verify payment");
+  }
+}
+
+//for changing payment status
+async function changePaymentStatus(orderId){
+  try {
+    console.log(orderId);
+    const order = await Order.updateOne({_id:orderId},
+    {
+      $set:{
+        paymentStatus:'placed'
+      }
+    })
+
+    console.log("Payment updated order"+order);
+    
+  } catch (error) {
+    console.log("Could not change the payment status");
+
+  }
+}
 
 module.exports = {
   loadCheckout,
@@ -383,7 +473,8 @@ module.exports = {
   cancelOrder,
   changeProdOrderStatus,
   cancelProdOrder,
-  addtoWishlist
+  addtoWishlist,
+  verifyPaymentFn
   
 
 

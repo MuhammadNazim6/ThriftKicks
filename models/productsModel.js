@@ -18,6 +18,7 @@ const ratingSchema = new mongoose.Schema({
   },
 });
 
+
 const productSchema = new mongoose.Schema({
   productName: {
     type: String,
@@ -48,7 +49,8 @@ const productSchema = new mongoose.Schema({
   offerPrice: {
     type: Number,
   },
-  ratings: [ratingSchema], // An array of the Rating subdocument
+  ratings: [ratingSchema], 
+  // An array of the Rating subdocument
   stock: {
     type: Number
     

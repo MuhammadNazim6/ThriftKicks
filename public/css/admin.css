@@ -185,7 +185,8 @@ font-family: 'Open Sans', sans-serif;
   cursor: pointer;
 }
 .card-image:hover{
-  filter:brightness(80%)
+  filter:brightness(80%);
+  transition: 0.3s;
 }
 
 .round-delete-button {
@@ -581,6 +582,31 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
 .hoverable:hover .icon {
   opacity: 1;
   cursor: pointer;
+
+}
+
+.icon:hover{
+  color: rgb(148, 145, 145);
+}
+
+/* Add this CSS to your stylesheet */
+.hoverable:hover .card-image {
+  filter: brightness(80%);
+  transition: filter 0.3s ease; /* Adjust duration and timing function as needed */
+}
+
+.wishlistIcon:hover + a .card-image {
+  filter: brightness(80%);
+  transition: filter 0.3s ease; /* Adjust duration and timing function as needed */
+}
+
+.txt-ind{
+  text-indent: 20px;
+background-color: #ffffff;  
   
+}
+
+.txt-ind::placeholder {
+  color: rgb(62, 61, 61);
 }
 
