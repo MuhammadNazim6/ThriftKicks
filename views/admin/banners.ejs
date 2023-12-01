@@ -348,21 +348,26 @@ addBannerBtn.addEventListener('click', async () => {
         imageUrl: e.target.result,
         imageAlt: 'The uploaded picture',
         showCancelButton: true,
-        confirmButtonText: 'Confidrm',
+        confirmButtonText: 'Confirm',
         confirmButtonColor: '#007BFF',
         cancelButtonText: 'Cancel',
         cancelButtonColor: '#DC3545',
       });
     };
+
     reader.readAsDataURL(formValues.image);
+  }
+
+  // Select the button and add an event listener outside the Swal.then method
+  const addBtn = document.getElementById('addBtn');
+  if (addBtn) {
+    addBtn.addEventListener('click', () => {
+      console.log('Add Banner button clicked');
+    });
   }
 });
 
 
-const addBtn = document.getElementById('addBtn')
-addBtn.addEventListener('click',()=>{
-  alert('ljyhgkjhkjh')
-})
 
     </script>
 
