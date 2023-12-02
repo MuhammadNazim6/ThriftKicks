@@ -204,7 +204,7 @@
     <td class="text-dark"><%= products[i].size %></td>
     <td class="text-dark"><%= products[i].category_id.categoryName %></td> 
     <td class="text-dark"><%= products[i].stock %></td> 
-    <td class="text-dark"><img class="product-view" src="<%= products[i].image.path1 %>"></td>
+    <td class="text-dark"><img class="product-view images" src="<%= products[i].image.path1 %>" style="cursor:pointer;"></td>
     
  
     
@@ -351,11 +351,43 @@
               this.setAttribute("data-state", "unlisted");
               this.classList.remove("btn-danger");
               this.classList.add("btn-success");
+
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "error",
+                title: "Product Unlisted"
+              });
             } else {
               this.textContent = "Unlist"; 
               this.setAttribute("data-state", "listed");
               this.classList.remove("btn-success");
               this.classList.add("btn-danger");
+
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Product Listed"
+              });
             }
           })
           .catch((error) => {
@@ -363,6 +395,23 @@
           });
       });
     });
+
+
+    //for loading image
+const images = document.querySelectorAll('.images').forEach((img)=>[
+  img.addEventListener('click',()=>{
+    
+    const imageUrl = img.src;
+
+    // Show the clicked image in SweetAlert modal
+    Swal.fire({
+      imageUrl: imageUrl,
+      imageAlt: 'Clicked Image',
+      confirmButtonText: 'Close',
+    });
+  })
+
+])
   </script>
   
   

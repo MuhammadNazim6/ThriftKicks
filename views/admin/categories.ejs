@@ -339,11 +339,44 @@
           this.setAttribute("data-state", "unlisted");
           this.classList.remove("btn-danger");
           this.classList.add("btn-success");
+
+          const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "error",
+                title: "Category Unlisted"
+              });
+
         } else {
           this.textContent = "Unlist";
           this.setAttribute("data-state", "listed");
           this.classList.remove("btn-success");
           this.classList.add("btn-danger");
+
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Category Listed"
+              });
         }
       }
 

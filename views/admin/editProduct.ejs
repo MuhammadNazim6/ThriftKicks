@@ -115,9 +115,9 @@
       <!-- Image Upload -->
 
       <div class="form-group">
-        <img class="product-view" src="<%= products.image.path1%>">
-        <img class="product-view" src="<%= products.image.path2%>">
-        <img class="product-view" src="<%= products.image.path3%>">
+        <img class="product-view images" src="<%= products.image.path1%>" style="cursor:pointer;">
+        <img class="product-view images" src="<%= products.image.path2%>" style="cursor:pointer;">
+        <img class="product-view images" src="<%= products.image.path3%>" style="cursor:pointer;">
         
         <div class="custom-file">
           <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" multiple
@@ -140,7 +140,24 @@
     
 </div>
 
+<script>
+  //for loading image
+const images = document.querySelectorAll('.images').forEach((img)=>[
+  img.addEventListener('click',()=>{
+    
+    const imageUrl = img.src;
 
+    // Show the clicked image in SweetAlert modal
+    Swal.fire({
+      imageUrl: imageUrl,
+      imageAlt: 'Clicked Image',
+      confirmButtonText: 'Close',
+    });
+  })
+
+])
+
+</script>
 
 
 

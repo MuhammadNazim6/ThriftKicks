@@ -75,20 +75,27 @@
 
 
 
-                                
-                                    <li>
-                                        <% if(typeof user !=='undefined' ) { %>
-                                            <a class="cursor_cart" href="/cart">
-                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
 
-                                            </a>
-                                            
-                                            <% } else { %>
-                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
-                                                    shopping_cart
-                                                    </span></a>
-                                                <% } %>
-                                    </li>
+                                        <li>
+                                            <% if(typeof user !=='undefined' ) { %>
+                                                <a class="cursor_cart" href="/cart">
+                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i> <span
+                                                            class="badge" id="badge">
+                                                            <%if(typeof cart !=='undefined' && cart?.products?.length>
+                                                                0){%><%=cart?.products?.length%>
+                                                                    <%}else{%>
+                                                                        <%}%>
+                                                        </span></div>
+                                                </a>
+
+                                                <% } else { %>
+                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span
+                                                            style="vertical-align: -4px;"
+                                                            class="material-symbols-outlined">
+                                                            shopping_cart
+                                                        </span></a>
+                                                    <% } %>
+                                        </li>
 
 
                         </ul>
@@ -108,7 +115,7 @@
         </div>
     </header>
     <!-- Header Section End -->
-   
+
     <div class="container">
         <div class="container-fluid py-4">
             <div class="row">
@@ -125,35 +132,105 @@
                 </div>
             </div>
         </div>
-        <!-- Hero Section Begin -->
-        <section class="hero">
+    </div>
+    <!-- Hero Section Begin -->
+    <div class="container">
+        <div id="carouselExampleIndicators" class="carousel slide mt-5 mb-5" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <% for (let i = 0; i < banner.length; i++) { %>
+                   <li data-target="#carouselExampleIndicators" data-slide-to="<%= i %>" <%= i === 0 ? 'class="active"' : '' %>></li>
+                <% } %>
+             </ol>
+             
+            <div class="carousel-inner">
+                <% banner.forEach((ban, index)=> { %>
+                    <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                        <a href="?search=<%= ban.href %>"> <img class="d-block w-100" src="<%= ban.imageUrl %>"
+                                alt="Slide <%= index + 1 %>"> </a>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h3 class="text-white">
+                                <%= ban.title %>
+                            </h3>
+                                <p class="text-white">
+                                    <%= ban.description %>
+                                </p>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
 
-            <img src="assets/hero/hero-1.jpg" class=" my-5">
+
+        <!-- Hero Section End -->
+
+        <!-- Carousel -->
+
+        <section class="hero">
             <div class="hero__slider owl-carousel">
                 <div class="hero__items set-bg">
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-7 col-md-8">
-                            <div class="hero__text">
-                                <h6>Summer Collection</h6>
-                                <h2>Fall - Winter Collections 2030</h2>
-                                <p>
-                                    A specialist label creating luxury essentials. Ethically crafted
-                                    with an unwavering commitment to exceptional quality.
-                                </p>
-                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
-                                <div class="hero__social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-7 col-md-8">
+                                <!-- Add an image using an <img> tag -->
+                                <img src="<%= products[0].image.path1 %>" alt="Your Alt Text">
+
+                                <div class="hero__text">
+                                    <h6>Summer Collection</h6>
+                                    <h2>Fall - Winter Collections 2030</h2>
+                                    <p>A specialist label creating luxury essentials. Ethically crafted with an
+                                        unwavering
+                                        commitment to exceptional quality.</p>
+                                    <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                    <div class="hero__social">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                                        <a href="#"><i class="fa fa-instagram"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="hero__items set-bg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-7 col-md-8">
+                                <!-- Add an image using an <img> tag -->
+                                <img src="<%= products[0].image.path1 %>" alt="Your Alt Text">
+
+                                <div class="hero__text">
+                                    <h6>Summer Collection</h6>
+                                    <h2>Fall - Winter Collections 2030</h2>
+                                    <p>A specialist label creating luxury essentials. Ethically crafted with an
+                                        unwavering
+                                        commitment to exceptional quality.</p>
+                                    <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                    <div class="hero__social">
+                                        <a href="#"><i class="fa fa-facebook"></i></a>
+                                        <a href="#"><i class="fa fa-twitter"></i></a>
+                                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                                        <a href="#"><i class="fa fa-instagram"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
-        <!-- Hero Section End -->
+
+        <!-- Carousel end -->
 
 
         <!-- Product Section Start -->
@@ -169,7 +246,7 @@
                                     <div class="card m-3" style="width: 15rem; height: 26rem;">
 
 
-                                    
+
                                         <div class="hoverable">
                                             <a href="/productView?id=<%=products[i]._id %>">
                                                 <img src="<%= products[i].image.path1 %>" class="card-image"
@@ -187,14 +264,13 @@
                                                     break;
                                                 }
                                             } %>
-                                            <%= isInWishlist ? 'text-danger' : '' %>" 
-                                            <% } %>
+                                            <%= isInWishlist ? 'text-danger' : '' %>" <% } %>
 
-                                            onmouseover="hoverCardImage()" data-prodId="<%= products[i]._id %>" >
-                                                <i class="fa fa-heart heartIcon"></i>
+                                                onmouseover="hoverCardImage()" data-prodId="<%= products[i]._id %>" >
+                                                    <i class="fa fa-heart heartIcon"></i>
                                             </div>
 
-                                            
+
                                         </div>
 
 
@@ -233,7 +309,7 @@
                     <ul class="pagination">
                         <% for (let i=1; i <=totalPages; i++) { %>
                             <li class="page-item">
-                                <a class="page-link" href="?page=<%= i %>">
+                                <a class="page-link pagination" href="?page=<%= i %>">
                                     <%= i %>
                                 </a>
                             </li>
@@ -423,7 +499,7 @@
 
         document.querySelectorAll(".addtoCartButton").forEach(function (button) {
             button.addEventListener("click", addtoCart)
-            
+
         })
 
         async function addtoCart() {
@@ -461,82 +537,90 @@
 
         //wishlist functionalities
         function hoverCardImage() {
-            document.querySelectorAll('.card-image').forEach((elem)=>{
-                elem.addEventListener('mouseover',()=>{
+            document.querySelectorAll('.card-image').forEach((elem) => {
+                elem.addEventListener('mouseover', () => {
                     style.filter = 'brightness(80%)'
                 })
             })
         }
         function unhoverCardImage() {
-            document.querySelector('.card-image').forEach((elem)=>{
-                elem.addEventListener('mouseover',()=>{
+            document.querySelector('.card-image').forEach((elem) => {
+                elem.addEventListener('mouseover', () => {
                     style.filter = 'brightness(100%)';
                 })
             })
         }
 
         const wishlistIcons = document.querySelectorAll('.wishlistIcon')
-        wishlistIcons.forEach((icon)=>{
-            icon.addEventListener('click',addWishlistFn)
+        wishlistIcons.forEach((icon) => {
+            icon.addEventListener('click', addWishlistFn)
         })
 
-        async function addWishlistFn(){
+        async function addWishlistFn() {
             try {
-                
+
                 const prodId = this.getAttribute('data-prodId')
                 const response = await fetch(`/addtoWishlist`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({prodId})
-                
-            })
-            if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            }
-            const data = await response.json()
-            if (data.message) {
-                this.classList.add('text-danger')
-                const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 1200,
-                });
-                Toast.fire({
-                icon: "success",
-                title: "Product added to wishlist"
-                });
-            }
-            if (data.remMessage) {
-                this.classList.remove('text-danger')
-                this.style.color = 'white'
-                const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 1200,
-                });
-                Toast.fire({
-                icon: "info",
-                title: "Product removed from wishlist"
-                });
-                
-            }
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ prodId })
+
+                })
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data");
+                }
+                const data = await response.json()
+                if (data.message) {
+                    this.classList.add('text-danger')
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 1200,
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Product added to wishlist"
+                    });
+                }
+                if (data.remMessage) {
+                    this.classList.remove('text-danger')
+                    this.style.color = 'white'
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 1200,
+                    });
+                    Toast.fire({
+                        icon: "info",
+                        title: "Product removed from wishlist"
+                    });
+
+                }
             } catch (error) {
                 const Toast = Swal.mixin({
-                toast: true,
-                position: "Center",
-                showConfirmButton: false,
-                timer: 1200,
+                    toast: true,
+                    position: "Center",
+                    showConfirmButton: false,
+                    timer: 1200,
                 });
                 Toast.fire({
-                icon: "warning",
-                text: "Login or Signup for adding to wishlist"
+                    icon: "warning",
+                    text: "Login or Signup for adding to wishlist"
                 });
             }
         }
+
+        //pagination
+        const paginationBtn = document.querySelectorAll('.pagination')
+        paginationBtn.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                btn.classList.color = 'red'
+            })
+        })
     </script>
 
     <%- include('../layouts/footer.ejs')%>

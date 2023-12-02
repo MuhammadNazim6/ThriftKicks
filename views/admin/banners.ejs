@@ -77,7 +77,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white active bg-gradient-secondary" href="/admin/categories">
+            <a class="nav-link text-white" href="/admin/categories">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                <i class="fa-solid fa-list"></i>
               </div>
@@ -85,7 +85,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white " href="/admin/coupons">
+            <a class="nav-link text-white" href="/admin/coupons">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-ticket"></i>
               </div>
@@ -93,7 +93,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white " href="/admin/banners">
+            <a class="nav-link text-white active bg-gradient-secondary" href="/admin/banners">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-newspaper"></i>
               </div>
@@ -195,10 +195,56 @@
 
               <div class="border-radius-xl mx-2 mx-md-3 position-relative"
                 style="background-image: url('..asssets/img/bg-pricing.jpg'); background-size: cover;">
-
-              
     </div>
 
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+
+          
+          <table class="table table-striped">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Banner</th>
+                <th scope="col">Description</th>
+                <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (typeof banner !== 'undefined' && banner.length > 0 ){   %>
+                <% banner.reverse() %>
+               <% banner.forEach((banner,index)=>{  %>
+                  <tr>
+                    <th class="p-4" style="width:20px;" scope="row"><%=index+1%></th>
+                    <td class="p-4" style="width:280px;"><%= banner.title %></td>
+                    <td class="p-2" style="width:300px;"><img class="images" src="<%= banner.imageUrl %>" alt="Banner Img" style="height:150px; width:220px; cursor:pointer;"></td>
+                    <td class="p-4"><%= banner.description %></td>
+                    <td class="p-4">
+                      
+                      <button data-banner-id="<%= banner._id %>"
+                        data-state="<% if(banner.is_listed === true){%>listed<%} else {%>unlisted<%} %>"
+                        class="btn unlistButton custom-button
+                      <%  if(banner.is_listed === true){%> btn-danger <% } else { %> btn-success <% } %> mx-3 
+                      ">
+                        <% if(banner.is_listed===true){%> Unlist <% } else { %> List <% } %>
+                      </button>
+
+                    </td>
+                  </tr>
+             <%   })  %> 
+            
+           <% }  %>
+            </tbody>
+          </table>
+
+
+        </div>
+      </div>
+    </div>
+    
+   
 
     <div class="fixed-plugin">
       <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
@@ -293,13 +339,13 @@ addBannerBtn.addEventListener('click', async () => {
   const { value: formValues } = await Swal.fire({
     title: 'Add Banner',
     html: `
-      <form>
+      <form enctype="multipart/form-data">
         <div class="form-group">
           <label class="text-lg" for="image">Select Banner Image</label>
           <input type="file" id="image" accept="image/*" class="form-control-file  bg-glass">
         </div>
         <div class="form-group">
-          <label class="text-lg" for="title">Banner Title</label>
+          <label class="text-lg" for="title">Title</label>
           <input type="text" id="title" class="form-control bg-glass">
         </div>
         <div class="form-group">
@@ -311,15 +357,117 @@ addBannerBtn.addEventListener('click', async () => {
           <input type="text" id="link" class="form-control bg-glass">
         </div>
       </form>
-      <button class="btn-info" id="addBtn" style="height:40px; border-radius:3px;"> Add Banner </button>
+      
     `,
     focusConfirm: false,
     showCancelButton: true,
     confirmButtonText: 'Add Banner',
-    showConfirmButton : false,
+    // showConfirmButton : false,
     cancelButtonText: 'Cancel',
     cancelButtonColor: '#DC3545',
-    preConfirm: () => {
+    preConfirm: async () => {
+      const image = document.getElementById('image').files[0];
+    
+      // const compressedImage = await imageCompression(imageFile, {
+      //   maxSizeMB: 1, // Adjust the maximum size
+      // });
+      const titleValue = document.getElementById('title').value;
+      const descrValue = document.getElementById('description').value;
+      const link = document.getElementById('link').value;
+
+
+      const formData = new FormData();
+      formData.append('image', image);
+      formData.append('titleValue', titleValue);
+      formData.append('descrValue', descrValue);
+      formData.append('link', link);
+    
+      if(image === null || image === undefined){
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: false,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "danger",
+        title: "Add a Banner image"
+      });
+      return
+      }
+
+      if(titleValue === ""){
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: false,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "danger",
+        title: "Add a Banner title"
+      });
+      return
+      }
+
+      if(descrValue === "" ){
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: false,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "danger",
+        title: "Add a Banner description"
+      });
+      return
+      }
+
+
+      if(link === "" ){
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "center",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: false,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "danger",
+        title: "Add a Banner link"
+      });
+      return
+      }
+
+      const response = await fetch('/admin/add-banner',{
+            method: "POST",
+            body: formData,
+          })
+
+          const data = await response.json();
+            if(data.success){
+              
+            }
       return {
         image: document.getElementById('image').files[0],
         title: document.getElementById('title').value,
@@ -337,35 +485,121 @@ addBannerBtn.addEventListener('click', async () => {
         title: 'Banner Preview',
         html: `
           <div class="card" style="width: 18rem;">
-            <img src="${e.target.result}" class="card-img-top" alt="The uploaded picture">
             <div class="card-body">
               <h5 class="card-title">${formValues.title}</h5>
               <p class="card-text">${formValues.description}</p>
-              <a href="${formValues.link}" class="btn btn-primary" target="_blank">Visit</a>
             </div>
           </div>
         `,
         imageUrl: e.target.result,
         imageAlt: 'The uploaded picture',
-        showCancelButton: true,
-        confirmButtonText: 'Confirm',
+        showCancelButton: false,
+        confirmButtonText: 'Ok',
         confirmButtonColor: '#007BFF',
         cancelButtonText: 'Cancel',
         cancelButtonColor: '#DC3545',
-      });
-    };
+      }).then((result) => {
+    if (result.isConfirmed) {
+      
+      location.reload()
+      
+    }})
 
+
+    };
     reader.readAsDataURL(formValues.image);
   }
-
-  // Select the button and add an event listener outside the Swal.then method
-  const addBtn = document.getElementById('addBtn');
-  if (addBtn) {
-    addBtn.addEventListener('click', () => {
-      console.log('Add Banner button clicked');
-    });
-  }
 });
+
+//for loading image
+const images = document.querySelectorAll('.images').forEach((img)=>[
+  img.addEventListener('click',()=>{
+    
+    const imageUrl = img.src;
+
+    // Show the clicked image in SweetAlert modal
+    Swal.fire({
+      imageUrl: imageUrl,
+      imageAlt: 'Clicked Image',
+      confirmButtonText: 'Close',
+    });
+  })
+
+])
+
+
+//list unlist banner
+document.querySelectorAll(".unlistButton").forEach(function (button) {
+        button.addEventListener("click", listUnlistBanner)
+      })
+
+      async function listUnlistBanner() {
+        const bannerId = this.getAttribute("data-banner-id");
+        const currentState = this.getAttribute("data-state");
+        let url;
+        if (currentState === "listed") {
+          url = `/admin/unlistBanner`;
+        } else {
+          url = `/admin/listBanner`;
+        }
+        const response = await fetch(url, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body:JSON.stringify({bannerId})
+        })
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json()
+        console.log(data.message);
+
+        if (currentState === "listed") {
+          this.textContent = "List";
+          this.setAttribute("data-state", "unlisted");
+          this.classList.remove("btn-danger");
+          this.classList.add("btn-success");
+
+          const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "error",
+                title: "Banner Unlisted"
+              });
+
+        } else {
+          this.textContent = "Unlist";
+          this.setAttribute("data-state", "listed");
+          this.classList.remove("btn-success");
+          this.classList.add("btn-danger");
+
+          const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Banner Listed"
+              });
+        }
+      }
 
 
 

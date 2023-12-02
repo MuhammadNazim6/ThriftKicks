@@ -601,7 +601,7 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
 }
 
 .txt-ind{
-  text-indent: 20px;
+  text-indent: 14px;
 background-color: #ffffff;  
   
 }
@@ -610,3 +610,6 @@ background-color: #ffffff;
   color: rgb(62, 61, 61);
 }
 
+.bg-creme{
+  background-color: rgba(0, 0, 0, 0.1) ;
+ }

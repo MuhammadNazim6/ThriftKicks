@@ -2,6 +2,7 @@ const express = require("express")
 const adminController = require("../controllers/adminController")
 const couponController = require("../controllers/couponsController")
 const orderController = require('../controllers/orderController')
+const bannerController = require('../controllers/bannerController.js')
 const admin_route = express()
 const authAdmin = require("../middleware/authAdmin")
 const upload = require('../multer.js')
@@ -59,6 +60,9 @@ admin_route.post('/coupon/delete', authAdmin.isLogin , couponController.deleteCo
 admin_route.patch('/orders/changeProdStatus', authAdmin.isLogin ,orderController.changeProdOrderStatus )
 admin_route.patch('/orders/cancelProdOrder' ,authAdmin.isLogin , orderController.cancelProdOrder)
 
-admin_route.get('/banners',authAdmin.isLogin, adminController.loadBanners)
+admin_route.get('/banners',authAdmin.isLogin, bannerController.loadBanners)
+admin_route.post('/add-banner', authAdmin.isLogin ,upload.single('image'), bannerController.addBanner)
+admin_route.patch('/unlistBanner',authAdmin.isLogin,bannerController.unlistBannerFn)
+admin_route.patch('/listBanner',authAdmin.isLogin,bannerController.listBannerFn)
 
 module.exports = admin_route; 

@@ -2,6 +2,7 @@ const UserAddressModel = require("../models/userModel");
 const ProductsModel = require("../models/productsModel");
 const OrdersModel = require('../models/ordersModel')
 const mailer = require("../services/mail");
+const BannerModel = require('../models/bannerModel')
 const bcrypt = require("bcrypt");
 const otplib = require("otplib");
 const uuid = require('uuid');
@@ -11,6 +12,8 @@ const Cart = UserAddressModel.Cart;
 const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
 const Wishlist = UserAddressModel.Wishlist;
+const Banner = BannerModel.Banner;
+
 
 let OTP;
 
@@ -288,6 +291,15 @@ const loadHome = async (req, res) => {
     //for wishlist
     const wishlist = await Wishlist.findOne({userId:user_id})
 
+//for banner
+const banner = await Banner.aggregate([
+  {
+    $match: {
+      is_listed: { $eq: true }
+    }
+  }
+]);
+
 
     if (req.session.user_id) {
       const userData = await User.findById({ _id: req.session.user_id });
@@ -297,13 +309,15 @@ const loadHome = async (req, res) => {
         totalPages: Math.ceil(count / limit),
         currentPage: page,
         cart : cart,
-        wishlist
+        wishlist,
+        banner
       });
     } else {
       res.render("users/home", {
         products: products,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
+        banner
       });
     }
   } catch (error) {
