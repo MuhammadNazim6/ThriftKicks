@@ -76,26 +76,19 @@
 
 
 
-                                        <li>
-                                            <% if(typeof user !=='undefined' ) { %>
-                                                <a class="cursor_cart" href="/cart">
-                                                    <div class="cart-icon"> <i class="fas fa-shopping-cart"></i> <span
-                                                            class="badge" id="badge">
-                                                            <%if(typeof cart !=='undefined' && cart?.products?.length>
-                                                                0){%><%=cart?.products?.length%>
-                                                                    <%}else{%>
-                                                                        <%}%>
-                                                        </span></div>
-                                                </a>
+                                    <li>
+                                        <% if(typeof user !=='undefined' ) { %>
+                                            <a class="cursor_cart" href="/cart">
+                                                <div class="cart-icon"> <i class="fas fa-shopping-cart"></i>  <span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
 
-                                                <% } else { %>
-                                                    <a class="cartButton cursor_cart"><span>Cart</span> <span
-                                                            style="vertical-align: -4px;"
-                                                            class="material-symbols-outlined">
-                                                            shopping_cart
-                                                        </span></a>
-                                                    <% } %>
-                                        </li>
+                                            </a>
+                                            
+                                            <% } else { %>
+                                                <a class="cartButton cursor_cart"><span>Cart</span> <span style="vertical-align: -4px;" class="material-symbols-outlined">
+                                                    shopping_cart
+                                                    </span></a>
+                                                <% } %>
+                                    </li>
 
 
                         </ul>
@@ -134,7 +127,7 @@
         </div>
     </div>
     <!-- Hero Section Begin -->
-    <div class="container">
+    <div class="container" >
         <div id="carouselExampleIndicators" class="carousel slide mt-5 mb-5" data-ride="carousel">
             <ol class="carousel-indicators">
                 <% for (let i = 0; i < banner.length; i++) { %>
@@ -145,7 +138,7 @@
             <div class="carousel-inner">
                 <% banner.forEach((ban, index)=> { %>
                     <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                        <a href="?search=<%= ban.href %>"> <img class="d-block w-100" src="<%= ban.imageUrl %>"
+                        <a href="/shop?search=<%= ban.href %>"> <img class="d-block w-100" src="<%= ban.imageUrl %>" style="height: 600px; "
                                 alt="Slide <%= index + 1 %>"> </a>
                         <div class="carousel-caption d-none d-md-block">
                             <h3 class="text-white">
@@ -167,6 +160,7 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
+    </div> 
 
 
         <!-- Hero Section End -->
@@ -289,7 +283,7 @@
                                             <button data-product-id="<%= products[i]._id %>"
                                                 class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
                                                 to Cart</button>
-
+                                                
                                         </div>
                                     </div>
                                 </div>
@@ -494,6 +488,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        
         //constants 
         const badge = document.getElementById('badge')
 

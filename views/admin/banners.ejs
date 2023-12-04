@@ -220,7 +220,7 @@
                     <th class="p-4" style="width:20px;" scope="row"><%=index+1%></th>
                     <td class="p-4" style="width:280px;"><%= banner.title %></td>
                     <td class="p-2" style="width:300px;"><img class="images" src="<%= banner.imageUrl %>" alt="Banner Img" style="height:150px; width:220px; cursor:pointer;"></td>
-                    <td class="p-4"><%= banner.description %></td>
+                    <td class="p-4" style="text-wrap: wrap;"><%= banner.description %></td>
                     <td class="p-4">
                       
                       <button data-banner-id="<%= banner._id %>"

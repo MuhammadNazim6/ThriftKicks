@@ -57,6 +57,9 @@ const orderSchema = new mongoose.Schema({
         },
         reason:{
           type:String
+        },
+        date:{
+          type:Date,
         }
         
       }

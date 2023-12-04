@@ -125,7 +125,7 @@ const insertUser = async (req, res) => {
     const email = req.body.email;
     const mail = await User.findOne({ email: req.body.email });
     const currentValue = req.body;
-    if (currentValue.fname.includes(" ") || /^[0-9]+$/.test(req.body.fname)) {
+    if(currentValue.fname.includes(" ") || /^[0-9]+$/.test(req.body.fname)) {
       return res.render("users/registration", {
         msgFname: "Enter a valid Name",
         currentValue: currentValue,
@@ -176,6 +176,7 @@ const insertUser = async (req, res) => {
         // image:req.file.filename,
         password: spassword,
         is_admin: 0,
+        
       });
 
       //returning a promise

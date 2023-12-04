@@ -230,7 +230,7 @@
                                     <% if (typeof wishlist !== 'undefined') { %>
                                   
                                       <% let isInWishlist = false; %>
-                                      <% for (let j = 0; j < wishlist.products.length; j++) {
+                                      <% for (let j = 0; j < wishlist?.products?.length; j++) {
                                         const x = wishlist.products[j];
                                         if (x.productId.toString() === product._id.toString()) {
                                           isInWishlist = true;

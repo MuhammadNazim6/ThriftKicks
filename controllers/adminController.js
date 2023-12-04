@@ -518,7 +518,36 @@ const changeOrderStatus = async (req,res)=>{
 
       order.OrderStatus = status;
       order.updatedAt = Date.now()
+
+      if(status === 'Shipped'){
+        order.products.forEach((prod)=>{
+          prod.ProductOrderStatus = "Shipped"
+        })
+      }
+
+      if(status === 'Delivered'){
+        order.products.forEach((prod)=>{
+          prod.ProductOrderStatus = "Delivered"
+        })
+      }
+      
+      if(status === 'Delivered'){
+        order.products.forEach((prod)=>{
+          prod.ProductOrderStatus = "Delivered"
+        })
+      }
+      if(status === 'Out for Delivery'){
+        order.products.forEach((prod)=>{
+          prod.ProductOrderStatus = "Out for Delivery"
+        })
+      }
+      if(status === 'Pending'){
+        order.products.forEach((prod)=>{
+          prod.ProductOrderStatus = "Ordered"
+        })
+      }
       await order.save();
+    
       res.json({message:"Order Status Changed Successfully"})
 
   } catch (error) {

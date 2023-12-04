@@ -165,7 +165,7 @@
 
                                             <br>
                                             <label class="custom-radio">
-                                                <input type="radio" name="address" value="<%= address[i]._id %>">
+                                                <input type="radio" name="address" value="<%= address[i]._id %>" style="cursor: pointer;">
 
                                                 <p class="mb-3">Choose Address</p>
                                             </label>
@@ -238,7 +238,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="button" class="btn btn-dark" id="addAddressButton">Add
+                                    <button type="button" class="primary-btn" id="addAddressButton">Add
                                         Address</button>
                                     <span id="addressAlert" class="alert alert-success text-white mr-5 mb-4"
                                         style="width:350px; display:none;">
@@ -248,6 +248,7 @@
                         </div>
 
                         <div class="col-lg-4 col-md-6">
+                            <button class="primary-btn mb-5 ml-2" id="viewCoupons">View Coupons</button>
                             <div class="checkout__order">
                                 <h4 class="order__title">Your order</h4>
                                 <div class="checkout__order__products">Product <span>Total</span></div>
@@ -693,6 +694,77 @@
         }
 
 
+
+        //viewing coupons
+        const viewCoupons = document.getElementById('viewCoupons')
+        viewCoupons.addEventListener('click',()=>{
+            
+            Swal.fire({
+                html: `
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th>Coupon Code</th>
+                        <th>Minimum Spend</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% coupons.forEach((coupon) => { %>
+                        <tr>
+                            <td><%= coupon.code %></td>
+                            <td class=""text-bold">Amount over <%= coupon.minimumSpend %></td>
+                            <td><button class="btn copyBtn text-white" style="border-radius:5px; background-color:black;" data-code="<%= coupon.code %>">Copy</button></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+
+                        `,
+            });
+            const copyBtn = document.querySelectorAll('.copyBtn')
+            copyBtn.forEach((btn)=>{
+            btn.addEventListener('click',()=>{
+                // alert(btn.dataset.code)
+                contentToCopy = btn.dataset.code
+                const tempInput = document.createElement('input');
+                tempInput.value = contentToCopy;
+
+                // Append the input element to the document
+                document.body.appendChild(tempInput);
+
+                // Select the text in the input element
+                tempInput.select();
+                tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+                // Execute the copy command
+                document.execCommand('copy');
+
+                // Remove the temporary input element
+                document.body.removeChild(tempInput);
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    }
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: 'Coupon Code Copied !'
+                  });
+                
+                
+            })
+        })
+        })
+
+        
     </script>
 
 

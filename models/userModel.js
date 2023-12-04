@@ -68,6 +68,27 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  wallet: {
+    balance: { 
+      type: Number,
+      default: 0 },
+
+      history: [
+        {
+          type: {
+                type: String,
+            },
+            amount: {
+                type: Number,
+            },
+            date: {
+              type: Date,
+              default: Date.now,
+              required: true
+            }
+        }
+    ],
+  }
 });
 
 
@@ -93,6 +114,7 @@ const cartSchema = new mongoose.Schema({
           }
       }
   ],
+
   createdAt: {
       type: Date,
       default: Date.now,

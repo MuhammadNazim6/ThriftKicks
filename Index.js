@@ -19,9 +19,9 @@ app.use(cookieParser());
 
 app.use(
   session({
-    secret: config.generateRandomString(32), // Provide your session secret
-    resave: false, //  prevent unnecessary session saves
-    saveUninitialized: false, // Set saveUninitialized to true to save new but uninitialized sessions
+    secret: config.generateRandomString(32), 
+    resave: false, 
+    saveUninitialized: false, 
     cookie:{
       httpOnly: true, 
       maxAge: 3600000, 

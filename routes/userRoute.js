@@ -68,5 +68,8 @@ user_route.get('/wishlist',auth.isLogin , userController.loadWishlist)
 //verify payment route
 user_route.post('/verify_payment',orderController.verifyPaymentFn)
 
+//product return
+user_route.post('/return-product',orderController.returnProductFn)
+
 
 module.exports = user_route;

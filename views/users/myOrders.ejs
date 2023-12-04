@@ -98,7 +98,7 @@
       <div class="container p-4">
 
           <% if (typeof orders !== 'undefined' && orders.length > 0) { %>
-              <table class="table">
+              <table class="table table-striped" style="margin-left: -40px;">
                   <thead>
                       <tr>
                           <th scope="col">#</th>
@@ -107,7 +107,7 @@
                           <th scope="col">Total Amount</th>
                           <th scope="col">Images</th>
                           <th scope="col">Payment </th>
-                          <th scope="col">Payment Status </th>
+                          <!-- <th scope="col">Order Status </th> -->
                           <th scope="col">Shipping Address</th>
                           <th scope="col">Details</th>
                           
@@ -119,13 +119,13 @@
                       <% for (let i = orders.length-1; i >= 0 ; i--) { j++ %>
                           <tr>
                               <td class="p-4" scope="row"><%= j %></td>
-                              <td class="p-4 text-bold"><%= orders[i].orderDate.toString().slice(0,15) %></td> 
-                              <td class="p-4">
+                              <td class="p-4 text-bold"><%= orders[i].orderDate.toLocaleDateString() %></td> 
+                              <td class="p-4" style="width: 180px;">
                               <% for(let j=0;j< orders[i].products.length ; j++){ %>  
                                       <%= orders[i].products[j].productId.productName %>  <br>
                               <%  }   %>
                               </td>
-                              <td class="p-4 text-bold text-md">Rs <%= orders[i].totalAmount %></td> 
+                              <td class="p-4 text-bold text-md" style="width: 80px;">Rs <%= orders[i].totalAmount %></td> 
 
                                   <td>
                                     <% let limit %>
@@ -139,11 +139,12 @@
                                   </td>
 
                                   <td class="p-4 text-bold">
-                                    <%= orders[i].paymentMethod %>  <br> 
+                                    <%= orders[i].paymentMethod %>  <br>  <br> <%= orders[i].paymentStatus %> 
                                   </td>
-                                  <td class="p-4 text-bold">
-                                    <%= orders[i].paymentStatus %>  <br> 
-                                  </td>
+                                  <!-- <td class="p-4 text-bold">
+                                    <%= orders[i].OrderStatus %>  <br> 
+                                  </td> -->
+                                 
                                   <td class="p-4">
                                     <%= orders[i].shippingAddress.fullName %>,  <br> 
                                     <%= orders[i].shippingAddress.mobile %>,  <br> 
@@ -154,7 +155,7 @@
                                     <%= orders[i].shippingAddress.country %>,  <br> 
                                   </td>
                                   <td>
-                                    <a href="/orderDetails?ordId=<%= orders[i]._id %>">   <button class="btn btn-light orderBtn" >View order</button>   </a> <br>
+                                    <a href="/orderDetails?ordId=<%= orders[i]._id %>"> <button class="btn btn-dark orderBtn mt-5" style="width: 130px; background-color: black;" >View order </button>   </a> <br>
                                     
                                   </td>
                       

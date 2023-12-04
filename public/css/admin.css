@@ -613,3 +613,10 @@ background-color: #ffffff;
 .bg-creme{
   background-color: rgba(0, 0, 0, 0.1) ;
  }
+
+ *{
+  letter-spacing: 1px;
+ }
+ .LSpacing{
+  letter-spacing: 2px;
+ }
