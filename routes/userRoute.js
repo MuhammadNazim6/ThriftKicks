@@ -39,7 +39,7 @@ user_route.post('/updateAddress',auth.isLogin, userController.updateAddress)
 user_route.post('/updateEditedAddress',auth.isLogin, userController.updateEditedAddress)
 
 user_route.post('/checkCurrPass',auth.isLogin, userController.checkCurrPass)
-user_route.post('/changePass',auth.isLogin, userController.changePass)
+user_route.post('/changePass', userController.changePass)
 
 user_route.post('/addAddress',auth.isLogin,userController.addAddress)
 
@@ -47,7 +47,7 @@ user_route.get('/forgotPassword',auth.isLogout, userController.forgotPassword)
 user_route.post('/forgotPassEmail',auth.isLogout ,userController.forgotPassEmail)
 user_route.post('/forgetPassCheckOtp',auth.isLogout, userController.forgetPassCheckOtp)
 
-user_route.get('/otpChangepass',auth.isLogin, userController.loadOtpchangepass)
+user_route.get('/otpChangepass',auth.isLogout, userController.loadOtpchangepass)
 
 user_route.get('/checkout', auth.isLogin,orderController.loadCheckout)
 user_route.post('/checkout',auth.isLogin, orderController.placeOrder)

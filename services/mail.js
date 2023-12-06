@@ -13,7 +13,7 @@ async function sendMail(toMail,otp,name){
 
   //mail content
   const mailOptions = {
-    from:'nazimnazz66@gmail.com',
+    from:process.env.EMAIL,
     to: toMail,
     subject:`OTP for email verification for Thrift Kicks`,
     text: `Dear ${name},\n\nThank you for choosing Thrift Kicks. Your OTP for email verification is: ${otp}. Please use this code to complete the verification process.\n\nBest Regards,\nThe Thrift Kicks Team`,

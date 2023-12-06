@@ -205,7 +205,6 @@
           <table class="table table-striped">
             <thead class="thead-light">
               <tr>
-                <th scope="col">#</th>
                 <th scope="col">Title</th>
                 <th scope="col">Banner</th>
                 <th scope="col">Description</th>
@@ -217,7 +216,7 @@
                 <% banner.reverse() %>
                <% banner.forEach((banner,index)=>{  %>
                   <tr>
-                    <th class="p-4" style="width:20px;" scope="row"><%=index+1%></th>
+                  
                     <td class="p-4" style="width:280px;"><%= banner.title %></td>
                     <td class="p-2" style="width:300px;"><img class="images" src="<%= banner.imageUrl %>" alt="Banner Img" style="height:150px; width:220px; cursor:pointer;"></td>
                     <td class="p-4" style="text-wrap: wrap;"><%= banner.description %></td>
@@ -229,6 +228,9 @@
                       <%  if(banner.is_listed === true){%> btn-danger <% } else { %> btn-success <% } %> mx-3 
                       ">
                         <% if(banner.is_listed===true){%> Unlist <% } else { %> List <% } %>
+                      </button>
+                      <button class="btn btn-dark bannerDelBtn" data-banner-id="<%= banner._id %>">
+                        Delete
                       </button>
 
                     </td>
@@ -601,6 +603,54 @@ document.querySelectorAll(".unlistButton").forEach(function (button) {
         }
       }
 
+
+      //Banner delete
+      const bannerDelBtn = document.querySelectorAll('.bannerDelBtn')
+      bannerDelBtn.forEach((btn)=>{
+        btn.addEventListener('click',deleteBannerFn)
+      })
+
+      async function deleteBannerFn(){
+        try {
+          const bannerId = this.getAttribute("data-banner-id")
+
+          Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+
+            const response = await fetch('/admin/deleteBanner',{
+            method:'DELETE',
+            headers:{
+              'Content-Type':'application/json',
+            },
+            body: JSON.stringify({bannerId})
+          })
+
+          const data = await response.json()
+          if(data.message){
+
+            this.parentNode.parentNode.remove()
+            Swal.fire({
+                          title: "Deleted!",
+                          text: "Banner has been deleted.",
+                          icon: "success"
+                        });
+          }            
+          }
+        });
+
+          
+        } catch (error) {
+          console.log("Was unable to delete banner");
+        }
+      }
 
 
     </script>

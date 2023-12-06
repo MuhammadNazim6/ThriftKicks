@@ -7,6 +7,7 @@ const otplib = require("otplib");
 const uuid = require("uuid");
 const crypto = require("crypto");
 const Razorpay = require("razorpay");
+const { log } = require("console");
 const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
 const Cart = UserAddressModel.Cart;
@@ -143,16 +144,19 @@ const stockAdjusted = async (cartProducts) => {
 //Order placing
 const placeOrder = async (req, res) => {
   try {
-    const { paymentSelected, addressSelected, couponId } = req.body;
+    const { paymentSelected, addressSelected, couponId ,walletCheckedStatus } = req.body;
     const userId = req.session.user_id;
     const userData = await User.findOne({ _id: userId });
     const shippingAddress = await Address.findOne({ _id: addressSelected });
     const cart = await Cart.findOne({ userId: userId });
     const coupon = couponId !== "" ? couponId : "none";
+    
 
     let trackId = await generateTrackId();
     let totalAmount = await calculateTotalPrice(userId);
     console.log(couponId);
+
+
 
     if (couponId) {
       const coupon = await Coupon.findOne({ _id: couponId });
@@ -160,6 +164,45 @@ const placeOrder = async (req, res) => {
       //coupon used by adding
       coupon.usersUsed.push(userId);
       await coupon.save();
+    }
+
+    if(walletCheckedStatus){
+      console.log("Here wallet is used "+walletCheckedStatus);
+      let walletBalance = userData.wallet.balance
+      if(userData.wallet.balance < totalAmount){
+        console.log("balance less than total amount");
+        
+        totalAmount = totalAmount - userData.wallet.balance
+        userData.wallet.balance = 0 
+        const walletHistory = {
+          type: "Debit",
+          amount: walletBalance,
+          date: Date.now(),
+          reason: 'Redeemed for shopping'
+        };
+        userData.wallet.history.push(walletHistory);
+        await userData.save();
+
+        console.log("Userdata saved");
+      }else{
+        console.log("balance greater than total amount");
+
+        userData.wallet.balance -= totalAmount
+
+        const walletHistory = {
+          type: "Debit",
+          amount: totalAmount,
+          date: Date.now(),
+          reason: 'Redeemed for shopping'
+        };
+        userData.wallet.history.push(walletHistory);
+        
+        await userData.save();
+
+        totalAmount = 0;
+
+      }
+      
     }
 
     const cartProducts = cart.products.map((productItem) => ({
@@ -326,9 +369,20 @@ const cancelProdOrder = async (req, res) => {
     productToUpdate.ProductOrderStatus = "Cancelled";
 
     //reducing total order amount
-    order.totalAmount =
+    // so that amount will not go below zero
+    if(order.totalAmount >= (product.actualPrice * productToUpdate.quantity)){
+      order.totalAmount =
       order.totalAmount - product.actualPrice * productToUpdate.quantity;
-    await order.save();
+      await order.save();
+      console.log("THat");
+
+    }else{
+      order.totalAmount =  order.totalAmount
+      await order.save()
+      console.log("THis");
+    }
+    
+
 
     //increasing stock of product
     product.stock = product.stock + productToUpdate.quantity;
@@ -350,6 +404,7 @@ const cancelProdOrder = async (req, res) => {
                       type: "Credit",
                       amount: (product.actualPrice * productToUpdate.quantity) - coupon.discount_amount,
                       date: Date.now(),
+                      reason: 'Order cancel refund'
                     };
                     user.wallet.history.push(walletHistory);
                     await user.save();
@@ -364,6 +419,7 @@ const cancelProdOrder = async (req, res) => {
                         type: "Credit",
                         amount: product.actualPrice * productToUpdate.quantity,
                         date: Date.now(),
+                        reason: 'Order cancel refund'
                       };
                 
                       user.wallet.history.push(walletHistory);
@@ -379,6 +435,7 @@ const cancelProdOrder = async (req, res) => {
           type: "Credit",
           amount: product.actualPrice * productToUpdate.quantity,
           date: Date.now(),
+          reason: 'Order cancel refund'
         };
   
         user.wallet.history.push(walletHistory);
@@ -525,17 +582,67 @@ const returnProductFn = async (req, res) => {
 
     //updating refunded amount in users wallet
 
-    user.wallet.balance =
-      user.wallet.balance + product.actualPrice * productInOrder.quantity;
+    user.wallet.balance = user.wallet.balance + product.actualPrice * quantity;
     const walletHistory = {
       type: "Credit",
-      amount: product.actualPrice * productInOrder.quantity,
+      amount: product.actualPrice * quantity,
       date: Date.now(),
+      reason: 'Order Return'
     };
-    console.log(walletHistory);
-    console.log(user.wallet.history);
     user.wallet.history.push(walletHistory);
     await user.save();
+
+    ///////////////
+
+     // if order has a coupon used
+    if(order.coupon !== 'none'){
+      console.log("Using coupon");
+      const coupon = await Coupon.findById(order.coupon)
+
+                  //if total amount becomes less then minimum coupon required amount
+                  if(order.totalAmount < coupon.minimumSpend){
+                    user.wallet.balance = user.wallet.balance + ((product.actualPrice * quantity)-coupon.discount_amount)
+                  const walletHistory = {
+                    type: "Credit",
+                    amount: (product.actualPrice * quantity) - coupon.discount_amount,
+                    date: Date.now(),
+                    reason: 'Return Refund'
+                  };
+                  user.wallet.history.push(walletHistory);
+                  await user.save();
+
+                  order.coupon = 'none'
+                  await order.save()
+                  console.log("Saved None in coupon");
+                  }else{
+                    console.log("No using coupon");
+                    user.wallet.balance = user.wallet.balance + (product.actualPrice * quantity)
+                    const walletHistory = {
+                      type: "Credit",
+                      amount: product.actualPrice * quantity,
+                      date: Date.now(),
+                      reason: 'Return Refund'
+                    };
+              
+                    user.wallet.history.push(walletHistory);
+                    await user.save();
+                        }
+      
+  
+    }else{
+      //if order doesn't use a coupon
+      console.log("No using coupon");
+      user.wallet.balance = user.wallet.balance + (product.actualPrice * productToUpdate.quantity)
+      const walletHistory = {
+        type: "Credit",
+        amount: product.actualPrice * productToUpdate.quantity,
+        date: Date.now(),
+        reason: 'Return Refund'      };
+
+      user.wallet.history.push(walletHistory);
+      await user.save();
+
+    }
 
     res.json({
       message: "Product Returned",

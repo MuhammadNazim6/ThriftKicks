@@ -1,6 +1,14 @@
 <%- include('../layouts/header.ejs')%>
+
+
+<link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css">
+<script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+
+
+
+
 <style>
-  img{
+  .img{
   display: block;
   width: 600px;
   max-width: 100%;
@@ -14,6 +22,12 @@
 
 #output{
   margin: 0 5px;
+}
+img {
+  display: block;
+
+  /* This rule is very important, please don't ignore this */
+  max-width: 100%;
 }
 
 </style>
@@ -105,7 +119,7 @@
 
               <!-- Size-->
               <label for="size">Select Size:</label>
-              <select id="size" name="size" class="form-control bg-light">
+              <select id="size" name="size" class="form-control bg-light txt-ind">
                 <option value="UK-4">UK-4</option>
                 <option value="UK-5">UK-5</option>
                 <option value="UK-5.5">UK-5.5</option>
@@ -137,34 +151,41 @@
                   <div class="col-md-4">
                     <label for="image1">Product Image 1:</label>
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="image1" name="image" accept="image/*" multiple
-                        required>
-                      <label class="custom-file-label" for="image1">Choose Image</label>
-                      <div class="imagePreview d-flex m-5" id="imagePreview1"></div>
+                        <input type="file" class="custom-file-input" id="image1" name="image" accept="image/*" multiple required>
+                        <label class="custom-file-label" for="image1">Choose Image</label>
+                        <div class="imagePreview d-flex m-5" id="imagePreview1">
+                            <img id="croppedImage1" src="" alt="Cropped Image 1">
+                        </div>
+                        <button class="cropButton" data-target="image1">Crop and Upload</button>
                     </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <label for="image2">Product Image 2:</label>
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="image2" name="image" accept="image/*" multiple
-                        required>
-                      <label class="custom-file-label" for="image2">Choose Image</label>
-                      <div class="imagePreview d-flex m-5" id="imagePreview2"></div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <label for="image3">Product Image 3:</label>
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input txt-ind" id="image3" name="image" accept="image/*" multiple
-                        required>
-                      <label class="custom-file-label" for="image3">Choose Image</label>
-                      <div class="imagePreview d-flex m-5" id="imagePreview3"></div>
-                    </div>
-                  </div>
                 </div>
-              </div>
+        
+            
+                    <div class="col-md-4">
+                        <label for="image2">Product Image 2:</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="image2" name="image" accept="image/*" multiple required>
+                            <label class="custom-file-label" for="image2">Choose Image</label>
+                            <div class="imagePreview d-flex m-5" id="imagePreview2">
+                                <img id="croppedImage2" src="" alt="Cropped Image 2">
+                            </div>
+                            <button class="cropButton" data-target="image2">Crop and Upload</button>
+                        </div>
+                    </div>
+            
+                    <div class="col-md-4">
+                        <label for="image3">Product Image 3:</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="image3" name="image" accept="image/*" multiple required>
+                            <label class="custom-file-label" for="image3">Choose Image</label>
+                            <div class="imagePreview d-flex m-5" id="imagePreview3">
+                                <img id="croppedImage3" src="" alt="Cropped Image 3">
+                            </div>
+                            <button class="cropButton" data-target="image3">Crop and Upload</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
               <!-- stock detail -->
@@ -176,7 +197,7 @@
               <!-- Category -->
               <div class="form-group">
                 <label class="mt-2" for="category">Category:</label>
-                <select class="form-control bg-light" id="category" name="category" required>
+                <select class="form-control bg-light txt-ind" id="category" name="category" required>
                   <% if (category && category.length> 0) { %>
                     <% category.forEach((cat, index)=> { %>
                       <option value="<%=cat._id%>">
@@ -190,7 +211,7 @@
               </div>
 
               <!-- Submit Button -->
-              <button type="submit" class="btn btn-primary">Add Product</button>
+              <button type="submit" class="primary-btn mt-5">Add Product</button>
             </form>
 
             <% if(typeof smessage !=='undefined' ){ %>
@@ -207,8 +228,9 @@
 
           </div>
 
+          <script src="/cropperjs/dist/cropper.min.js"></script>
 
-          <script>
+          <!-- <script>
             
             const imageInput1 = document.getElementById('image1')
             const imageInput2 = document.getElementById('image2')
@@ -251,31 +273,65 @@
 
 
 
-            //for image crop 
-            
-            async function cropFn(){
-              console.log("hello");
-              const image = await document.getElementById('imagePreview1')
-              const myImg = await image.querySelector('img')
-              console.log(myImg);
+          
+          </script> -->
 
-              const cropper = new Cropper(myImg ,{
-              aspectRatio: 0,
-              viewMode: 0,
-            })
-            console.log(cropper);
-            }
-            
-
-
-            document.getElementById('cropImageBtn').addEventListener('click',
-              function () {
-                var croppedImage = cropper.getCroppedCanvas().toDataURL("image/png")
-
-                document.getElementById('output').src = croppedImage;
-              })
-
-
-          </script>
+          <!-- <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              ['1', '2', '3'].forEach(function (index) {
+                const imageInput = document.getElementById('image' + index);
+                const imagePreview = document.getElementById('imagePreview' + index);
+                const croppedImage = document.getElementById('croppedImage' + index);
+                const cropButton = document.querySelector('.cropButton[data-target="image' + index + '"]');
+                let cropper;
+          
+                // Declare cropper here
+          
+                imageInput.addEventListener('change', function (event) {
+                  const file = event.target.files[0];
+                  const reader = new FileReader();
+          
+                  reader.onload = function (e) {
+                    // Clear previous preview and initialize Cropper
+                    imagePreview.innerHTML = '<img src="' + e.target.result + '" alt="Preview Image">';
+                    cropper = new Cropper(croppedImage, {
+                      aspectRatio: 1, // Set the aspect ratio as needed
+                      viewMode: 1, // Set the view mode for manual crop
+                    });
+                  };
+          
+                  reader.readAsDataURL(file);
+                });
+          
+                cropButton.addEventListener('click', function () {
+                  // Get the cropped canvas
+                  const croppedCanvas = cropper.getCroppedCanvas();
+          
+                  // Convert the canvas to a Blob
+                  croppedCanvas.toBlob(function (blob) {
+                    // Create a new FormData object and append the Blob
+                    const formData = new FormData();
+                    formData.append('croppedImage', blob, 'croppedImage' + index + '.png');
+          
+                    // You can now send formData to the server using AJAX or any other method
+                    // Example using fetch API:
+                    fetch('/your/upload/endpoint', {
+                      method: 'POST',
+                      body: formData,
+                    })
+                      .then(response => response.json())
+                      .then(data => {
+                        // Handle the server response
+                        console.log('Server response:', data);
+                      })
+                      .catch(error => {
+                        console.error('Error:', error);
+                      });
+                  }, 'image/png');
+                });
+              });
+            });
+          </script> -->
+          
 
           <%- include('../layouts/footer.ejs')%>

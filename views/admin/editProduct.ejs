@@ -77,18 +77,18 @@
       <!-- Product Name -->
       <div class="form-group">
           <label for="productName">Product Name:</label>
-          <input type="text" class="form-control bg-light" id="productName" name="productName" value="<%= products.productName%>" required>
+          <input type="text" class="form-control bg-light txt-ind" id="productName" name="productName" value="<%= products.productName%>" required>
       </div>
 
       <!-- Description -->
       <div class="form-group">
           <label for="description">Description:</label>
-          <textarea class="form-control bg-light" id="description" name="description" rows="3" required><%= products.description %> </textarea>
+          <textarea class="form-control bg-light txt-ind p-3" id="description" name="description" rows="3" required><%= products.description %> </textarea>
       </div>
 
       <!-- Size-->
       <label for="size">Select Size:</label>
-    <select id="size" name="size" class="form-control bg-light" value="<%= products.size %>">
+    <select id="size" name="size" class="form-control bg-light txt-ind" value="<%= products.size %>">
     <option value="UK-4" <% if (products.size === "UK-4") { %>selected<% } %>>UK-4</option>
     <option value="UK-5" <% if (products.size === "UK-5") { %>selected<% } %>>UK-5</option>
     <option value="UK-5.5" <% if (products.size === "UK-5.5") { %>selected<% } %>">UK-5.5</option>
@@ -103,13 +103,13 @@
       <!--Actual Price -->
       <div class="form-group">
           <label for="actualPrice">Price:</label>
-          <input type="number" class="form-control bg-light" id="actualPrice" name="actualPrice" value="<%= products.actualPrice %>" required>
+          <input type="number" class="form-control bg-light txt-ind" id="actualPrice" name="actualPrice" value="<%= products.actualPrice %>" required>
       </div>
 
        <!-- stock detail -->
        <div class="form-group">
         <label for="stock">Stock Details:</label>
-        <input type="number" class="form-control bg-light" id="stock" name="stock" value="<%= products.stock %>" required>
+        <input type="number" class="form-control bg-light txt-ind" id="stock" name="stock" value="<%= products.stock %>" required>
       </div>
 
       <!-- Image Upload -->
@@ -121,7 +121,7 @@
         
         <div class="custom-file">
           <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" multiple
-            required>
+            >
           <label class="custom-file-label" for="image">Change Image</label>
         </div>
       </div>

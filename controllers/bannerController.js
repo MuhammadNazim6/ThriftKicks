@@ -30,7 +30,6 @@ const loadBanners = async (req,res)=>{
 //Adding banner function
 const addBanner = async (req,res)=>{
   try {
-    console.log("REached");
     const image = req.file; // Access the uploaded image file
 
     // Access other form fields in req.body
@@ -39,13 +38,6 @@ const addBanner = async (req,res)=>{
     const link = req.body.link;
 
     imagePath = image.path.slice(6);
-    console.log(image.path);
-    console.log(image);
-    console.log(image.path.slice(6));
-    console.log(titleValue);
-    console.log(descrValue);
-    console.log(link);
-    console.log("HAppy");
 
     const banner = new Banner({
       imageUrl: imagePath,
@@ -55,9 +47,6 @@ const addBanner = async (req,res)=>{
 
     })
     const newBanner = await banner.save()
-
-    console.log("Banner saved",newBanner);
-
     res.json({success:"Banner added"})
 
   } catch (error) {
@@ -98,6 +87,17 @@ const listBannerFn = async (req,res)=>{
   }
 }
 
+//delete banner 
+const deleteBannerFn = async(req,res)=>{
+  try {
+    const {bannerId} = req.body
+    const banner = await Banner.deleteOne({_id:bannerId})
+    res.json({message:'Banner deleted successfully'})
+
+  } catch (error) {
+    console.log('Unable to delete banner');
+  }
+}
 
 
 
@@ -105,6 +105,7 @@ module.exports = {
   loadBanners,
   addBanner,
   unlistBannerFn,
-  listBannerFn
+  listBannerFn,
+  deleteBannerFn
 
 };

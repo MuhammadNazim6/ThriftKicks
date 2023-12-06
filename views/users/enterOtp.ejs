@@ -40,14 +40,14 @@
     <div class="row otp-container">
      
       
-      <span class="text-center text-lg"> Enter OTP sent to your mail "<%= email %>"</span>
+      <span class="text-center text-lg text-dark"> Enter OTP sent to your mail "<%= email %>"</span>
 
       <div class="col-lg-6 mt-3">
 
         <form method="post">
           <div class="d-flex justify-content-center">
             
-            <input type='text' name='otp' class="otp-holder p-3" id="otp">
+            <input type='text' name='otp' class="otp-holder p-3 txt-ind text-dark" id="otp">
             <input class="otp-button" type="submit">
           </div>
           <input type="hidden" value="<%= email %>" name="email">

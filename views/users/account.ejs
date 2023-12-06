@@ -348,6 +348,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Transaction</th>
                                         <th scope="col">Date</th>
+                                        <th scope="col">Reason</th>
                                         <th scope="col">Amount</th>
                                     </tr>
                                 </thead>
@@ -357,9 +358,10 @@
 
                                     <tr>
                                         <td class="p-4"> <%= index+1 %></td>
-                                        <td class="p-4"> <%= hist.type %> </td>
+                                        <td class="p-4 text-bold"> <%= hist.type %> </td>
                                         <td class="p-4"> <%= hist.date.toLocaleDateString() %></td>
-                                        <td class="p-4">₹ <%= hist.amount %></td>
+                                        <td class="p-4 text-bold"> <%= hist.reason %></td>
+                                        <td class="p-4 <%= hist.type === 'Credit' ? 'text-success' : 'text-danger' %>"><%= hist.type === 'Credit' ? '+ ' : '- ' %>₹ <span class="text-bold"><%= hist.amount %></span></td>
                                     </tr>
                                     <% }) %>
                                 </tbody>

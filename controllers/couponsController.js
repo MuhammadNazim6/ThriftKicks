@@ -97,9 +97,9 @@ const applyCoupon = async (req,res)=>{
     if(totalAmount < coupon.minimumSpend ){
       return res.json({message:"Coupon available for purchase above Rs "+coupon.minimumSpend})
     }
-    if(coupon.usersUsed.includes(req.session.user_id)){
-      return res.json({message:"You already used this coupon"})
-    }
+    // if(coupon.usersUsed.includes(req.session.user_id)){
+    //   return res.json({message:"You already used this coupon"})
+    // }
     //applying discount
     const reductionAmount = coupon.discount_amount
     const discount_amount = totalAmount - reductionAmount 

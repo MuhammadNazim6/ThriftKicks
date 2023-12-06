@@ -260,31 +260,43 @@
                                                     </span></li>
                                         <% } %>
 
-                                            <ul class="checkout__total__all">
+                                            <ul class="checkout__total__all" style="min-height: 220px;">
                                                 <li>Subtotal <span>₹ <%= totalAmount %></span></li>
                                                 <li id="minusAmount" style="display:none;">Coupon Discount <span
                                                         id="targetSpan"></span></li>
+                                                <li id="walletMinusLiTag" style="display:none;">Wallet amount <span
+                                                        id="walletMinusAmt"></span></li>
                                                 <li>Total <span id="totalAmount">₹ <%= totalAmount %></span></li>
 
                                             </ul>
 
                                             <input id="hiddenCouponId" type="hidden">
-
-                                            <div class="checkout__input__checkbox">
+                                            <div class="d-flex">
+                                                <!-- <% if( totalAmount < user.wallet.balance ){ %>  -->
+                                                    <!-- <% } %> -->
+                                            <p class="my-5 text-lg text-bold bg-white p-3">Wallet Balance: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;₹ <span id="walletBalance"><%= user.wallet.balance %></span> <label  for="walletCheck">
+                                                Use Wallet Balance
+                                                <input class="ml-3 mt-4 walletCheck" type="checkbox" id="walletCheck" style="cursor: pointer;">
+                                                <span class="checkmark"></span>
+                                            </label> </p>
+                                            
+                                        </div>
+                                            <div style="min-height: 100px;">
+                                                <div class="checkout__input__checkbox" id="codDiv">
                                                 <label for="cod">
                                                     Cash On delivery
                                                     <input type="radio" id="cod" name="payment" value="COD">
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </div>
-                                            <div class="checkout__input__checkbox">
+                                            <!-- <div class="checkout__input__checkbox">
                                                 <label for="upi">
                                                     UPI
                                                     <input type="radio" id="upi" name="payment" value="UPI">
                                                     <span class="checkmark"></span>
                                                 </label>
-                                            </div>
-                                            <div class="checkout__input__checkbox">
+                                            </div> -->
+                                            <div class="checkout__input__checkbox" id="netBankingDiv">
                                                 <label for="netbanking">
                                                     Net banking
                                                     <input type="radio" id="netbanking" name="payment"
@@ -292,6 +304,8 @@
                                                     <span class="checkmark"></span>
                                                 </label>
                                             </div>
+                                            </div>
+                                            
                                             <button id="placeOrderBtn" type="button" class="site-btn">PLACE
                                                 ORDER</button>
 
@@ -495,17 +509,21 @@
             }
         }
 
-
-
+        
 
         //place order function
         async function placeOrderFn() {
             try {
                 let paymentSelected;
                 let addressSelected;
-                var paymentOptions = Array.from(document.getElementsByName("payment"))
-                var addressIds = Array.from(document.getElementsByName('address'))
+                let paymentOptions = Array.from(document.getElementsByName("payment"))  //chnge var
+                let addressIds = Array.from(document.getElementsByName('address'))      //chnge var
                 let couponId = hiddenCouponId.value
+                const walletCheckedStatus = document.querySelector('.walletCheck').checked
+
+                
+                
+                
 
                 addressIds.forEach(function (option) {
                     if (option.checked) {
@@ -519,24 +537,36 @@
                     }
                 });
 
+
                 if (typeof addressSelected === 'undefined') {
-                    placeOrderAlert.style.display = 'inline'
-                    placeOrderAlert.classList.replace('alert-success', 'alert-danger')
-                    placeOrderAlert.textContent = 'Choose an address'
-                    setTimeout(() => {
-                        placeOrderAlert.style.display = 'none'
-                    }, 2000)
+                
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "center",
+                        showConfirmButton: false,
+                        timer: 1500,
+
+                        });
+                        Toast.fire({
+                        icon: "error",
+                        title: 'Choose an address'
+                        });
                     return
                 }
 
                 if (typeof paymentSelected === 'undefined') {
-                    placeOrderAlert.style.display = 'inline'
-                    placeOrderAlert.classList.replace('alert-success', 'alert-danger')
-                    placeOrderAlert.textContent = 'Choose a Payment Method'
-                    setTimeout(() => {
-                        placeOrderAlert.style.display = 'none'
-                    }, 2000)
-                    return
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "center",
+                        showConfirmButton: false,
+                        timer: 1500,
+
+                        });
+                        Toast.fire({
+                        icon: "error",
+                        title: 'Choose a Payment Method'
+                        });
+                        return
                 }
 
                 const response = await fetch(`/checkout`, {
@@ -544,7 +574,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ paymentSelected, addressSelected, couponId })
+                    body: JSON.stringify({ paymentSelected, addressSelected, couponId ,walletCheckedStatus})
                 });
 
                 if (!response.ok) {
@@ -684,7 +714,15 @@
             if (data.discount_amount) {
                 const couponId = data.couponId
                 hiddenCouponId.value = couponId
-                totalAmount.textContent = "₹ " + data.discount_amount
+
+                //checking if user used wallet
+                let walletMinusAmt = document.getElementById('walletMinusAmt').textContent.slice(4)
+                if(walletMinusAmt === ''){
+                    walletMinusAmt = 0
+                }
+                
+                totalAmtToShow = data.discount_amount - parseInt(walletMinusAmt)
+                totalAmount.textContent = "₹ " + totalAmtToShow
                 minusAmount.style.display = 'inline'
                 minusAmount.querySelector('#targetSpan').textContent = '- ₹ ' + data.reductionAmount
                 Swal.fire({
@@ -726,22 +764,22 @@
             const copyBtn = document.querySelectorAll('.copyBtn')
             copyBtn.forEach((btn)=>{
             btn.addEventListener('click',()=>{
-                // alert(btn.dataset.code)
+                
                 contentToCopy = btn.dataset.code
                 const tempInput = document.createElement('input');
                 tempInput.value = contentToCopy;
 
-                // Append the input element to the document
+                // adding the input element to  docmnt
                 document.body.appendChild(tempInput);
 
-                // Select the text in the input element
+                // Selecting text in  input element
                 tempInput.select();
-                tempInput.setSelectionRange(0, 99999); // For mobile devices
+                tempInput.setSelectionRange(0, 99999); 
 
-                // Execute the copy command
+               //copy command
                 document.execCommand('copy');
 
-                // Remove the temporary input element
+                // Removing  temp input element
                 document.body.removeChild(tempInput);
 
                 const Toast = Swal.mixin({
@@ -764,6 +802,60 @@
         })
         })
 
+
+        // using wallet balance
+        const totalAmtValue = parseInt(totalAmount.textContent.slice(2))
+        const walletBalanceElem = document.getElementById('walletBalance')
+        const walletBalanceAmount = parseInt(walletBalance.textContent)
+        const walletCheckbox = document.querySelector('.walletCheck')
+        const walletMinusAmt = document.getElementById('walletMinusAmt')
+        const netBankingDiv = document.getElementById('netBankingDiv')
+        const codDiv = document.getElementById('codDiv')
+
+        const ifCouponApplied = document.getElementById('minusAmount')
+        if(ifCouponApplied.style.display === 'inline'){
+           const minusCoupon = ifCouponApplied.textContent
+        }
+
+        const walletMinusLiTag = document.getElementById('walletMinusLiTag')
+        
+        walletCheckbox.addEventListener('click',applyWalletAmt)
+        
+        async function applyWalletAmt(){
+            // alert(ifCouponApplied.querySelector('#targetSpan').textContent)
+            let couponMinus = ifCouponApplied.querySelector('#targetSpan').textContent.slice(4) 
+            if(couponMinus === ""){
+                couponMinus = 0;
+            }            
+            if(this.checked){
+                if(totalAmtValue > walletBalanceAmount){
+                    const afterWalletMinus = totalAmtValue - walletBalanceAmount - couponMinus
+                    totalAmount.textContent = "₹ " + afterWalletMinus
+                    walletBalanceElem.textContent = 0;
+                    walletMinusLiTag.style.display = 'block'
+                    walletMinusAmt.textContent = '- ₹ '+walletBalanceAmount
+                    
+                }else{
+                    const afterWalletMinus = totalAmtValue - walletBalanceAmount
+                    totalAmount.textContent = "₹ " + 0
+                    netBankingDiv.style.display = 'none'
+                    // codDiv.style.display = 'none'
+                    walletMinusLiTag.style.display = 'inline'
+                    walletBalanceElem.textContent = walletBalanceAmount-totalAmtValue;
+                    walletMinusAmt.textContent = '- ₹ '+totalAmtValue
+
+                }
+            }else{
+                //if unchecking wallet balance amount
+                walletMinusLiTag.style.display = 'none'
+                netBankingDiv.style.display = 'inline'
+                codDiv.style.display = 'inline'
+                totalAmount.textContent = "₹ " + totalAmtValue 
+                walletBalanceElem.textContent = walletBalanceAmount
+            }
+            
+        }
+ 
         
     </script>
 

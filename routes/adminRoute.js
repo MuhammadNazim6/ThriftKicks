@@ -64,5 +64,6 @@ admin_route.get('/banners',authAdmin.isLogin, bannerController.loadBanners)
 admin_route.post('/add-banner', authAdmin.isLogin ,upload.single('image'), bannerController.addBanner)
 admin_route.patch('/unlistBanner',authAdmin.isLogin,bannerController.unlistBannerFn)
 admin_route.patch('/listBanner',authAdmin.isLogin,bannerController.listBannerFn)
+admin_route.delete('/deleteBanner',authAdmin.isLogin,bannerController.deleteBannerFn)
 
 module.exports = admin_route; 

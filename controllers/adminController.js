@@ -246,6 +246,7 @@ const addProduct = async (req, res) => {
         smessage: "Product Added Successfully.",
         category: categoryFull,
       });
+      res.redirect('/admin/products')
     } else {
       res.render("admin/addProduct", {
         fmessage: "Failed to add product.",
@@ -335,6 +336,8 @@ const loadEditProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const filePaths = req.files.map((file) => file.path);
+
+    if(filePaths.length !== 0 ){
     const Path1 = "\\Images\\" + path.basename(filePaths[0]);
     const Path2 = "\\Images\\" + path.basename(filePaths[1]);
     const Path3 = "\\Images\\" + path.basename(filePaths[2]);
@@ -358,6 +361,23 @@ const updateProduct = async (req, res) => {
       }
     );
 
+    }else{
+      await Product.findByIdAndUpdate(
+        { _id: req.body.id },
+  
+        {
+          $set: {
+            productName: req.body.productName,
+            description: req.body.description,
+            size: req.body.size,
+            actualPrice: req.body.actualPrice,
+            stock: req.body.stock,
+          
+          },
+        }
+      );
+    }
+    
     res.redirect("/admin/products");
   } catch (error) {
     console.log(error.message);
