@@ -69,7 +69,7 @@
                                     <% } %>
 
 
-                                        <li class="active">
+                                        <li class="">
                                             <% if(typeof user !=='undefined' ) { %>
                                                 <a class="cursor_cart" href="/cart">
                                                     <div class="cart-icon"> <i class="fas fa-shopping-cart"></i><span class="badge" id="badge"><%if(typeof cart !=='undefined' && cart?.products?.length > 0){%><%=cart?.products?.length%><%}else{%><%}%></span></div>
@@ -93,10 +93,7 @@
                             <a href="/myOrders">My orders</a>
                         <%  }  %>
                         <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
-                        <!-- <span style="vertical-align: -6px;"class="material-symbols-outlined">
-                            logout
-                            </span>
-                        <a class="list-group-item text-bold" href="/logout"> Logout</a> -->
+                    
                     </div>
                 </div>
             </div>
@@ -135,7 +132,7 @@
                     <div class="shopping__cart__table ml-5 pl-5">
                         <table>
 
-                            <% if(typeof wishlist !=="undefined" && wishlist.products.length> 0) { %>
+                            <% if(typeof wishlist !=="undefined" && wishlist?.products?.length> 0) { %>
                                 <input type="hidden" value="<%= wishlist.products.length %>" id="productLength">
                                 <thead>
                                     <tr>
@@ -152,7 +149,7 @@
                                             <td class="product__cart__item">
                                                 <div class="cart_image">
 
-                                                    <a href="/productView?id=<%=wishlist.products[i].productId._id %>">
+                                                    <a href="/productView?id=<%=wishlist?.products[i]?.productId?._id %>">
                                                         <img class="imaage card-image"
                                                             src="<%= wishlist.products[i].productId.image.path1 %>" alt="">
                                                     </a>
@@ -362,11 +359,11 @@
         //remove product from wishlist
         const removeBtn = document.querySelectorAll('.removeBtn')
         removeBtn.forEach((btn)=>{
-          btn.addEventListener('click',addWishlistFn)
+          btn.addEventListener('click',removeFromWish)
         })
+        let length = removeBtn.length
 
-
-        async function addWishlistFn(){
+        async function removeFromWish(){
             try {
                 
                 const prodId = this.getAttribute('data-prodId')
@@ -384,9 +381,10 @@
             const data = await response.json()
           
             if (data.remMessage) {
-              const row = this.parentElement.parentElement
-              row.remove()
+            const row = this.parentElement.parentElement
+            row.remove()
 
+            length -= 1
                 const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -397,6 +395,9 @@
                 icon: "info",
                 title: "Product removed from wishlist"
                 });
+                if(length === 0){
+                    location.reload()
+                }
                 
             }
             } catch (error) {

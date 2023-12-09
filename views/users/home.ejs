@@ -262,13 +262,25 @@
 
                                                 onmouseover="hoverCardImage()" data-prodId="<%= products[i]._id %>" >
                                                     <i class="fa fa-heart heartIcon"></i>
-                                            </div>
 
+                                                    
+                                            </div>
+                                            <% let avgStar = 0 
+                                            products[i].ratings.forEach( (elem)=>{
+                                             avgStar = avgStar + elem.star
+                                          })
+                                            avgStar = Math.floor(avgStar/products[i].ratings.length)
+                                         %>
+                                                    <div class="d-flex ml-3 mt-3 iconStar">
+                                                        <% for (let j = 0; j < 5; j++) { %>
+                                                            <i class="fa-solid fa-star <%= j < avgStar  ? 'text-warning' : 'text-light' %>"></i>
+                                                        <% } %>
+                                                    </div>
 
                                         </div>
 
 
-                                        <div class="card-body">
+                                        <div class="card-body" >
                                             <span class="text-center">
                                                 <a href="/productView?id=<%=products[i]._id %>">
                                                     <%= products[i].productName %>
@@ -277,11 +289,10 @@
                                             <span class="card-text">
                                                 <!-- <%= products[i].category_id.categoryName %> -->
                                             </span>
-                                            <h6>₹<%= products[i].actualPrice %>/-</h6>
+                                            <p>₹<%= products[i].actualPrice %>/-</p>
                                             <!-- <h6 class="text-center"><%= products[i].size %></h6> -->
-                                            <br>
                                             <button data-product-id="<%= products[i]._id %>"
-                                                class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
+                                                class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton  <% }else{%> cartButton <%}%>">Add
                                                 to Cart</button>
                                                 
                                         </div>

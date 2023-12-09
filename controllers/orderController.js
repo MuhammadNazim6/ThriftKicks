@@ -15,10 +15,13 @@ const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
 const Coupon = OrdersModel.Coupon;
 const Wishlist = UserAddressModel.Wishlist;
+const Rating = ProductsModel.Rating;
 var instance = new Razorpay({
   key_id: "rzp_test_hrcgmUAQIlTJWz",
   key_secret: "e6rN7GFxw4rzGXDHyQ9oFGy6",
 });
+
+
 
 //loading checkout page
 const loadCheckout = async (req, res) => {
@@ -654,6 +657,29 @@ const returnProductFn = async (req, res) => {
   }
 };
 
+
+//adding product review function
+const addProdReview = async (req,res)=>{
+  try {
+    const {starValue,text,prodId} = req.body
+    let star = starValue ?? 3
+    const product = await Product.findById(prodId)
+
+    const newRating = {
+      comment: text,
+      star: star,
+      userId: req.session.user_id,
+      createdAt: Date.now()
+    }
+
+    product.ratings.push(newRating)
+    await product.save()
+    res.json({message:"Thank you for your response"})
+  } catch (error) {
+    
+  }
+}
+
 module.exports = {
   loadCheckout,
   placeOrder,
@@ -666,4 +692,5 @@ module.exports = {
   addtoWishlist,
   verifyPaymentFn,
   returnProductFn,
+  addProdReview
 };

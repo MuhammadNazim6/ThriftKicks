@@ -107,8 +107,8 @@
                     <div class="tab-content">
 
                         <div class="tab-pane fade active show" id="account-general">
-                            <!-- <div class="card-body media align-items-center">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
+                            <div class="card-body media align-items-center">
+                            <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
                                 class="d-block ui-w-80">
                             <div class="media-body ml-4">
                                 <label class="btn btn-outline-primary">
@@ -117,8 +117,11 @@
                                 </label> &nbsp;
                                 <button type="button" class="btn btn-default md-btn-flat">Reset</button>
                                 <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-                            </div>
-                        </div> -->
+                            </div> -->
+
+                            <button id="refCodeCopyBtn" class="btn text-white letter-spc" style="background-color: rgb(47, 48, 48);" data-link="http://localhost:8000/register?refCode=<%= user.refCode %>" >Referral link <i class="fa-solid fa-copy"></i></button>
+                        </div>
+
 
                             <hr class="border-light m-0">
                             <div class="card-body">
@@ -129,8 +132,8 @@
                                         style="width:350px; display: none;">
                                         User Details Updated Successfully
                                     </span>
-                                    <button type="button" id="editUserBtn" class="btn btn-dark mr-5"
-                                        style="width: 170px;">Edit
+                                    <button type="button" id="editUserBtn" class="primary-btn mr-5"
+                                        style="width: 200px; height: 50px;">Edit
                                         Profile</button>&nbsp;
                                     <button type="button" id="saveUserEdits" class="btn btn-primary mr-5"
                                         style="display: none;width: 170px;">Save </button>
@@ -229,16 +232,16 @@
                             <div class="card-body pb-2">
                                 <div class="form-group">
                                     <label class="form-label text-lg">Current password</label>
-                                    <input type="password" id="currentPass" class="form-control text-lg bg-glass">
+                                    <input type="password" id="currentPass" class="form-control text-lg bg-glass txt-ind">
                                     <button id="checkPassBtn" class="btn btn-dark mt-3"> Check Password</button>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label text-lg">New password</label>
-                                    <input type="password" id="newPass" class="form-control text-lg bg-glass" readonly>
+                                    <input type="password" id="newPass" class="form-control text-lg bg-glass txt-ind" readonly>
                                 </div>
                                 <div class="form-group mb-5">
                                     <label class="form-label text-lg">Repeat new password</label>
-                                    <input type="password" id="confirmPass" class="form-control text-lg mb-5 bg-glass"
+                                    <input type="password" id="confirmPass" class="form-control text-lg mb-5 bg-glass txt-ind"
                                         readonly>
                                 </div>
                                 <button id="changePassBtn" class="btn btn-dark mt-3" style="display: none;"> Change
@@ -246,7 +249,6 @@
 
                                 <span id="passAlert" class="alert alert-success text-white mr-5 mb-4"
                                     style="width:350px; display:none;">
-
                                 </span>
                             </div>
                         </div>
@@ -270,14 +272,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-
                         </div>
-
-
-
-
-
-
 
 
                         <div class="tab-pane fade mt-5" id="account-connections">
@@ -372,10 +367,7 @@
 
             </div>
         </div>
-        <!-- <div class="text-right mt-3">
-        <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
-        <button type="button" class="btn btn-default">Cancel</button>
-    </div> -->
+    
     </div>
 
 
@@ -1285,7 +1277,42 @@
         }
 
 
+    //for copying referral code
+    const refCodeCopyBtn = document.getElementById('refCodeCopyBtn')
+    refCodeCopyBtn.addEventListener('click',copyRefCode)
+    
+    async function copyRefCode(){
+                
+                contentToCopy = this.dataset.link
+                const tempInput = document.createElement('input');
+                tempInput.value = contentToCopy;
 
+                // adding the input element to  docmnt
+                document.body.appendChild(tempInput);
+
+                tempInput.select();
+                tempInput.setSelectionRange(0, 99999); 
+
+               //copy command
+                document.execCommand('copy');
+
+                document.body.removeChild(tempInput);
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                    }
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    text: 'Referral link copied'
+                  });
+    }
 
     </script>
     <%- include('../layouts/footer.ejs')%>

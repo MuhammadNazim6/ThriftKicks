@@ -277,7 +277,7 @@
                                 </tbody>
 
                                 <% } else{ %>
-                                    <img src="/assets/userside_images/empty_cart.jpg">
+                                    <img class="p-5" src="/assets/userside_images/empty_cart.jpg">
                                     <% } %>
 
 
@@ -516,15 +516,12 @@
                 button.addEventListener('click', function () {
                     const prodId = button.getAttribute('data-prodId');
 
-                    // Show the modal
                     $('#productDelete').modal('show');
 
                     const confirmButton = document.querySelector('.confirm');
                     confirmButton.addEventListener('click', async function () {
-                        // User confirmed, proceed with deletion
                         await deleteCartProduct(prodId , button);
 
-                        // Close the modal after deletion
                         $('#productDelete').modal('hide');
                     });
                 });
@@ -533,8 +530,10 @@
 
         const badge = document.getElementById('badge')
 
+        
         //FETCH of cart product delete
         async function deleteCartProduct(prodId , button) {
+
             const confirm = await document.querySelector(".confirm");
             const response = await fetch(`/deleteProduct/${prodId}`, {
                 method: "POST",
@@ -544,27 +543,41 @@
 
             })
 
-
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
             }
             
+            // const productTotal = button.parentElement.parentElement.querySelector('.cart__price').querySelector('.prices').textContent.trim()
+            // const totalAmountElem = document.getElementById("totalAmount")
+            // const totalAmount = parseInt(totalAmountElem.textContent)
+
+            // const subTotalAmt = document.getElementById('subtotalAmount')
+            // console.log(totalAmount);
+            // console.log(productTotal);
+            
+            // totalAmountElem.textContent = totalAmount - productTotal
             const data = await response.json()
-            if (data.message) {
-                Swal.fire({
-                    text: data.message,
-                });
+            if (data.message) {    
+                
+            console.log('Hello');
+
+                // Swal.fire({
+                //     text: data.message,
+                // });
+            
             }
             if (data.length) {
-
+            
                 badge.textContent = data.length
                 badge.classList.add('jumping')
                 setTimeout(() => {
                     badge.classList.remove('jumping')
                 }, 500)
-                button.parentElement.parentElement.remove()
+                
+            }else{
+                location.reload()
             }
-        
+            button.parentElement.parentElement.remove()
         }
 
 

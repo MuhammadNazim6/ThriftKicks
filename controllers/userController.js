@@ -42,6 +42,11 @@ const securePassword = async (password) => {
 //register load
 const loadRegister = async (req, res) => {
   try {
+    const refCode = req.query.refCode
+    req.session.refCode = refCode
+    console.log(refCode);
+    console.log(req.session.refCode);
+
     res.render("users/registration");
   } catch (error) {
     console.log(error.message);
@@ -55,6 +60,7 @@ const verifyEmail = async (req, res, next) => {
     const name = req.body.lname;
     req.session.name = name;
     req.session.email = email;
+    
 
     generateOtp();
     mailer.sendMail(email, OTP, name);
@@ -92,10 +98,51 @@ const verifyOtp = async (req, res) => {
       const verified = await user.save();
 
       if (verified) {
+        req.session.user_id = user._id;
+        
+
+        //if there is a referral code
+        if(req.session.refCode){
+
+          const referrerUser = await User.findOne({refCode:req.session.refCode})
+          //if referral code is valid
+          if(referrerUser){
+            
+          console.log('Referral code present');
+
+          user.wallet.balance = 200
+          const history = {
+            type: 'Credit',
+            amount: 200,
+            date: Date.now(),
+            reason: 'Referral Bonus'
+          }
+          user.wallet.history.push(history)
+          await user.save()
+
+          //updateing referrer users wallet balance
+          
+          referrerUser.wallet.balance += 200
+          const referrerHistory = {
+            type: 'Credit',
+            amount: 200,
+            date: Date.now(),
+            reason: 'Referrer Bonus'
+          }
+          referrerUser.wallet.history.push(referrerHistory)
+          await referrerUser.save()
+
+          }else{
+            console.log('Not a valid referral code');
+          }
+
+        }
+
         res.render("users/enterOtp", {
           email: emailId,
           message: "Your email has been verified",
         });
+      
       }
     } else {
       res.render("users/enterOtp", {
@@ -111,6 +158,7 @@ const verifyOtp = async (req, res) => {
 //resendOtp
 const resendOtp = async (req, res, next) => {
   try {
+    
     generateOtp();
     mailer.sendMail(req.session.email, OTP, req.session.name);
     next();
@@ -122,6 +170,8 @@ const resendOtp = async (req, res, next) => {
 //insert user
 const insertUser = async (req, res) => {
   try {
+  
+
     const email = req.body.email;
     const mail = await User.findOne({ email: req.body.email });
     const currentValue = req.body;
@@ -168,19 +218,22 @@ const insertUser = async (req, res) => {
     if (currentValue.password == currentValue.cpassword) {
       const spassword = await securePassword(req.body.password);
 
+      const refCode = await generateReferralCode()
+      console.log(refCode);
+
       const user = new User({
         firstname: req.body.fname,
         lastname: req.body.lname,
         email: req.body.email,
         mobile: req.body.mobile,
-        // image:req.file.filename,
         password: spassword,
         is_admin: 0,
+        refCode: refCode
         
       });
 
       //returning a promise
-      const userData = await user.save(); //saving data to mongo db
+      const userData = await user.save(); 
 
       if (userData) {
         res.redirect(`/verifyOtp?email=${encodeURIComponent(email)}`);
@@ -201,6 +254,18 @@ const insertUser = async (req, res) => {
   }
 };
 
+//for generating referral Code
+function generateReferralCode(length = 8) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let referralCode = '';
+  
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    referralCode += characters.charAt(randomIndex);
+  }
+  return referralCode;
+}
+
 //login function
 const loadLogin = async (req, res) => {
   try {
@@ -211,36 +276,43 @@ const loadLogin = async (req, res) => {
   }
 };
 
+
 // verifyLogin
 const verifyLogin = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
     const userData = await User.findOne({ email: email });
+
+    
+    if (!userData) {
+      return res.render("users/login", {
+          message: "Email and password is incorrect",
+      });
+  }
+
     if (!userData.is_verified) {
       return res.render("users/login", {
-        verif_message: "You email is not verified",
+          verif_message: "Your email is not verified",
       });
-    }
-    if (!userData.isBlocked) {
-      if (userData) {
-        const passwordMatch = await bcrypt.compare(password, userData.password);
-        if (passwordMatch) {
-          req.session.user_id = userData._id;
-          res.redirect("/home");
-        } else {
-          res.render("users/login", {
-            message: "Email and password is incorrect",
-          });
-        }
-      } else {
-        res.render("users/login", {
+  }
+  
+  if (userData.isBlocked) {
+      return res.render("users/login", {
+      message: "You have been blocked" });
+  }
+  
+    const passwordMatch = await bcrypt.compare(password, userData.password);
+  
+  if (passwordMatch) {
+      req.session.user_id = userData._id;
+      res.redirect("/home");
+  } else {
+      res.render("users/login", {
           message: "Email and password is incorrect",
-        });
-      }
-    } else {
-      res.render("users/login", { message: "You have been blocked" });
-    }
+      });
+  }
+  
   } catch (error) {
     console.log(error.message);
   }
@@ -292,14 +364,15 @@ const loadHome = async (req, res) => {
     //for wishlist
     const wishlist = await Wishlist.findOne({userId:user_id})
 
-//for banner
-const banner = await Banner.aggregate([
-  {
-    $match: {
-      is_listed: { $eq: true }
-    }
-  }
-]);
+  //for banner
+      const banner = await Banner.aggregate([
+        {
+        $match: {
+          is_listed: { $eq: true }
+        }
+      }
+    ]);
+
 
 
     if (req.session.user_id) {
@@ -311,14 +384,16 @@ const banner = await Banner.aggregate([
         currentPage: page,
         cart : cart,
         wishlist,
-        banner
+        banner,
+        
       });
     } else {
       res.render("users/home", {
         products: products,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
-        banner
+        banner,
+        
       });
     }
   } catch (error) {
@@ -485,7 +560,8 @@ const loadProductView = async (req, res) => {
     const product_id = req.query.id;
     const userId = req.session.user_id;
     const user = await User.findOne({ _id: userId });
-    const product = await Product.findOne({ _id: product_id });
+    const product = await Product.findOne({ _id: product_id })
+    .populate("ratings.userId")
     // for badge
     const cart = await Cart.findOne({userId: req.session.user_id})
     .populate("userId")
@@ -493,10 +569,21 @@ const loadProductView = async (req, res) => {
 
     //for wishlist
     const wishlist = await Wishlist.findOne({userId:userId})
+
+
+    //for average star rating
+      let avgStar = 0 
+      product.ratings.forEach( (elem)=>{
+        avgStar = avgStar + elem.star
+    })
+      avgStar = Math.floor(avgStar/product.ratings.length)
+
+      const products = await Product.find()
+
 if(user){
-  res.render("users/productView", { product: product, user: user ,cart ,wishlist});
+  res.render("users/productView", { product , user ,cart ,wishlist ,avgStar , products});
 }else{
-  res.render("users/productView", { product: product });
+  res.render("users/productView", { product , avgStar , products });
 }
   } catch (error) {
     console.log(error.message);
@@ -616,7 +703,7 @@ const deleteCartProduct = async (req, res, next) => {
      .populate("products.productId");
     
 
-     res.json({length: cart.products.length})
+    res.json({length: cart.products.length , message:'Cart item removed'})
 
     next();
   } catch (error) {
@@ -876,6 +963,21 @@ const loadWishlist = async (req,res)=>{
   }
 }
 
+async function bob(){
+  const product = await Product.findById('65416aeaa43ee5b5ac829f39')
+  let avgStar = 0
+  product.ratings.forEach( (elem)=>{
+    avgStar = avgStar + elem.star
+})
+  avgStar = Math.floor(avgStar/product.ratings.length)
+  console.log(avgStar);
+}
+
+bob()
+
+
+
+
 
 module.exports = {
   loadLogin,
@@ -909,3 +1011,4 @@ module.exports = {
   
 
 };
+

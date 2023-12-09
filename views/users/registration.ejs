@@ -36,7 +36,6 @@
                   <div class="col-md-6 mb-4">
                     <div class="form-outline">
                   
-                     
                       <input class="form-control" type="text" id="fname" name="fname" 
                       value="<% if(typeof currentValue !=='undefined' ){%><%= currentValue.fname %><%}else{ }%>" 
                       required />
@@ -102,6 +101,7 @@
                   <label class="form-label text-dark" for="cpassword">Confirm Password</label>
                 </div>
 
+                <input type="hidden"
 
 
                 <% if(typeof msgPass !=='undefined' ){ %>

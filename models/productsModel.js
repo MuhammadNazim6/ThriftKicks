@@ -8,7 +8,7 @@ const ratingSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  rating: {
+  star: {
     type: Number,
     required: true,
   },

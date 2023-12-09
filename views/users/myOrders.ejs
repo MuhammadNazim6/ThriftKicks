@@ -115,15 +115,18 @@
                       </tr>
                   </thead>
                   <tbody class="table-group-divider">
+                    
                       <% let j = 0 %>
                       <% for (let i = orders.length-1; i >= 0 ; i--) { j++ %>
                           <tr>
                               <td class="p-4" scope="row"><%= j %></td>
-                              <td class="p-4 text-bold"><%= orders[i].orderDate.toLocaleDateString() %></td> 
+                              <td class="p-4 text-bold"><%= orders[i].orderDate.toLocaleDateString() %>
+                            </td> 
                               <td class="p-4" style="width: 180px;">
                               <% for(let j=0;j< orders[i].products.length ; j++){ %>  
                                       <%= orders[i].products[j].productId.productName %>  <br>
                               <%  }   %>
+                              
                               </td>
                               <td class="p-4 text-bold text-md" style="width: 80px;">Rs <%= orders[i].totalAmount %></td> 
 
@@ -158,8 +161,10 @@
                                     <a href="/orderDetails?ordId=<%= orders[i]._id %>"> <button class="btn btn-dark orderBtn mt-5" style="width: 130px; background-color: black;" >View order </button>   </a> <br>
                                     
                                   </td>
+                            
                       
                           </tr>
+                          
                       <% } %>
                       
                   </tbody>

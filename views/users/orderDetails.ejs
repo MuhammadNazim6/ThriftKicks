@@ -33,6 +33,7 @@
   </header>
   <!-- Header Section End -->
 
+  <input type="hidden" value="<%= order.OrderStatus %>" id="progressStatus">
 
   <div class="container">
     <br>
@@ -48,6 +49,8 @@
             <th scope="col">Status</th>
           </tr>
         </thead>
+
+        
 
         <tbody class="table-group-divider">
           <% for(let i=0; i< order.products.length; i++ ){ %>
@@ -103,6 +106,25 @@
             </tr>
             <% } %>
 
+
+            <ul class="step-wizard-list m-3 mb-5">
+              <li id="forPending" class="step-wizard-item ">
+                  <span class="progress-count">1</span>
+                  <span class="progress-label">Ordered</span>
+              </li>
+              <li id="forDispatched" class="step-wizard-item ">
+                  <span class="progress-count">2</span>
+                  <span class="progress-label">Dispatched</span>
+              </li>
+              <li id="forOutForDelivery" class="step-wizard-item">
+                  <span class="progress-count">3</span>
+                  <span class="progress-label">Out for delivery</span>
+              </li>
+              <li id="forDelivered" class="step-wizard-item ">
+                  <span class="progress-count">4</span>
+                  <span class="progress-label">Delivered</span>
+              </li>
+          </ul>
         </tbody>
       </table>
 
@@ -417,6 +439,24 @@
       }
     }
   
+
+    const progressStatus = document.getElementById('progressStatus')
+    const forPending = document.getElementById('forPending')
+    const forDispatched = document.getElementById('forDispatched')
+    const forOutForDelivery = document.getElementById('forOutForDelivery')
+    const forDelivered = document.getElementById('forDelivered')
+    if(progressStatus.value === 'Pending'){
+      forDispatched.classList.add('current-item')
+    }
+    if(progressStatus.value === 'Shipped'){
+      forOutForDelivery.classList.add('current-item')
+    }
+    if(progressStatus.value === 'Out for Delivery'){
+      forDelivered.classList.add('current-item')
+    }
+    if(progressStatus.value === 'Delivery'){
+      forDelivered.classList.add('current-item')
+    }
   </script>
 
   <%- include('../layouts/footer.ejs')%>

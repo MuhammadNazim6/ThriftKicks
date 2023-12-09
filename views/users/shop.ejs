@@ -305,7 +305,19 @@
 
                             onmouseover="hoverCardImage()" data-prodId="<%= products[i]._id %>">
                                 <i class="fa fa-heart"></i>
+                                
                             </div>
+                            <% let avgStar = 0 
+                            products[i].ratings.forEach( (elem)=>{
+                             avgStar = avgStar + elem.star
+                          })
+                            avgStar = Math.floor(avgStar/products[i].ratings.length)
+                         %>
+                                    <div class="d-flex ml-3 mt-3 iconStar">
+                                        <% for (let j = 0; j < 5; j++) { %>
+                                            <i class="fa-solid fa-star <%= j < avgStar  ? 'text-warning' : 'text-light' %>"></i>
+                                        <% } %>
+                                    </div>
                         </div>
                 
                 </a>
@@ -316,9 +328,7 @@
                         </a>
                     </h>
                     <p class="card-text">    </p>
-                    <h5>₹<%= products[i].actualPrice %>/-</h5>
-                    <h6><%= products[i].size %></h6>
-                    <br>
+                    <p>₹<%= products[i].actualPrice %>/-</p>
                     <button data-product-id="<%= products[i]._id %>"
                         class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
                         to Cart</button>

@@ -62,12 +62,14 @@
     <br>
     <div class="d-flex justify-content-center">
 
+      <input id="verified" type="hidden" value="<%= typeof message !== 'undefined' ? 'verified' : 'not-verified' %>" >
       <% if(typeof message !=='undefined' ){ %>
 
         <div class="alert alert-success text-center verif-message align-items-center" role="alert">
-          <%= message %> <a href="/login">&nbsp&nbsp <b>Login Here</b></a>
+          <%= message %>
         </div>
       <div class=""></div>  
+   
         <% } %>
 
           <% if(typeof fmessage !=='undefined' ){ %>
@@ -95,6 +97,21 @@
   <script src="js/owl.carousel.min.js"></script>
   <script src="js/main.js"></script>
 
+<script>
+  
+  const verified = document.getElementById('verified')
+  console.log(verified);
+  if(verified.value === 'not-verified'){
+    console.log("NOt verified");
+  }
+  if(verified.value === 'verified'){
+    console.log("verified");
+    setTimeout(() => { 
+              window.location.href = "/home" 
+        }, 1000);
+  }
 
+
+</script>
 
   <%- include('../layouts/footer.ejs')%>

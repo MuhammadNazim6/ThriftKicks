@@ -1,25 +1,26 @@
 
+/* 
+  @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Mitr:wght@200;300;400;500&family=Open+Sans&display=swap'); */
 
 
-  /* @import url('https://fonts.googleapis.com/css2?family=Linefont:wght@100&family=Montserrat&family=Poppins:wght@200&family=Roboto+Slab:wght@300&family=Vollkorn&display=swap'); */
+  
+  @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Anonymous+Pro&family=Fira+Mono:wght@400;500;700&family=JetBrains+Mono:wght@200;400;500;600&family=Mitr:wght@200;300;400;500&family=Nunito+Sans:opsz,wght@6..12,300;6..12,500;6..12,600;6..12,700&family=Open+Sans&family=Red+Hat+Display:wght@300&family=Rethink+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 
-  /* @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Mitr:wght@200;300;400;500&family=Open+Sans&display=swap'); */
 
+  *{
 
-  @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Anonymous+Pro&family=Fira+Mono:wght@400;500;700&family=JetBrains+Mono:wght@200;400;500;600&family=Mitr:wght@200;300;400;500&family=Open+Sans&display=swap');
-
-*{
-  /* font-family: 'Alegreya Sans', sans-serif;
-font-family: 'Mitr', sans-serif;
-font-family: 'Open Sans', sans-serif; */
 
 font-family: 'Alegreya Sans', sans-serif;
 font-family: 'Anonymous Pro', monospace;
 font-family: 'Fira Mono', monospace;
 font-family: 'JetBrains Mono', monospace;
 font-family: 'Mitr', sans-serif;
+font-family: 'Nunito Sans', sans-serif;
 font-family: 'Open Sans', sans-serif;
+font-family: 'Raleway', sans-serif;
+font-family: 'Red Hat Display', sans-serif;
+font-family: 'Rethink Sans', sans-serif;
 }
 
 .custom-button{
@@ -579,6 +580,7 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
   font-size: 28px;
 }
 
+
 .hoverable:hover .icon {
   opacity: 1;
   cursor: pointer;
@@ -600,6 +602,33 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
   transition: filter 0.3s ease; /* Adjust duration and timing function as needed */
 }
 
+.iconStar {
+  position: absolute;
+  top: 82%;
+  left: 23%;
+  /* left: 43%; */
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  font-size: 13px;
+}
+.hoverable:hover .iconStar {
+  opacity: 1;
+  cursor: pointer;
+
+}
+.iconStar:hover{
+  color: rgb(148, 145, 145);
+}
+
+/* Add this CSS to your stylesheet */
+.hoverable:hover .card-image {
+  filter: brightness(80%);
+  transition: filter 0.3s ease; /* Adjust duration and timing function as needed */
+}
+
+
+
 .txt-ind{
   text-indent: 14px;
 background-color: #ffffff;  
@@ -620,3 +649,142 @@ background-color: #ffffff;
  .LSpacing{
   letter-spacing: 2px;
  }
+
+
+ /* for progress bar */
+
+ * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.step-wizard {
+  background-color: #21d4fd;
+  background-image: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.step-wizard-list{
+  background: #fff;
+  box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+  color: #333;
+  list-style-type: none;
+  border-radius: 16px;
+  display: flex;
+  padding: 20px 10px;
+  position: relative;
+  z-index: 10;
+}
+
+.step-wizard-item{
+  padding: 0 20px;
+  flex-basis: 0;
+  -webkit-box-flex: 1;
+  -ms-flex-positive:1;
+  flex-grow: 1;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  min-width: 170px;
+  position: relative;
+}
+.step-wizard-item + .step-wizard-item:after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 19px;
+  background: #21d4fd;
+  width: 100%;
+  height: 2px;
+  transform: translateX(-50%);
+  z-index: -10;
+}
+.progress-count{
+  height: 40px;
+  width:40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  margin: 0 auto;
+  position: relative;
+  z-index:10;
+  color: transparent;
+}
+.progress-count:after{
+  content: "";
+  height: 40px;
+  width: 40px;
+  background: #21d4fd;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: -10;
+}
+.progress-count:before{
+  content: "";
+  height: 10px;
+  width: 20px;
+  border-left: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -60%) rotate(-45deg);
+  transform-origin: center center;
+}
+.progress-label{
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.current-item .progress-count:before,
+.current-item ~ .step-wizard-item .progress-count:before{
+  display: none;
+}
+.current-item ~ .step-wizard-item .progress-count:after{
+  height:10px;
+  width:10px;
+}
+.current-item ~ .step-wizard-item .progress-label{
+  opacity: 0.5;
+}
+.current-item .progress-count:after{
+  background: #fff;
+  border: 2px solid #21d4fd;
+}
+.current-item .progress-count{
+  color: #37666f;
+}
+
+.btn-primary {
+  --bs-btn-color: #000;
+  --bs-btn-bg: #e91e63;
+  --bs-btn-border-color: #e91e63;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #ec407a;
+  --bs-btn-hover-border-color: #eb3573;
+  --bs-btn-focus-shadow-rgb: 198, 26, 84;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #ed4b82;
+  --bs-btn-active-border-color: #eb3573;
+  --bs-btn-active-shadow: none;
+  --bs-btn-disabled-color: #000;
+  --bs-btn-disabled-bg: #e91e63;
+  --bs-btn-disabled-border-color: #e91e63;
+}
+
+.letter-spc{
+  letter-spacing: 2px;
+}

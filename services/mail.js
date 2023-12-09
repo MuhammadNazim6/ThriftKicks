@@ -13,12 +13,19 @@ async function sendMail(toMail,otp,name){
 
   //mail content
   const mailOptions = {
-    from:process.env.EMAIL,
+    from: process.env.EMAIL,
     to: toMail,
-    subject:`OTP for email verification for Thrift Kicks`,
-    text: `Dear ${name},\n\nThank you for choosing Thrift Kicks. Your OTP for email verification is: ${otp}. Please use this code to complete the verification process.\n\nBest Regards,\nThe Thrift Kicks Team`,
-    
-  }
+    subject: 'OTP for Email Verification of Thrift Kicks',
+
+    html: `
+        <div class="email-container">
+            <h3>Dear ${name},</h3>
+            <p>Thank you for choosing Thrift Kicks. Your OTP for email verification is: <strong>${otp}</strong>. Please use this code to complete the verification process.</p>
+
+            <p>Best Regards,<br/>The Thrift Kicks Team</p>
+        </div>  
+    `
+};
 
   try {
     const result = await transporter.sendMail(mailOptions)

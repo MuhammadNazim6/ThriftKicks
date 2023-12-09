@@ -1,5 +1,14 @@
+
 <%- include('../layouts/header.ejs')%>
 
+<style>
+  #chart-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+</style>
 
 
   <body class="g-sidenav-show  bg-gray-200">
@@ -231,8 +240,8 @@
                   <i class="material-icons opacity-10">weekend</i>
                 </div>
                 <div class="text-end pt-1">
-                  <p class="text-sm mb-0 text-capitalize">Today's Money</p>
-                  <h4 class="mb-0">$53k</h4>
+                  <p class="text-sm mb-0 text-capitalize">Completed Orders</p>
+                  <h4 class="mb-0"></h4>
                 </div>
               </div>
               <hr class="dark horizontal my-0">
@@ -764,7 +773,24 @@
             </div>
           </div>
         </footer>
+      </div> -->
+
+
+      <!-- Pie chart -->
+      <!-- <div class="container">
+        <div class="row">
+            <div id="chart-container" class="ml-5" style="height: 400px; width: 400px;"></div>
+        </div>
       </div>
+      <div class="container">
+        <div class="row">
+          <div id="chart-container2"></div>
+        </div>
+      </div>
+      
+
+
+      
     </main>
     <div class="fixed-plugin">
       <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
@@ -853,6 +879,15 @@
     </div>
 
 
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+
+    <script>
+      
+
+
+    </script>
 
 
     <%- include('../layouts/footer.ejs')%>
+
+ 

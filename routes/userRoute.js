@@ -71,5 +71,8 @@ user_route.post('/verify_payment',orderController.verifyPaymentFn)
 //product return
 user_route.post('/return-product',orderController.returnProductFn)
 
+//adding prod review
+user_route.post('/add-ProductReview',auth.isLogin, orderController.addProdReview)
+
 
 module.exports = user_route;
