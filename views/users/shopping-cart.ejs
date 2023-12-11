@@ -174,8 +174,14 @@
                                                     <h6>
                                                         <%= cart.products[i].productId.size %>
                                                     </h6>
-                                                    <h5>₹ <%= cart.products[i].productId.actualPrice %>
-                                                    </h5>
+
+                                                    <% if(cart.products[i].productId.actualPrice === cart.products[i].productId.offerPrice ){ %>
+                                                        <h5>₹ <%= cart.products[i].productId.actualPrice %> </h5>
+                                                    <% }else{ %>
+
+                                                    <h5>₹ <%= cart.products[i].productId.offerPrice %> </h5>
+
+                                                    <% } %>
 
                                                 </div>
                                             </td>
@@ -211,7 +217,7 @@
                                                                 data-stock="<%= cart.products[i].productId.stock %>"
                                                                 prodId="<%= cart.products[i].productId._id %>"
                                                                 data-index="<%=i%>"
-                                                                data-price="<%= cart.products[i].productId.actualPrice %>" readonly>
+                                                                data-price="<%= cart.products[i].productId.actualPrice === cart.products[i].productId.offerPrice ? cart.products[i].productId.actualPrice : cart.products[i].productId.offerPrice %>" readonly>
 
                                                             <button class="btn btn-dark inline increase"
                                                                 id="increase">+</button>
@@ -223,12 +229,21 @@
                                                 </div>
                                                 
                                             </td>
+                                            <% if(cart.products[i].productId.actualPrice === cart.products[i].productId.offerPrice ){ %>
                                             <td id="price<%= i %>" class="cart__price">₹ <span class="prices">
                                                     <%= cart.products[i].quantity*cart.products[i].productId.actualPrice
                                                         %>
                                                 </span>
-                                                
                                             </td>
+                                            <% }else{ %>
+                                                <td id="price<%= i %>" class="cart__price">₹ <span class="prices">
+                                                    <%= cart.products[i].quantity*cart.products[i].productId.offerPrice
+                                                        %>
+                                                </span>
+                                            </td>
+                                            <% } %>
+
+
                                             <td class="cart__close"><i
                                                     class="fa fa-close round-delete-button deleteProd"
                                                     data-prodId="<%=cart.products[i].productId._id %>"></i></td>

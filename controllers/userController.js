@@ -19,11 +19,11 @@ let OTP;
 
 
 // Generate a new OTP secret
-const generateOtp = async () => {
+const generateOtp = async (req,res) => {
   try {
     const otpSecret = otplib.authenticator.generateSecret();
     OTP = otplib.authenticator.generate(otpSecret);
-    console.log(`OTP: ${OTP}`);
+    // console.log(`OTP: ${OTP}`);
   } catch (error) {
     console.log(error.message);
   }
@@ -364,7 +364,7 @@ const loadHome = async (req, res) => {
     //for wishlist
     const wishlist = await Wishlist.findOne({userId:user_id})
 
-  //for banner
+    //for banner
       const banner = await Banner.aggregate([
         {
         $match: {
@@ -520,11 +520,17 @@ const loadcart = async (req, res) => {
 
     if (cart) {
       let totalAmount = 0;
+      
       cart.products.forEach((product, index) => {
         if (index === 0) {
           totalAmount = 0;
         }
-        totalAmount += product.productId.actualPrice * product.quantity;
+            if(product.productId.actualPrice === product.productId.offerPrice){
+              totalAmount += product.productId.actualPrice * product.quantity;
+            }else{
+              totalAmount += product.productId.offerPrice * product.quantity;
+            }
+        
       });
 
           if(!stockQuery){
@@ -917,7 +923,7 @@ const forgotPassEmail = async (req,res)=>{
 const forgetPassCheckOtp = async (req,res)=>{
   try {
     const { email, userOtp } = req.body;
-
+    
     if(userOtp === OTP){
       return res.json({ successMessage: "Otp are equal" })
     }

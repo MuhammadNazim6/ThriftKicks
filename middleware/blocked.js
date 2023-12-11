@@ -8,7 +8,6 @@ const isBlocked = async (req,res,next)=>{
       if(user.isBlocked){
         res.render('users/blocked')
       }
-
     }
 
     next()
@@ -17,8 +16,6 @@ const isBlocked = async (req,res,next)=>{
     console.log(error.message);
   }
 }
-
-
 
 
 module.exports = {

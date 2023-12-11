@@ -12,7 +12,11 @@ const categorySchema = new mongoose.Schema({
   is_listed: {
     type: Boolean,
     default: true
+  },
+  offers: {
+    type: Array
   }
+  
 });
 
 

@@ -282,6 +282,11 @@
                 <a href="/productView?id=<%=products[i]._id %>">
         
                         <div class="hoverable">
+
+                            <% if(products[i]?.offers.length !== 0){  %>
+                                <p class="offerBadge"><%= products[i]?.offers[0]?.offerDiscount %>%&nbsp;</p>
+                                <% } %>
+                                
                             <a href="/productView?id=<%=products[i]._id %>">
                                 <img src="<%= products[i].image.path1 %>" class="card-image"
                                     onmouseout="unhoverCardImage()">
@@ -322,13 +327,30 @@
                 
                 </a>
                 <div class="card-body">
-                    <h6>
+                    <h6 class="text-bold text-md">
                         <a href="/productView?id=<%=products[i]._id %>">
                             <%= products[i].productName %>
                         </a>
                     </h>
+                    
+                    <% if(products[i].actualPrice === products[i].offerPrice){  %>
+
+                        <p class="text-md text-bold mt-1">₹<%= products[i].actualPrice %>/-</p>
+
+                            <% }else{ %>
+                                
+                                <div class="d-flex justify-content-between">
+                                    <p class="text-md text-bold discounted-price mt-1 text-danger">
+                                        ₹<%= products[i].actualPrice %>/- 
+                                    </p>
+                                    <p class="text-md text-bold mt-1">
+                                        ₹<%= products[i].offerPrice %>/- 
+                                    </p>
+
+                                </div>
+                            
+                                <% } %>
                     <p class="card-text">    </p>
-                    <p>₹<%= products[i].actualPrice %>/-</p>
                     <button data-product-id="<%= products[i]._id %>"
                         class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
                         to Cart</button>

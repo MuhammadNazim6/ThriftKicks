@@ -193,6 +193,9 @@
                             <h4>
                                 <%= product.productName %>
                             </h4>
+                            <% if(product?.offers.length !== 0){  %>
+                                <p class="offerBadgeInProdView text-bold" style="height: 35px;"><%= product?.offers[0]?.offerDiscount %>% Discount On this Product&nbsp;</p>
+                                <% } %>
 
                             <div class="rating">
                                 <% for (let j = 0; j < 5; j++) { %>
@@ -202,12 +205,29 @@
                         
                         </div> 
                         <input type="hidden" id="prodId" value="<%= product._id %>">
-                            <h3>₹ <%= product.actualPrice %>/-</h3>
+                        
+
+                            <% if(product.actualPrice === product.offerPrice){  %>
+
+                                <h3>₹ <%= product.actualPrice %>/-</h3>
+        
+                                    <% }else{ %>
+                                        
+                                        <div class=" justify-content-center ">
+                                    
+                                            <h4 class="discounted-price text-danger">₹ <%= product.actualPrice %>/-</h4>
+                                            <h3>  ₹ <%= product.offerPrice %>/-  </h3>
+                                        </div>
+                                    
+                                        <% } %>
+
 
 
                             <p>
                                 <%= product.description %>
                             </p>
+                            
+
                             <div class="product__details__option">
                                 <div class="product__details__option__size">
                                     <span>Size:<%= product.size %></span>
@@ -766,11 +786,9 @@
             Toast.fire({
             icon: "success",
             title: data.message
-            });
-
-
-        
+            });        
         }
+        
         
     }
 });

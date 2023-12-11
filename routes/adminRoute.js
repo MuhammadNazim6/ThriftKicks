@@ -3,6 +3,7 @@ const adminController = require("../controllers/adminController")
 const couponController = require("../controllers/couponsController")
 const orderController = require('../controllers/orderController')
 const bannerController = require('../controllers/bannerController.js')
+const offerController = require('../controllers/offerController.js')
 const admin_route = express()
 const authAdmin = require("../middleware/authAdmin")
 const upload = require('../multer.js')
@@ -65,5 +66,13 @@ admin_route.post('/add-banner', authAdmin.isLogin ,upload.single('image'), banne
 admin_route.patch('/unlistBanner',authAdmin.isLogin,bannerController.unlistBannerFn)
 admin_route.patch('/listBanner',authAdmin.isLogin,bannerController.listBannerFn)
 admin_route.delete('/deleteBanner',authAdmin.isLogin,bannerController.deleteBannerFn)
+
+admin_route.get('/offers',authAdmin.isLogin,offerController.loadOfferPage)
+admin_route.post('/add-offer',authAdmin.isLogin,offerController.addNewOffer)
+admin_route.post('/applyOffer-prod',authAdmin.isLogin,offerController.applyOfferToProduct)
+admin_route.patch('/remove-prod-offer',authAdmin.isLogin,offerController.removeProdOfferFn)
+
+admin_route.post('/applyOffer-category',authAdmin.isLogin , offerController.applyOfferToCategory)
+admin_route.patch('/remove-category-offer',authAdmin.isLogin ,offerController.removeCategoryOfferFn)
 
 module.exports = admin_route; 

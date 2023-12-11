@@ -19,6 +19,8 @@ const ratingSchema = new mongoose.Schema({
 });
 
 
+
+
 const productSchema = new mongoose.Schema({
   productName: {
     type: String,
@@ -58,13 +60,18 @@ const productSchema = new mongoose.Schema({
   is_listed: {
     type: Boolean,
     default: true
+
+  },
+  offers: {
+    type: Array
   }
 
 });
 
+
+
 const Product = mongoose.model("Product", productSchema);
 const Rating = mongoose.model("Rating", ratingSchema);
-
 
 
 

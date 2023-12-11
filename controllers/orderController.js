@@ -39,7 +39,12 @@ const loadCheckout = async (req, res) => {
       if (index === 0) {
         totalAmount = 0;
       }
-      totalAmount += product.productId.actualPrice * product.quantity;
+      if(product.productId.actualPrice === product.productId.offerPrice){
+        totalAmount += product.productId.actualPrice * product.quantity;
+      }else{
+        totalAmount += product.productId.offerPrice * product.quantity;
+      }
+
     });
 
     //sending coupons
@@ -119,8 +124,16 @@ const calculateTotalPrice = async (userId) => {
     let totalPrice = 0;
     for (const cartProduct of cart.products) {
       const { productId, quantity } = cartProduct;
-      const productSubtotal = productId.actualPrice * quantity;
-      totalPrice += productSubtotal;
+
+      if(productId.actualPrice === productId.offerPrice ){
+        const productSubtotal = productId.actualPrice * quantity;
+        totalPrice += productSubtotal;
+      }else{
+        const productSubtotal = productId.offerPrice * quantity;
+        totalPrice += productSubtotal;
+      }
+      
+      
     }
 
     return totalPrice;
@@ -662,6 +675,15 @@ const returnProductFn = async (req, res) => {
 const addProdReview = async (req,res)=>{
   try {
     const {starValue,text,prodId} = req.body
+
+    // const orders = await Order.find({userId : req.session.user_id})
+    // const mappedOrders = orders.products.filter((x)=>{
+    //  return x.productId === prodId && x.ProductOrderStatus === 'Delivered'
+    // })
+    // if(mappedOrders.length === 0 ){
+    //   res.json({message:"Thank you for your response"})
+    // }
+
     let star = starValue ?? 3
     const product = await Product.findById(prodId)
 

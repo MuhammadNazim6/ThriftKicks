@@ -239,9 +239,13 @@
                                 <div class="col-lg-3 col-md-4 col-sm-6">
                                     <div class="card m-3" style="width: 15rem; height: 26rem;">
 
-
-
+                                        
                                         <div class="hoverable">
+
+                                            <% if(products[i]?.offers.length !== 0){  %>
+                                            <p class="offerBadge"><%= products[i]?.offers[0]?.offerDiscount %>%&nbsp;</p>
+                                            <% } %>
+
                                             <a href="/productView?id=<%=products[i]._id %>">
                                                 <img src="<%= products[i].image.path1 %>" class="card-image"
                                                     onmouseout="unhoverCardImage()">
@@ -281,18 +285,33 @@
 
 
                                         <div class="card-body" >
-                                            <span class="text-center">
+                                            <span class="text-center text-bold text-md">
                                                 <a href="/productView?id=<%=products[i]._id %>">
                                                     <%= products[i].productName %>
                                                 </a>
                                             </span>
-                                            <span class="card-text">
-                                                <!-- <%= products[i].category_id.categoryName %> -->
-                                            </span>
-                                            <p>₹<%= products[i].actualPrice %>/-</p>
-                                            <!-- <h6 class="text-center"><%= products[i].size %></h6> -->
+                                        
+
+                                            <% if(products[i].actualPrice === products[i].offerPrice){  %>
+
+                                            <p class="text-md text-bold mt-1">₹<%= products[i].actualPrice %>/-</p>
+
+                                                <% }else{ %>
+                                                    
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-md text-bold discounted-price mt-1 text-danger">
+                                                            ₹<%= products[i].actualPrice %>/- 
+                                                        </p>
+                                                        <p class="text-md text-bold mt-1">
+                                                            ₹<%= products[i].offerPrice %>/- 
+                                                        </p>
+
+                                                    </div>
+                                                
+                                                    <% } %>
+
                                             <button data-product-id="<%= products[i]._id %>"
-                                                class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton  <% }else{%> cartButton <%}%>">Add
+                                                class="btn mt-3 addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton  <% }else{%> cartButton <%}%>">Add
                                                 to Cart</button>
                                                 
                                         </div>

@@ -2,6 +2,7 @@ const UserAddressModel = require("../models/userModel")
 const ProductsModel = require("../models/productsModel")
 const CategoryModel = require("../models/categoryModel")
 const OrdersModel = require('../models/ordersModel')
+const { Offer } = require("../models/offerModel");
 const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
 const Product = ProductsModel.Product;
@@ -196,11 +197,17 @@ const loadProducts = async (req, res) => {
       .populate("category_id")
       .exec();
 
-    res.render("admin/products", { products: fullProducts });
+      const allOffers = await Offer.find()
+      const offers = allOffers.filter((offer)=>{
+        return offer.expiryDate > Date.now()
+      })
+      
+    res.render("admin/products", { products: fullProducts ,offers});
   } catch (error) {
     console.log(error.message);
   }
 };
+
 
 //Loading add product
 const loadAddProduct = async (req, res) => {
@@ -262,7 +269,13 @@ const addProduct = async (req, res) => {
 const loadCategories = async (req, res) => {
   try {
     const categories = await Category.find();
-    res.render("admin/categories", { category: categories });
+
+    const allOffers = await Offer.find()
+      const offers = allOffers.filter((offer)=>{
+        return offer.expiryDate > Date.now()
+      })
+
+    res.render("admin/categories", { category: categories ,offers});
   } catch (error) {
     console.log(error.message);
   }
@@ -303,9 +316,10 @@ const addCategory = async (req, res) => {
       const newCategory = await category.save();
 
       if (newCategory) {
-        res.render("admin/addCategory", {
-          smessage: "Category Added Successfully.",
-        });
+        // res.render("admin/addCategory", {
+        //   smessage: "Category Added Successfully.",
+        // });
+        res.redirect('/admin/categories')
       } else {
         res.render("admin/addCategory", {
           fmessage: "Failed to add Category.",

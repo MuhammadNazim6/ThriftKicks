@@ -621,6 +621,36 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
   color: rgb(148, 145, 145);
 }
 
+
+/*  For offer badge */
+.offerBadge{
+    position: absolute;
+    top: 12%;
+    left: 17%;
+    transform: translate(-50%, -50%);
+    opacity: 0.9;
+    transition: opacity 0.3s ease-in-out;
+    color: rgb(247, 247, 247);
+    font-size: 19px;
+    background-color: rgba(184, 22, 22, 0.8);
+    text-indent: 7px;
+    /* border-radius: 60px; */
+    z-index: 5;
+    cursor: pointer;
+  }
+
+
+  .offerBadgeInProdView{
+   
+    opacity: 0.9;
+    /* transition: opacity 0.3s ease-in-out; */
+    color: rgb(255, 0, 0);
+    font-size: 19px;
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    text-indent: 7px;
+  
+    cursor: pointer;
+  }
 /* Add this CSS to your stylesheet */
 .hoverable:hover .card-image {
   filter: brightness(80%);
@@ -785,6 +815,44 @@ body {
   --bs-btn-disabled-border-color: #e91e63;
 }
 
+
+ /* for progress bar ENDING */
+
+
 .letter-spc{
   letter-spacing: 2px;
+}
+
+
+
+/* Sweet alert */
+/* .swal2-container {
+  background: #000;
+}
+
+.swal2-popup {
+  background: #000;
+}
+
+.swal2-title {
+  color: #ffffff; 
+}
+
+.swal2-content {
+  color: #ffffff; 
+} */
+
+/* For offer showing in product page in admin side */
+.custom-background {
+  background-color: #89dfa3; 
+  border: 1px solid #ced4da; 
+  padding: 10px;
+  border-radius: 5px; 
+}
+
+
+/* For discounted price */
+.discounted-price {
+  text-decoration: line-through;
+  color: #808080
 }

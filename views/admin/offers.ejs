@@ -1,5 +1,28 @@
 <%- include('../layouts/header.ejs')%>
+  <style>
+    /* Assuming .bg-glass class has some custom styling */
+    .bg-glass {
+      background-color: rgba(255, 255, 255, 0.2);
+      /* Example background color with opacity */
+      /* Add any other styles you want for the bg-glass class */
+    }
 
+    /* Bootstrap classes for form-control-file */
+    .form-control-file {
+      display: block;
+      width: 100%;
+      height: calc(1.5em + 0.75rem + 2px);
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+  </style>
 
 
   <body class="g-sidenav-show bg-gray-200 ">
@@ -21,7 +44,7 @@
           <li class="nav-item">
             <a class="nav-link text-white " href="/admin/dashboard">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-               <i class="fa-solid fa-store"></i>
+                <i class="fa-solid fa-store"></i>
               </div>
               <span class="nav-link-text ms-1">Dashboard</span>
             </a>
@@ -29,7 +52,7 @@
           <li class="nav-item">
             <a class="nav-link text-white " href="/admin/users">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                  <i class="fa fa-users" aria-hidden="true"></i>
+                <i class="fa fa-users" aria-hidden="true"></i>
               </div>
               <span class="nav-link-text ms-1">Users</span>
             </a>
@@ -51,15 +74,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white " href="/admin/categories">
+            <a class="nav-link text-white" href="/admin/categories">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-               <i class="fa-solid fa-list"></i>
+                <i class="fa-solid fa-list"></i>
               </div>
               <span class="nav-link-text ms-1">Categories</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white active bg-gradient-secondary " href="/admin/coupons">
+            <a class="nav-link text-white" href="/admin/coupons">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-ticket"></i>
               </div>
@@ -67,7 +90,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white " href="/admin/banners">
+            <a class="nav-link text-white" href="/admin/banners">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-newspaper"></i>
               </div>
@@ -75,7 +98,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="/admin/offers">
+            <a class="nav-link text-white active bg-gradient-secondary" href="/admin/offers">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-percent"></i>
               </div>
@@ -115,8 +138,9 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                 <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-                <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Coupons</li>
+                <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Offers</li>
               </ol>
+              <h6 class="font-weight-bolder mb-0">Offers</h6>
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
               <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -144,8 +168,6 @@
                     <i class="fa fa-bell cursor-pointer"></i>
                   </a>
                   <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-
-
                   </ul>
                 </li>
                 <li class="nav-item d-flex align-items-center">
@@ -166,141 +188,164 @@
             <div class=" my-4">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-secondary shadow-dark border-radius-lg pt-4 pb-3">
-                  <h6 class="text-white text-capitalize ps-3">Coupons</h6>
+                  <h6 class="text-white text-capitalize ps-3">Offers</h6>
                 </div>
 
-                <a href="/admin/coupons/addCoupon"><button class="btn btn-outline-info btn-lg my-4">
-                    Add Coupon</button></a>
+                <button id="addOfferBtn" class="btn btn-outline-info btn-lg my-4">Add New
+                  offer</button>
 
               </div>
 
               <div class="border-radius-xl mx-2 mx-md-3 position-relative"
                 style="background-image: url('..asssets/img/bg-pricing.jpg'); background-size: cover;">
+              </div>
 
-                <main class="main-content border-radius-lg h-100">
-                  <div class="container-fluid">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
 
-                    <table class="table table-bordered table-striped table-hover">
-                      <thead>
+
+                    <table id="offertable" class="table table-striped">
+                      <thead class="thead-light">
                         <tr>
-                          <th class="text-dark p-4">Coupon Code</th>
-                          <th class="text-dark p-4">Name</th>
-                          <th class="text-dark p-4">Discount Amount</th>
-                          <th class="text-dark p-4">Minimum Order</th>
-                          <th class="text-dark p-4">Valid From</th>
-                          <th class="text-dark p-4">Valid To</th>
-                          <th class="text-dark p-4">Action</th>
+                          <th class="p-4 text-bold text-lg" scope="col">Offer Name</th>
+                          <th class="p-4 text-bold text-lg" scope="col">Offer discount %</th>
+                          <th class="p-4 text-bold text-lg" scope="col">Expiry date</th>
+                          <th class="p-4 text-bold text-lg" scope="col">Status</th>
+                          <!-- <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</th> -->
                         </tr>
                       </thead>
                       <tbody>
+                        <% offers.forEach((offer)=>{   %>
+                          <tr>
+                          <td class="p-4 text-bold text-lg"> <%= offer.offerName %> </td>
+                          <td class="p-4 text-bold text-lg"> <%= offer.offerDiscount %> </td>
+                          <td class="p-4 text-bold text-lg"> <%= offer.expiryDate.toLocaleDateString() %> </td>
 
-                        <% if(typeof coupons !=='undefined' ){ coupons.forEach(coupon=>{ %>
-                          <tr class="coupon-container" data-coupId="<%= coupon._id %>">
-                            <td class="text-dark text-md text-bold p-4">
-                              <%= coupon.code %>
-                            </td>
-                            <td class="text-dark text-md p-4">
-                              <%= coupon.couponName %>
-                            </td>
-                            <td class="text-dark text-md p-4">
-                              <span class="ml-4">Rs <%= coupon.discount_amount %></span>
-                            </td>
-                            <td class="text-dark text-md p-4">
-                              <span class="ml-4">Rs <%= coupon.minimumSpend %></span>
-                            </td>
-                            <td class="text-dark text-md p-4">
-                              <%= coupon.validFrom.toString().slice(0,15) %>
-                            </td>
-                            <td class="text-dark text-md p-4">
-                              <%= coupon.validTo.toString().slice(0,15) %>
-                            </td>
-                            <td class="text-dark text-md p-4">
-                              <button data-couponid="<%= coupon._id %>" class="btn-danger deleteCouponBtn">
-                                Delete</button>
-
-                            </td>
-
-
-
-                          </tr>
-                          <% }) %>
-
-                            <% }else { %>
-                              <tr>
-                                <td colspan="6">No Coupons Found</td>
-                              </tr>
-                              <% } %>
-
+                          <td class="p-4 text-bold text-lg <%= new Date(offer.expiryDate) > Date.now() ? 'text-success' : 'text-danger' %>"> <%= new Date(offer.expiryDate) > Date.now() ? 'Active' : 'Expired' %> </td>
+                        </tr>
+                        <%  })   %>
+                        
                       </tbody>
                     </table>
 
-
                   </div>
+                </div>
               </div>
-            </div>
+
+              <script>
+
+                const addOfferBtn = document.getElementById('addOfferBtn')
+                addOfferBtn.addEventListener('click', addOffer)
+
+                async function addOffer() {
+                  try {
+                    const { value: formValues } = await Swal.fire({
+                      title: "",
+                      html: `
+            <h4 class="mt-4" > Add new offer </h4>
+            <label for="offerName" class="text-md mt-4" > Offer Name </label>
+              <input id="offerName" class="txt-ind mb-3 " style="height:40px; width:400px;">
+              <p id="offerNameAlert" class="text-danger" style="display:none;"> Enter a valid name </p>
+
+            <label for="offerDiscount" class="text-md mt-2" > Discount </label>
+              <input type='number' id="offerDiscount" class="txt-ind" style="height:40px; width:400px;">
+
+            <label for="expiry" class="text-md mt-2" > Expiry date </label>
+              <input type="date" id="expiry" class="txt-ind" style="height:40px; width:400px;">
+            `,
+                      focusConfirm: false,
+
+                      preConfirm: () => {
+                        const offerName = document.getElementById("offerName").value
+                        const offerDiscount = document.getElementById("offerDiscount").value
+                        const expiry = document.getElementById("expiry").value
+
+                        return [
+                          offerName,
+                          offerDiscount,
+                          expiry
+                        ];
+                      }
+                    });
+                    if (formValues) {
+                      const response = await fetch('/admin/add-offer', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ formValues })
+                      })
+
+                      const data = await response.json()
 
 
-            <div class="section min-vh-85 position-relative transform-scale-0 transform-scale-md-7">
+                      //if entered name is not proper
+                      if (data) {
 
-            </div>
-    </main>
-    </div>
+                        if (data.errMsg) {
+                          const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                              toast.onmouseenter = Swal.stopTimer;
+                              toast.onmouseleave = Swal.resumeTimer;
+                            }
+                          });
+                          Toast.fire({
+                            icon: "error",
+                            text: data.errMsg
+                          });
+                        }
+                      }
 
 
- 
+                      if (data.message) {
+
+                        const Toast = Swal.mixin({
+                          toast: true,
+                          position: "top-end",
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true,
+                          didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                          }
+                        });
+                        Toast.fire({
+                          icon: "success",
+                          text: data.message
+                        });
+
+                        const table = document.getElementById('offertable')
+                        const row = table.insertRow(1)
+
+                        const nameRow = row.insertCell(0)
+                        const discountRow = row.insertCell(1)
+                        const statusRow = row.insertCell(2)
+
+                        nameRow.textContent = formValues[0]
+                        nameRow.classList.add('p-4','text-bold' ,'text-lg')
+
+                        discountRow.textContent = formValues[1]
+                        discountRow.classList.add('p-4','text-bold' ,'text-lg')
+
+                        statusRow.classList.add('text-success','p-4','text-bold' ,'text-lg')
+                        statusRow.textContent = 'Active'
+                        
+                      }
 
 
-    <script>
-      const deleteCouponBtns = document.querySelectorAll('.deleteCouponBtn')
+                    }
 
-      deleteCouponBtns.forEach((btn) => {
-        btn.addEventListener('click', ()=> deleteCouponFn(btn));
-        
-      });
+                  } catch (error) {
+                    console.log("Unable to add offer");
+                  }
+                }
+              </script>
 
-      async function deleteCouponFn(btn){
-        try {
-          const couponId = btn.dataset.couponid;
-          const divToRemove = document.querySelector(`.coupon-container[data-coupId="${couponId}"]`);
-
-          Swal.fire({
-          title: "Are you sure you want to delete this coupon?",
-          text: "You won't be able to revert this!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Delete Coupon !"
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-
-          const response = await fetch('/admin/coupon/delete',{
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ couponId })
-          })
-          if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            }
-            const data = await response.json()
-            if (data.message) { 
-              Swal.fire(data.message);
-              divToRemove.remove()
-              
-            }
-
-        }
-        
-      })
-
-          
-
-        } catch (error) {
-          console.log("couldnt delete coupon");
-        }
-      }
-    </script>
-
-    <%- include('../layouts/footer.ejs')%>
+              <%- include('../layouts/footer.ejs')%>

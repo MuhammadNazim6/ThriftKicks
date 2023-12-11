@@ -72,6 +72,14 @@
               <span class="nav-link-text ms-1">Banners</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/admin/offers">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+              <span class="nav-link-text ms-1">Offers</span>
+            </a>
+          </li>
           <li class="nav-item mt-3">
             <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
           </li>
@@ -437,18 +445,18 @@
               <div class="container-fluid">
                 <table class="table table-bordered table-striped table-hover">
                   <tr>
-                    <th class="text-dark text-lg text-bold">Name</th>
-                    <th class="text-dark text-lg text-bold">Email</th>
-                    <th class="text-dark text-lg text-bold">Mobile</th>
-                    <th class="text-dark text-lg text-bold">Action</th>
+                    <th class="text-dark text-lg text-bold p-4">Name</th>
+                    <th class="text-dark text-lg text-bold p-4">Email</th>
+                    <th class="text-dark text-lg text-bold p-4">Mobile</th>
+                    <th class="text-dark text-lg text-bold p-4">Action</th>
                   </tr>
                   <% if(users.length> 0){ for(let i=0; i < users.length; i++){ %>
                       <tr>
-                        <td class="text-dark">
+                        <td class="text-dark p-4">
                           <%= users[i].firstname+" "+users[i].lastname %></td>
-            <td class="text-dark"><%= users[i].email %></td>
-            <td class="text-dark"><%= users[i].mobile %></td>
-            <td class="text-dark">
+            <td class="text-dark p-4"><%= users[i].email %></td>
+            <td class="text-dark p-4"><%= users[i].mobile %></td>
+            <td class="text-dark p-4">
   
                               
                             <button data-user-id="<%= users[i]._id %>"

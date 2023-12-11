@@ -254,9 +254,7 @@
                                 <div class="checkout__order__products">Product <span>Total</span></div>
                                 <ul class="checkout__total__products">
                                     <% for(let i=0; i < cart.products.length; i++){%>
-                                        <li>0<%=i+1%>.&nbsp;<%=cart.products[i].productId.productName %> <span>₹
-                                                        <%=cart.products[i].productId.actualPrice *
-                                                            cart.products[i].quantity%>
+                                        <li>0<%=i+1%>.&nbsp;<%=cart.products[i].productId.productName %> <span>₹ <%= cart.products[i].productId.actualPrice === cart.products[i].productId.offerPrice ? cart.products[i].productId.actualPrice : cart.products[i].productId.offerPrice *  cart.products[i].quantity %>
                                                     </span></li>
                                         <% } %>
 
