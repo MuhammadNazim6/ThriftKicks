@@ -209,7 +209,7 @@
                   <div class="container-fluid">
                     <table class="table table-bordered table-striped table-hover">
                       <tr>
-                        <th class="text-dark text-lg text-bold p-4">Product Name</th>
+                        <th class="text-dark text-lg text-bold p-4" >Product Name</th>
                         <th class="text-dark text-lg text-bold p-4">Size</th>
                         <th class="text-dark text-lg text-bold p-4">Category</th>
                         <th class="text-dark text-lg text-bold p-4" style="max-width: 80px;">Stock</th>
@@ -497,6 +497,9 @@
             })
             const data = await response.json()
             if (data) {
+
+              location.reload()
+
               const Toast = Swal.mixin({
                 toast: true,
                 position: "center",
@@ -582,10 +585,10 @@
               icon: "success",
               text: data.message
             });
-
           }
 
             }
+
           });
 
       

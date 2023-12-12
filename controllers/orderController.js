@@ -164,7 +164,7 @@ const placeOrder = async (req, res) => {
     const userId = req.session.user_id;
     const userData = await User.findOne({ _id: userId });
     const shippingAddress = await Address.findOne({ _id: addressSelected });
-    const cart = await Cart.findOne({ userId: userId });
+    const cart = await Cart.findOne({ userId: userId }).populate('products.productId')
     const coupon = couponId !== "" ? couponId : "none";
     
 
@@ -220,11 +220,12 @@ const placeOrder = async (req, res) => {
       }
       
     }
-
+      
     const cartProducts = cart.products.map((productItem) => ({
       productId: productItem.productId,
       ProductOrderStatus: "Ordered",
       quantity: productItem.quantity,
+      unitPrice: productItem.productId.actualPrice === productItem.productId.offerPrice ? productItem.productId.actualPrice : productItem.productId.offerPrice,
       "returnOrderStatus.status": "none",
       "returnOrderStatus.reason": "none",
     }));

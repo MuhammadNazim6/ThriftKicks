@@ -47,6 +47,10 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      unitPrice:{
+        type:Number,
+        require: true
+      },
       ProductOrderStatus: {
         type:String,
         require:true

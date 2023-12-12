@@ -27,7 +27,7 @@ const addNewOffer = async (req, res) => {
       return res.json({ errMsg: "Enter a proper offer name" });
     }
 
-    if (offerDiscount < 0 || isNaN(offerDiscount) || offerDiscount > 50) {
+    if (offerDiscount < 0 || isNaN(offerDiscount) || offerDiscount > 101) {
       return res.json({
         errMsg: "Discount should be more than 2% and less than 50%",
       });
@@ -45,9 +45,9 @@ const addNewOffer = async (req, res) => {
       offerDiscount: offerDiscount,
       expiryDate: expiry,
     });
-
+    const offerId = newOffer._id
     await newOffer.save();
-    res.json({ message: "New offer added successfully" });
+    res.json({ message: "New offer added successfully" ,offerId });
   } catch (error) {
     console.log("Unable to add offer ");
     console.log(error.message);
@@ -65,7 +65,7 @@ const applyOfferToProduct = async (req, res) => {
     product.offers = [];
     product.offers.push(offer);
     const offerPrice = Math.floor(
-      product.actualPrice - product.actualPrice * (offer.offerDiscount / 100)
+      product.actualPrice - (product.actualPrice * (offer.offerDiscount / 100))
     );
     product.offerPrice = offerPrice;
 
@@ -184,11 +184,28 @@ const removeCategoryOfferFn = async (req, res) => {
 };
 
 
+//Deleting offer function
+const deleteOfferFn = async (req,res)=>{
+
+  try {
+    const { offerId } = req.body;
+    console.log(offerId);
+    await Offer.deleteOne({_id:offerId})
+    console.log('deleted');
+    res.json({ message: "Offer Deleted Successfully" });
+  } catch (error) {
+    res.json({ fmessage: "Unable to delete the offer" });
+  }
+}
+
+
+
 module.exports = {
   loadOfferPage,
   addNewOffer,
   applyOfferToProduct,
   removeProdOfferFn,
   applyOfferToCategory,
-  removeCategoryOfferFn
+  removeCategoryOfferFn,
+  deleteOfferFn
 };

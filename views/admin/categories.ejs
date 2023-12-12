@@ -361,6 +361,8 @@
             })
             const data = await response.json()
             if (data) {
+
+              location.reload()
               const Toast = Swal.mixin({
                 toast: true,
                 position: "center",

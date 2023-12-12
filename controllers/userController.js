@@ -335,7 +335,7 @@ const loadHome = async (req, res) => {
     }
     const limit = 4;
 
-    const products = await Product.find({
+    const listedProducts = await Product.find({
       is_listed: true,
       $or: [
         { productName: { $regex: ".*" + search + ".*", $options: "i" } },
@@ -347,6 +347,10 @@ const loadHome = async (req, res) => {
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
+
+      const products = listedProducts.filter((prod)=>{
+        return prod.category_id.is_listed === true
+      })
 
     const count = await Product.find({
       $or: [
@@ -560,6 +564,28 @@ const loadcart = async (req, res) => {
   }
 };
 
+async function bb(){
+  let canRate = []
+  const orders = await Order.find({userId : '654f74125049c9c88b6e79f9'})
+  
+  orders.forEach((order)=>{
+  const prodInOrder = order.products.filter((prod)=>{
+    return prod.productId.toString() === '6544c235bcaee8ed35d03034';
+  })
+
+  prodInOrder.forEach((prod)=>{
+   if((prod.ProductOrderStatus === 'Delivered') || (prod.ProductOrderStatus === 'Returned')){
+    canRate.push('Yeah')
+   }
+  
+  })
+
+})
+  console.log(canRate.length);
+}
+bb()
+
+
 //loading productview
 const loadProductView = async (req, res) => {
   try {
@@ -568,6 +594,26 @@ const loadProductView = async (req, res) => {
     const user = await User.findOne({ _id: userId });
     const product = await Product.findOne({ _id: product_id })
     .populate("ratings.userId")
+
+
+    //checking weather user is eligible for review
+    const orders = await Order.find({userId : userId})
+
+    let canRateArr = []
+    orders.forEach((order)=>{
+      const prodInOrder = order.products.filter((prod)=>{
+        return prod.productId.toString() === product_id;
+      })
+      prodInOrder.forEach((prod)=>{
+        if((prod.ProductOrderStatus === 'Delivered') || (prod.ProductOrderStatus === 'Returned')){
+          canRateArr.push('Yeah')
+            }
+      })
+    })
+    let canRate = canRateArr.length !== 0;
+// ------------------------------------
+
+
     // for badge
     const cart = await Cart.findOne({userId: req.session.user_id})
     .populate("userId")
@@ -575,7 +621,6 @@ const loadProductView = async (req, res) => {
 
     //for wishlist
     const wishlist = await Wishlist.findOne({userId:userId})
-
 
     //for average star rating
       let avgStar = 0 
@@ -587,7 +632,7 @@ const loadProductView = async (req, res) => {
       const products = await Product.find()
 
 if(user){
-  res.render("users/productView", { product , user ,cart ,wishlist ,avgStar , products});
+  res.render("users/productView", { product , user ,cart ,wishlist ,avgStar , products , canRate});
 }else{
   res.render("users/productView", { product , avgStar , products });
 }
@@ -968,19 +1013,6 @@ const loadWishlist = async (req,res)=>{
 
   }
 }
-
-async function bob(){
-  const product = await Product.findById('65416aeaa43ee5b5ac829f39')
-  let avgStar = 0
-  product.ratings.forEach( (elem)=>{
-    avgStar = avgStar + elem.star
-})
-  avgStar = Math.floor(avgStar/product.ratings.length)
-  console.log(avgStar);
-}
-
-bob()
-
 
 
 

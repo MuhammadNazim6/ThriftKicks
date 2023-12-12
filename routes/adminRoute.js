@@ -75,4 +75,6 @@ admin_route.patch('/remove-prod-offer',authAdmin.isLogin,offerController.removeP
 admin_route.post('/applyOffer-category',authAdmin.isLogin , offerController.applyOfferToCategory)
 admin_route.patch('/remove-category-offer',authAdmin.isLogin ,offerController.removeCategoryOfferFn)
 
+admin_route.delete('/deleteOffer',authAdmin.isLogin, offerController.deleteOfferFn)
+
 module.exports = admin_route; 

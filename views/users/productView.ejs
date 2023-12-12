@@ -274,12 +274,15 @@
                             </div>
                             <div class="product__details__last__option">
                                 <h5><span>Guaranteed Safe Checkout</span></h5>
-                                <p class="mt-5 text-capitalize text-info" id="addReviewBtn" style="cursor: pointer;" data-product-id="<%= product._id %>" data-user="<%= typeof user !== 'undefined' ? 'loggedIn':'loggedOut'%>">Give review and rating</p>
-
+                                <% if(locals.canRate){ %>
+                                    <p class="mt-5 text-capitalize text-info" id="addReviewBtn" style="cursor: pointer;" data-product-id="<%= product._id %>" data-user="<%= typeof user !== 'undefined' ? 'loggedIn':'loggedOut'%>">Give review and rating</p>
+                                    <% } %>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
+            
                 
                 <div class="row" id="reviews">
                     <div class="col-lg-12">
@@ -658,7 +661,78 @@
                 image.src = item.src;
             }
             
-            
+            // Add to wishlist
+        const addtoWishlist = document.getElementById('addtoWishlist')
+        addtoWishlist.addEventListener('mouseover',()=>{
+            addtoWishlist.style.color = 'red'
+        })
+        addtoWishlist.addEventListener('mouseout',()=>{
+            addtoWishlist.style.color = 'grey'
+        })
+        addtoWishlist.addEventListener('click',addtoWishlistFn)
+
+
+        async function addtoWishlistFn(){
+            try {
+                const prodId = document.getElementById('prodId').value
+
+                const response = await fetch(`/addtoWishlist`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({prodId})
+                
+            })
+            if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            if (data.message) {
+                addtoWishlist.innerHTML = '<i class="fa fa-heart"></i> Remove from wishlist'
+                
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "success",
+                title: "Product added to wishlist"
+                });
+            }
+            if (data.remMessage) {
+                addtoWishlist.innerHTML = '<i class="fa fa-heart"></i> add to wishlist'
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "info",
+                title: "Product removed from wishlist"
+                });
+                
+            } 
+            } catch (error) {
+                console.log("Unable to add to wishlist");
+                const Toast = Swal.mixin({
+                toast: true,
+                position: "Center",
+                showConfirmButton: false,
+                timer: 1200,
+                });
+                Toast.fire({
+                icon: "warning",
+                text: "Login or Signup for adding to wishlist"
+                });
+            }
+        }
+
+
+        
 
             //add review function
         const addReviewBtn = document.getElementById('addReviewBtn');
@@ -795,75 +869,7 @@
 
 
 
-        // Add to wishlist
-        const addtoWishlist = document.getElementById('addtoWishlist')
-        addtoWishlist.addEventListener('mouseover',()=>{
-            addtoWishlist.style.color = 'red'
-        })
-        addtoWishlist.addEventListener('mouseout',()=>{
-            addtoWishlist.style.color = 'grey'
-        })
-        addtoWishlist.addEventListener('click',addtoWishlistFn)
-
-
-        async function addtoWishlistFn(){
-            try {
-                const prodId = document.getElementById('prodId').value
-
-                const response = await fetch(`/addtoWishlist`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({prodId})
-                
-            })
-            if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            }
-            const data = await response.json()
-            if (data.message) {
-                addtoWishlist.innerHTML = '<i class="fa fa-heart"></i> Remove from wishlist'
-                
-                const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 1200,
-                });
-                Toast.fire({
-                icon: "success",
-                title: "Product added to wishlist"
-                });
-            }
-            if (data.remMessage) {
-                addtoWishlist.innerHTML = '<i class="fa fa-heart"></i> add to wishlist'
-                const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 1200,
-                });
-                Toast.fire({
-                icon: "info",
-                title: "Product removed from wishlist"
-                });
-                
-            } 
-            } catch (error) {
-                console.log("Unable to add to wishlist");
-                const Toast = Swal.mixin({
-                toast: true,
-                position: "Center",
-                showConfirmButton: false,
-                timer: 1200,
-                });
-                Toast.fire({
-                icon: "warning",
-                text: "Login or Signup for adding to wishlist"
-                });
-            }
-        }
+        
 
     
         </script>

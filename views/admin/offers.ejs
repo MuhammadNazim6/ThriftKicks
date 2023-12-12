@@ -212,10 +212,12 @@
                           <th class="p-4 text-bold text-lg" scope="col">Offer discount %</th>
                           <th class="p-4 text-bold text-lg" scope="col">Expiry date</th>
                           <th class="p-4 text-bold text-lg" scope="col">Status</th>
+                          <th class="p-4 text-bold text-lg" scope="col">Action</th>
                           <!-- <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</th> -->
                         </tr>
                       </thead>
                       <tbody>
+                        <% offers.reverse() %>
                         <% offers.forEach((offer)=>{   %>
                           <tr>
                           <td class="p-4 text-bold text-lg"> <%= offer.offerName %> </td>
@@ -223,6 +225,10 @@
                           <td class="p-4 text-bold text-lg"> <%= offer.expiryDate.toLocaleDateString() %> </td>
 
                           <td class="p-4 text-bold text-lg <%= new Date(offer.expiryDate) > Date.now() ? 'text-success' : 'text-danger' %>"> <%= new Date(offer.expiryDate) > Date.now() ? 'Active' : 'Expired' %> </td>
+                          <td class="p-4 text-bold text-lg "> 
+                            <button class = "deleteOfferBtn btn btn-light L-spacing text-white" style="background-color:rgb(159, 149, 149)" data-offer-id="<%= offer._id %>">
+                              Delete Offer
+                            </button> </td>
                         </tr>
                         <%  })   %>
                         
@@ -276,9 +282,7 @@
                         },
                         body: JSON.stringify({ formValues })
                       })
-
                       const data = await response.json()
-
 
                       //if entered name is not proper
                       if (data) {
@@ -324,28 +328,92 @@
                         const table = document.getElementById('offertable')
                         const row = table.insertRow(1)
 
-                        const nameRow = row.insertCell(0)
-                        const discountRow = row.insertCell(1)
-                        const statusRow = row.insertCell(2)
+                        const nameCell = row.insertCell(0)
+                        const discountCell = row.insertCell(1)
+                        const expDateCell = row.insertCell(2)
+                        const statusCell = row.insertCell(3)
+                        const actionCell = row.insertCell(4)
 
-                        nameRow.textContent = formValues[0]
-                        nameRow.classList.add('p-4','text-bold' ,'text-lg')
+                        nameCell.textContent = formValues[0]
+                        nameCell.classList.add('p-4','text-bold' ,'text-lg')
 
-                        discountRow.textContent = formValues[1]
-                        discountRow.classList.add('p-4','text-bold' ,'text-lg')
+                        discountCell.textContent = formValues[1]
+                        discountCell.classList.add('p-4','text-bold' ,'text-lg')
 
-                        statusRow.classList.add('text-success','p-4','text-bold' ,'text-lg')
-                        statusRow.textContent = 'Active'
+                        expDateCell.classList.add('p-4','text-bold' ,'text-lg')
+                        expDateCell.textContent = formValues[2]
+
+                        statusCell.classList.add('text-success','p-4','text-bold' ,'text-lg')
+                        statusCell.textContent = 'Active'
                         
+                        actionCell.classList.add('p-4','text-bold' ,'text-lg')
+                        actionCell.innerHTML = `<button class = "deleteOfferBtn btn btn-light L-spacing text-white" style="background-color:rgb(159, 149, 149)" data-offer-id="${data.offerId}"> Delete Offer </button>`
+                        
+                        requestAnimationFrame(() => {
+                          const dynamicButton = document.querySelector('.deleteOfferBtn');
+                          dynamicButton.addEventListener('click', deleteOfferFn)
+                        });
+                      
                       }
-
-
                     }
 
                   } catch (error) {
                     console.log("Unable to add offer");
                   }
                 }
-              </script>
 
-              <%- include('../layouts/footer.ejs')%>
+
+
+      //for deleteing offer
+      const deleteOfferBtns = document.querySelectorAll('.deleteOfferBtn')
+
+      deleteOfferBtns.forEach((btn) => {
+        btn.addEventListener('click', deleteOfferFn);
+        
+      });
+
+      async function deleteOfferFn(){
+        try {
+          const offerId = this.dataset.offerId
+          Swal.fire({
+          title: "Are you sure you want to delete this offer?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Delete Offer !"
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+  
+            const response = await fetch('/admin/deleteOffer',{
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ offerId })
+          })
+
+          if (!response.ok) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = await response.json()
+            if (data.message) { 
+              this.parentNode.parentNode.remove()
+              Swal.fire({
+                          title: "Deleted!",
+                          text: "Offer has been deleted.",
+                          icon: "success"
+                  });
+            }
+
+        }
+      })
+        } catch (error) {
+          console.log("Couldn't delete offer");
+        }
+      }
+
+      </script>
+
+        <%- include('../layouts/footer.ejs')%>
