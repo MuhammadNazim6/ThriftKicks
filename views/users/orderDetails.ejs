@@ -32,18 +32,31 @@
     </div>
   </header>
   <!-- Header Section End -->
-
+  <div class="container d-flex align-items-center justify-content-center">
+    <div class="row">
+      <div class="col mx-auto">
+        <h2 class="LSpacing">ORDER DETAILS</h2>
+      </div>
+    </div>
+  </div>
   <input type="hidden" value="<%= order.OrderStatus %>" id="progressStatus">
 
   <div class="container">
     <br>
     <% if(typeof order !=='undefined' ) { %>
+      
+      <input type="hidden" id="shippingAddress" value="<%= JSON.stringify(order.shippingAddress) %>">
+      <input type="hidden" id="orderDate" value="<%= order.orderDate %>">
+      <input type="text" id="productsArray" value="<%= JSON.stringify(order.products) %>">
+
+
       <table class="table">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Product</th>
             <th scope="col">Name</th>
+            <th scope="col">Unit Price</th>
             <th scope="col">Quantity</th>
             <th scope="col">Ordered On</th>
             <th scope="col">Status</th>
@@ -70,7 +83,13 @@
                 </a>
               </td>
 
-              <td class="p-4">&nbsp;&nbsp;<%= order.products[i].quantity %>
+              <td class="p-4 text-bold text-lg">
+                <a href="/productView?id=<%=order.products[i].productId._id %>">
+                  ₹ <%= order.products[i].unitPrice %>
+                </a>
+              </td>
+
+              <td class="p-4 text-bold ">&nbsp;&nbsp;<%= order.products[i].quantity %>
               </td>
               <td class="p-4">
                 <%= order.orderDate.toLocaleDateString() %>
@@ -140,9 +159,32 @@
 
 
         </div>
-
   </div>
 
+  <div class="container align-items-center">
+    <div class="row">
+      <div class="col mx-auto d-flex">
+        <p id="shippingAddress" class="ml-5 mt-4 bg-light p-4 text-bold" style="font-size:large;"><span style="font-size:x-large;">Shipping Address :</span><br><br> <span><%= order.shippingAddress.fullName +' , '+order.shippingAddress.houseName +' , '+ order.shippingAddress.city +' , '+ order.shippingAddress.state +' , '+order.shippingAddress.country +' , PinCode : '+ order.shippingAddress.pincode + ' , '+order.shippingAddress.mobile  %></span></p>
+      </div>
+      <div class="col mx-auto">
+        <p class="ml-5 mt-4 bg-light p-4 text-bold" style="font-size:large;"><span style="font-size:x-large;">Order Id :</span> <span><%= order._id %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+        <p class="ml-5 mt-4 bg-light p-4 text-bold" style="font-size:large;"><span style="font-size:x-large;">Track Id : </span><span><%= order.trackId %> </span></p>
+      </div>
+    </div>
+
+    <div class="col mx-auto d-flex" >
+      <p class="ml-5 mr-5 mt-4 bg-light p-4 text-bold" style="font-size:large;  min-width: 550px;"><span style="font-size:x-large;">Payment Method : </span> <span><%= order.paymentMethod %></span></p>
+      <p class="ml-5 mt-4 bg-light p-4 text-bold" style="font-size:large;"><span style="font-size:x-large;">Total Amount :</span> <span style="font-size: x-large;">₹ <%= order.totalAmount %></span></p>
+    </div>
+    <div class="col mx-auto d-flex" >
+      <% if(order.coupon){ %>
+        <p class="ml-5 mt-4 bg-light p-4 text-bold" style="font-size:large; width: 550px;"><span style="font-size:x-large;">Coupon details :</span> <br><br>  <span>Coupon Name: <%= order.coupon.couponName %> <br><br> </span> <span>Coupon Code: <%= order.coupon.code %> <br><br></span></span> <span>Coupon Discount: ₹ <%= order.coupon.discount_amount %> <br><br></span></p>
+      
+      <% } %>
+    </div>
+    <button id="downloadInvoiceBtn">Download invoice</button>
+  </div>
+  
 
 
 
@@ -396,7 +438,6 @@
                     title: "Choose a valid reason"
                   });
             }else{
-            
               const response = await fetch(`/return-product`, {
               method: 'POST',
               headers: {
@@ -407,12 +448,6 @@
 
             const data = await response.json();
             if(data.message){
-
-              this.style.display = 'none'
-              this.parentNode.classList = []
-              this.parentNode.classList.add('text-bold')
-              this.parentNode.textContent = "Returned"
-
 
               const Toast = Swal.mixin({
               toast: true,
@@ -426,9 +461,12 @@
               });
               Toast.fire({
                 icon: "success",
-                title: data.message + " and wallet credited with refund amount"
+                text: data.message + " and wallet credited with refund amount"
               })
-
+                this.style.display = 'none'
+                this.parentNode.classList = []
+                this.parentNode.classList.add('text-bold')
+                this.parentNode.textContent = "Returned"
             }
             }
           })
@@ -456,6 +494,78 @@
     }
     if(progressStatus.value === 'Delivery'){
       forDelivered.classList.add('current-item')
+    }
+
+
+
+    //for downloading invoice function------------------------------------------------------------------
+    const downloadInvoiceBtn = document.getElementById('downloadInvoiceBtn')
+    downloadInvoiceBtn.addEventListener('click',downloadInvoiceFn)
+
+    const shipAddress = JSON.parse(document.getElementById('shippingAddress').value)
+
+    const orderDate = new Date(document.getElementById('orderDate').value).toDateString()
+
+    const products = document.getElementById('productsArray').value
+    const productsArr = JSON.parse(products)
+
+console.log("HEllo");
+    async function downloadInvoiceFn(){
+    
+      var data = {
+    "customize": {
+      
+    },
+    "images": {
+        // The logo on top of your invoice
+        "logo": "https://public.budgetinvoice.com/img/logo_en_original.png",
+        // The invoice background
+        "background": "https://public.budgetinvoice.com/img/watermark-draft.jpg"
+    },
+    // Your own data
+    "sender": {
+        "company": "Thrift Kicks",
+        "address": "Calicut",
+        "zip": "565436",
+        "city": "Town Street",
+        "country": "India"
+        
+    },
+    // Your recipient
+    "client": {
+        "company": shipAddress.fullName,
+        "address": shipAddress.houseName,
+        "zip": shipAddress.pincode,
+        "state":shipAddress.state,
+        "city": shipAddress.city,
+        "country": shipAddress.country
+        
+    },
+    "information": {
+        // Invoice number
+        "number": "2021.0001",
+        // Invoice data
+        "order-date": orderDate,
+
+    },
+    
+
+    "products": productsArr,
+  
+    // Settings to customize your invoice
+    "settings": {
+        "currency": "INR", 
+    },
+    "translate": {
+      
+    },
+};
+
+easyinvoice.createInvoice(data, function (result) {
+
+    console.log('PDF base64 string: ', result.pdf);
+    easyinvoice.download('invoice.pdf')
+});
     }
   </script>
 

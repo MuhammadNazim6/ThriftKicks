@@ -5,6 +5,7 @@ const mailer = require("../services/mail");
 const BannerModel = require('../models/bannerModel')
 const bcrypt = require("bcrypt");
 const otplib = require("otplib");
+
 const uuid = require('uuid');
 const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
@@ -15,17 +16,16 @@ const Wishlist = UserAddressModel.Wishlist;
 const Banner = BannerModel.Banner;
 
 
-let OTP;
-
 
 // Generate a new OTP secret
 const generateOtp = async (req,res) => {
   try {
     const otpSecret = otplib.authenticator.generateSecret();
-    OTP = otplib.authenticator.generate(otpSecret);
-    // console.log(`OTP: ${OTP}`);
+    req.session.otp = otplib.authenticator.generate(otpSecret);
+    console.log(`OTP: ${req.session.otp}`);
   } catch (error) {
     console.log(error.message);
+    console.log("we got error here in generateOtp");
   }
 };
 
@@ -44,7 +44,6 @@ const loadRegister = async (req, res) => {
   try {
     const refCode = req.query.refCode
     req.session.refCode = refCode
-    console.log(refCode);
     console.log(req.session.refCode);
 
     res.render("users/registration");
@@ -61,12 +60,15 @@ const verifyEmail = async (req, res, next) => {
     req.session.name = name;
     req.session.email = email;
     
+    
 
-    generateOtp();
+    await generateOtp(req,res);
+    const OTP = req.session.otp
     mailer.sendMail(email, OTP, name);
     next();
   } catch (error) {
     console.log(error.message);
+    console.log("we got errpr here in verifyEmail");
   }
 };
 
@@ -89,7 +91,7 @@ const verifyOtp = async (req, res) => {
     console.log(userOTP);
     console.log(emailId);
 
-    if (OTP === userOTP) {
+    if (req.session.otp === userOTP) {
       console.log("correct");
       const user = await User.findOne({ email: emailId });
 
@@ -159,8 +161,8 @@ const verifyOtp = async (req, res) => {
 const resendOtp = async (req, res, next) => {
   try {
     
-    generateOtp();
-    mailer.sendMail(req.session.email, OTP, req.session.name);
+    generateOtp(req,res);
+    mailer.sendMail(req.session.email, req.session.otp, req.session.name);
     next();
   } catch (error) {
     console.log(error.message);
@@ -564,27 +566,6 @@ const loadcart = async (req, res) => {
   }
 };
 
-async function bb(){
-  let canRate = []
-  const orders = await Order.find({userId : '654f74125049c9c88b6e79f9'})
-  
-  orders.forEach((order)=>{
-  const prodInOrder = order.products.filter((prod)=>{
-    return prod.productId.toString() === '6544c235bcaee8ed35d03034';
-  })
-
-  prodInOrder.forEach((prod)=>{
-   if((prod.ProductOrderStatus === 'Delivered') || (prod.ProductOrderStatus === 'Returned')){
-    canRate.push('Yeah')
-   }
-  
-  })
-
-})
-  console.log(canRate.length);
-}
-bb()
-
 
 //loading productview
 const loadProductView = async (req, res) => {
@@ -954,8 +935,8 @@ const forgotPassEmail = async (req,res)=>{
       return res.json({ failMessage: "No User found with this email" });
     }
     const name = user.firstname+" "+user.lastname;
-    generateOtp();
-    mailer.sendMail( email, OTP, name );
+    generateOtp(req,res);
+    mailer.sendForgotPassMail( email, req.session.otp, name );
     return res.json({ successMessage: "Otp sent to the email" })
 
   } catch (error) {
@@ -969,7 +950,7 @@ const forgetPassCheckOtp = async (req,res)=>{
   try {
     const { email, userOtp } = req.body;
     
-    if(userOtp === OTP){
+    if(userOtp === req.session.otp){
       return res.json({ successMessage: "Otp are equal" })
     }
     res.json({failedMessage:'Enter a valid OTP'})

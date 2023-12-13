@@ -123,7 +123,7 @@
     <!-- Breadcrumb Section End -->
 
 
-
+            
 
 
     <!-- Shopping Cart Section Begin -->
@@ -552,6 +552,15 @@
         //FETCH of cart product delete
         async function deleteCartProduct(prodId , button) {
 
+            // alert(button)
+            // console.log(button.parentElement.parentElement.querySelector('.cart__price').querySelector('.prices').textContent.trim());
+            // const productCost = button.parentElement.parentElement.querySelector('.cart__price').querySelector('.prices').textContent.trim()
+
+            // const subTotalCell = document.getElementById('subtotalAmount')
+            // subTotalCell.textContent -= productCost
+
+            // return
+
             const confirm = await document.querySelector(".confirm");
             const response = await fetch(`/deleteProduct/${prodId}`, {
                 method: "POST",
@@ -564,24 +573,11 @@
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
             }
-            
-            // const productTotal = button.parentElement.parentElement.querySelector('.cart__price').querySelector('.prices').textContent.trim()
-            // const totalAmountElem = document.getElementById("totalAmount")
-            // const totalAmount = parseInt(totalAmountElem.textContent)
-
-            // const subTotalAmt = document.getElementById('subtotalAmount')
-            // console.log(totalAmount);
-            // console.log(productTotal);
-            
-            // totalAmountElem.textContent = totalAmount - productTotal
+        
             const data = await response.json()
             if (data.message) {    
                 
-            console.log('Hello');
-
-                // Swal.fire({
-                //     text: data.message,
-                // });
+                location.reload()
             
             }
             if (data.length) {

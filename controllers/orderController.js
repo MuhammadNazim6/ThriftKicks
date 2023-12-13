@@ -1,9 +1,9 @@
 const UserAddressModel = require("../models/userModel");
 const ProductsModel = require("../models/productsModel");
 const OrdersModel = require("../models/ordersModel");
-const mailer = require("../services/mail");
-const bcrypt = require("bcrypt");
-const otplib = require("otplib");
+// const mailer = require("../services/mail");
+// const bcrypt = require("bcrypt");
+// const otplib = require("otplib");
 const uuid = require("uuid");
 const crypto = require("crypto");
 const Razorpay = require("razorpay");
@@ -15,7 +15,7 @@ const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
 const Coupon = OrdersModel.Coupon;
 const Wishlist = UserAddressModel.Wishlist;
-const Rating = ProductsModel.Rating;
+// const Rating = ProductsModel.Rating;
 var instance = new Razorpay({
   key_id: "rzp_test_hrcgmUAQIlTJWz",
   key_secret: "e6rN7GFxw4rzGXDHyQ9oFGy6",
@@ -329,9 +329,7 @@ const loadMyorders = async (req, res) => {
 const loadOrderDetailsPage = async (req, res) => {
   try {
     const orderId = req.query.ordId;
-    const order = await Order.findOne({ _id: orderId }).populate(
-      "products.productId"
-    );
+    const order = await Order.findOne({ _id: orderId }).populate("products.productId").populate('coupon')
 
     res.render("users/orderDetails", { order: order });
   } catch (error) {
@@ -649,10 +647,10 @@ const returnProductFn = async (req, res) => {
     }else{
       //if order doesn't use a coupon
       console.log("No using coupon");
-      user.wallet.balance = user.wallet.balance + (product.actualPrice * productToUpdate.quantity)
+      user.wallet.balance = user.wallet.balance + (product.actualPrice * productInOrder.quantity)
       const walletHistory = {
         type: "Credit",
-        amount: product.actualPrice * productToUpdate.quantity,
+        amount: product.actualPrice * productInOrder.quantity,
         date: Date.now(),
         reason: 'Return Refund'      };
 

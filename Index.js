@@ -10,7 +10,7 @@ const config = require("./config/config")
 const user_route = require("./routes/userRoute")
 const admin_route = require("./routes/adminRoute")
 const blocked = require('./middleware/blocked')
-
+// const invoice = require('./services/invoice.js')
 
 const path = require("path")
 const morgan = require("morgan")
@@ -30,7 +30,6 @@ app.use(
     }
   })
 );
-
 app.use(nocache());
 // app.use(morgan('tiny'))
 

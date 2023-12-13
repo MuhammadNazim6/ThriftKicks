@@ -94,8 +94,8 @@ const orderSchema = new mongoose.Schema({
     require:true
   },
   coupon:{
-      type: String,
-      required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Coupon', 
   },
   trackId:{
     type: String,

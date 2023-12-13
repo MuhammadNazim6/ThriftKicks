@@ -27,7 +27,7 @@ const addNewOffer = async (req, res) => {
       return res.json({ errMsg: "Enter a proper offer name" });
     }
 
-    if (offerDiscount < 0 || isNaN(offerDiscount) || offerDiscount > 101) {
+    if (offerDiscount < 0 || isNaN(offerDiscount) || offerDiscount > 60) {
       return res.json({
         errMsg: "Discount should be more than 2% and less than 50%",
       });
