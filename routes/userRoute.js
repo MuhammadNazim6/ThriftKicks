@@ -6,6 +6,9 @@ const user_route = express();
 const path = require("path")
 const auth = require("../middleware/auth")
 
+// const blocked = require('../middleware/blocked')
+
+// user_route.use(blocked.isBlocked)
 
 user_route.get("/register", auth.isLogout, userController.loadRegister)
 user_route.post("/register", auth.isLogout ,userController.verifyEmail,userController.insertUser)

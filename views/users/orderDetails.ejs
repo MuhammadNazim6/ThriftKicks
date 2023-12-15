@@ -1,4 +1,14 @@
 <%- include('../layouts/header.ejs')%>
+<style>
+  #pdf {
+    text-align: center;
+}
+
+#pdf canvas {
+    border: 1px solid black;
+    width: 95%;
+}
+</style>
 
   <!-- Header Section Begin -->
   <header class="header">
@@ -47,8 +57,8 @@
       
       <input type="hidden" id="shippingAddress" value="<%= JSON.stringify(order.shippingAddress) %>">
       <input type="hidden" id="orderDate" value="<%= order.orderDate %>">
-      <input type="text" id="productsArray" value="<%= JSON.stringify(order.products) %>">
-
+      <input type="hidden" id="productsArray" value="<%= JSON.stringify(order.products) %>">
+      <input type="hidden" id="orderId" value="<%= order._id %>">
 
       <table class="table">
         <thead>
@@ -98,12 +108,13 @@
                         <%= order.products[i].ProductOrderStatus === 'Cancelled' ? 'text-danger' : '' %>
                         <%= order.products[i].ProductOrderStatus === 'Out for Delivery' ? 'text-info' : '' %>
                         <%= order.products[i].ProductOrderStatus === 'Shipped' ? 'text-info' : '' %>
-                        <%= order.products[i].ProductOrderStatus === 'Delivered' ? 'text-success' : '' %>"
+                        <%= order.products[i].ProductOrderStatus === 'Delivered' ? 'text-success' : '' %>
+                        <%= order.products[i].ProductOrderStatus === 'Returned' ? 'text-danger' : '' %>"
                 style="width: 250px;">
                 <%= order.products[i].ProductOrderStatus%>
                   <br>
                   <% if( order.products[i].ProductOrderStatus === 'Returned' ){ %>
-                   <br> <p>On  <%= order.products[i].returnOrderStatus.date.toLocaleDateString() %> </p>
+                   <br> <p>On  <%= order.products[i].returnOrderStatus?.date?.toLocaleDateString() %> </p>
                     <%   }  %>
 
                   <% if(order.products[i].ProductOrderStatus!=='Returned' ){ %>
@@ -147,6 +158,11 @@
         </tbody>
       </table>
 
+      <div class="container d-flex justify-content-center">
+        <button class="m-4 primary-btn" id="downloadInvoiceBtn">Download invoice</button>
+        <button class="m-4 primary-btn" id="viewInvBtn" >View invoice</button>
+      </div>
+    
       <% } %>
         <div class="d-flex justify-content-center align-items-center">
           <input type="hidden" value="<%= order._id %>" id="orderIdElem">
@@ -160,6 +176,8 @@
 
         </div>
   </div>
+  <div id="pdf" class="mt-4"></div>
+
 
   <div class="container align-items-center">
     <div class="row">
@@ -182,7 +200,7 @@
       
       <% } %>
     </div>
-    <button id="downloadInvoiceBtn">Download invoice</button>
+    
   </div>
   
 
@@ -255,6 +273,11 @@
   </footer>
   <!-- Footer Section End -->
 
+
+
+  <script src="https://unpkg.com/pdfjs-dist/build/pdf.min.js"></script>
+  <script src="https://unpkg.com/pdfjs-dist/build/pdf.worker.min.js"></script>
+  <script src="https://unpkg.com/pdfjs-dist@2.3.200/build/pdf.min.js"></script>
 
   <script>
     // const cancelOrderBtn = document.getElementById('cancelOrder')
@@ -504,23 +527,25 @@
 
     const shipAddress = JSON.parse(document.getElementById('shippingAddress').value)
 
-    const orderDate = new Date(document.getElementById('orderDate').value).toDateString()
+    const orderDate = new Date(document.getElementById('orderDate').value).toLocaleDateString()
+    const dueDate = new Date(orderDate);
+    dueDate.setDate(dueDate.getDate() + 10)
 
     const products = document.getElementById('productsArray').value
     const productsArr = JSON.parse(products)
 
-console.log("HEllo");
+    const orderId = document.getElementById('orderId').value 
+    const invoiceNum = 'INV-'+ orderId.slice(5,13) 
+
     async function downloadInvoiceFn(){
-    
-      var data = {
+
+    var data = {
     "customize": {
-      
     },
     "images": {
         // The logo on top of your invoice
         "logo": "https://public.budgetinvoice.com/img/logo_en_original.png",
         // The invoice background
-        "background": "https://public.budgetinvoice.com/img/watermark-draft.jpg"
     },
     // Your own data
     "sender": {
@@ -542,15 +567,15 @@ console.log("HEllo");
         
     },
     "information": {
-        // Invoice number
-        "number": "2021.0001",
+         // Invoice number
+        "number": invoiceNum,
         // Invoice data
-        "order-date": orderDate,
+        "date": orderDate,
+        // Invoice due date
+        "due-date": dueDate.toLocaleDateString()   
 
     },
-    
-
-    "products": productsArr,
+    "products":[],
   
     // Settings to customize your invoice
     "settings": {
@@ -561,12 +586,125 @@ console.log("HEllo");
     },
 };
 
-easyinvoice.createInvoice(data, function (result) {
+for (let i = 0; i < productsArr.length ; i++) {
+  if( (productsArr[i].ProductOrderStatus !== 'Returned') && (productsArr[i].ProductOrderStatus !== 'Returned') ){
+    const product = {
+      "quantity": productsArr[i].quantity,
+      "description":productsArr[i].productId.productName,
+      "tax-rate": 0,
+      "price": productsArr[i].unitPrice
+  };
+  data.products.push(product);
+  }
+}
 
+
+easyinvoice.createInvoice(data, function (result) {
     console.log('PDF base64 string: ', result.pdf);
     easyinvoice.download('invoice.pdf')
 });
+
+}
+
+
+
+
+
+//for Viewing invoice function------------------------------------------------------------------
+const viewInvoiceBtn = document.getElementById('viewInvBtn')
+viewInvBtn.addEventListener('click',viewInvoiceFn) 
+
+// viewInvoiceFn()
+    
+async function viewInvoiceFn(){
+    
+    var data = {
+  "customize": {
+    
+  },
+  "images": {
+    "logo": "https://public.budgetinvoice.com/img/logo_en_original.png",
+      // The invoice background
+  },
+  // Your own data
+  "sender": {
+      "company": "Thrift Kicks",
+      "address": "Calicut",
+      "zip": "565436",
+      "city": "Town Street",
+      "country": "India"
+      
+  },
+  // Your recipient
+  "client": {
+      "company": shipAddress.fullName,
+      "address": shipAddress.houseName,
+      "zip": shipAddress.pincode,
+      "state":shipAddress.state,
+      "city": shipAddress.city,
+      "country": shipAddress.country
+      
+  },
+  "information": {
+       // Invoice number
+      "number": invoiceNum,
+      // Invoice data
+      "date": orderDate,
+      // Invoice due date
+      "due-date": dueDate.toLocaleDateString()   
+
+  },
+  
+
+  "products":[],
+
+  // Settings to customize your invoice
+  "settings": {
+      "currency": "INR", 
+  },
+  "translate": {
+    
+  },
+};
+
+for (let i = 0; i < productsArr.length ; i++) {
+  if( (productsArr[i].ProductOrderStatus !== 'Cancelled') && productsArr[i].ProductOrderStatus !== 'Returned'){
+    const product = {
+      "quantity": productsArr[i].quantity,
+      "description":productsArr[i].productId.productName,
+      "tax-rate": 0,
+      "price": productsArr[i].unitPrice
+  };
+  data.products.push(product);
+  }
+}
+
+const elementId = 'pdf';
+const pdfElem = document.getElementById('pdf')
+
+const result = await easyinvoice.createInvoice(data);
+
+console.log('Invoice Data:', data);
+console.log('Invoice Result:', result);
+
+const options = {
+      margin: 10,
+      filename: 'invoice.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: {
+        unit: 'mm',          // Use millimeters for units
+        format: 'a10',        // Specify the page format (you can use other formats)
+        orientation: 'portrait',  // Set to 'landscape' for a landscape-oriented PDF
+      }
+    };
+
+    
+await easyinvoice.render(elementId, result.pdf ,options);
+
+
     }
+
   </script>
 
   <%- include('../layouts/footer.ejs')%>

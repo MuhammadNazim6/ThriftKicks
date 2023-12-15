@@ -558,23 +558,20 @@ const changeOrderStatus = async (req,res)=>{
           prod.ProductOrderStatus = "Shipped"
         })
       }
-
-      if(status === 'Delivered'){
-        order.products.forEach((prod)=>{
-          prod.ProductOrderStatus = "Delivered"
-        })
-      }
       
       if(status === 'Delivered'){
         order.products.forEach((prod)=>{
           prod.ProductOrderStatus = "Delivered"
         })
+        order.paymentStatus = 'Paid'
       }
+
       if(status === 'Out for Delivery'){
         order.products.forEach((prod)=>{
           prod.ProductOrderStatus = "Out for Delivery"
         })
       }
+      
       if(status === 'Pending'){
         order.products.forEach((prod)=>{
           prod.ProductOrderStatus = "Ordered"

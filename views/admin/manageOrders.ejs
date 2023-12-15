@@ -145,7 +145,7 @@
                     <div class="form-group">
                       <label class="form-label text-lg">Order Date</label>
                       <input type="text" class="form-control text-lg bg-glass pl-4"
-                        value="<%= currentOrder.orderDate %>" style="width:160px;" readonly>
+                        value="<%= currentOrder.orderDate.toLocaleDateString() %>" readonly>
                     </div>
 
 
@@ -175,7 +175,7 @@
               <div class="tab-pane">
                 <br>
 
-                <h3 class="mb-5">Product Details</h3>
+                <h3 class="mb-5 LSpacing">Product Details</h3>
 
               </div>
 
@@ -199,19 +199,19 @@
                   <tbody class="table-group-divider">
                     <% currentOrder.products.forEach(function(product , index) { %>
                       <tr>
-                        <td scope="row">
+                        <td class="p-4" scope="row">
                           <%= index+1 %>
                         </td>
-                        <td>
+                        <td class="p-4">
                           <img src="<%= product.productId.image.path1 %>" style="height: 200px; width: 200px;">
                         </td>
-                        <td>
+                        <td class="p-4">
                           <%= product.productId.productName %>
                         </td>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= product.quantity %>
+                        <td class="p-4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= product.quantity %>
                         </td>
                         <!-- <td><%= currentOrder.orderDate.toString().slice(0,15) %></td> -->
-                        <td>
+                        <td class="p-4">
                           <% if(product.ProductOrderStatus !=="Cancelled" ){ %>
                             <select class="form-control text-lg bg-glass pl-4 ProductOrderStatus"
                               value="<%= product.ProductOrderStatus %>">
@@ -309,6 +309,7 @@
                   text: "Order status changed to " + status,
                 });
               }
+              location.reload()
               console.log(data.message);
             } catch (error) {
               console.log("Could not change Order status");

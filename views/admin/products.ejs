@@ -91,14 +91,14 @@
           <li class="nav-item mt-3">
             <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link text-white " href="../pages/profile.html">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">person</i>
               </div>
               <span class="nav-link-text ms-1">Profile</span>
             </a>
-          </li>
+          </li> -->
 
           <li class="nav-item">
             <a class="nav-link text-white" href="/admin/logout">
@@ -210,7 +210,7 @@
                     <table class="table table-bordered table-striped table-hover">
                       <tr>
                         <th class="text-dark text-lg text-bold p-4" >Product Name</th>
-                        <th class="text-dark text-lg text-bold p-4">Size</th>
+                        <th class="text-dark text-lg text-bold p-4">Price</th>
                         <th class="text-dark text-lg text-bold p-4">Category</th>
                         <th class="text-dark text-lg text-bold p-4" style="max-width: 80px;">Stock</th>
                         <th class="text-dark text-lg text-bold p-4" style="min-width: 100px;">Image</th>
@@ -233,12 +233,10 @@
                                         data-product-id="<%= products[i]._id %>"> Remove Offer</button>
                                       <% } %>
                                   </div>
-
-
                             </td>
 
                             <td class="text-dark p-4">
-                              <%= products[i].size %>
+                              ₹ <%= products[i].actualPrice %>
                             </td>
                             <td class="text-dark p-4">
                               <%= products[i].category_id.categoryName %>
@@ -248,7 +246,6 @@
                             </td>
                             <td class="text-dark p-4"><img class="product-view images" style="min-width: 100px;"
                                 src="<%= products[i].image.path1 %>" style="cursor:pointer;"></td>
-
 
 
                             <td class="p-5">

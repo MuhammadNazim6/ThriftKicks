@@ -1,7 +1,10 @@
 //to check weather user is logged in or not
+const blocked = require('./blocked')
+
 const isLogin = async (req, res, next) => {
   try {
     if (req.session.user_id) {
+      blocked.isBlocked
     } else {
       return res.redirect("/");
     }

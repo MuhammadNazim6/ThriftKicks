@@ -160,27 +160,34 @@ const stockAdjusted = async (cartProducts) => {
 //Order placing
 const placeOrder = async (req, res) => {
   try {
+    console.log('Inside place order 1');
     const { paymentSelected, addressSelected, couponId ,walletCheckedStatus } = req.body;
+    console.log('Inside place order 2');
     const userId = req.session.user_id;
     const userData = await User.findOne({ _id: userId });
     const shippingAddress = await Address.findOne({ _id: addressSelected });
     const cart = await Cart.findOne({ userId: userId }).populate('products.productId')
-    const coupon = couponId !== "" ? couponId : "none";
-    
+    const coupon = couponId || null;
+    console.log('Inside place order 3');
+
 
     let trackId = await generateTrackId();
     let totalAmount = await calculateTotalPrice(userId);
     console.log(couponId);
 
+    console.log('Inside place order 4');
 
 
     if (couponId) {
+      console.log('Inside place order inside coupon');
+
       const coupon = await Coupon.findOne({ _id: couponId });
       totalAmount = totalAmount - coupon.discount_amount;
       //coupon used by adding
       coupon.usersUsed.push(userId);
       await coupon.save();
     }
+    console.log('Inside place order after coupon');
 
     if(walletCheckedStatus){
       console.log("Here wallet is used "+walletCheckedStatus);
@@ -229,6 +236,7 @@ const placeOrder = async (req, res) => {
       "returnOrderStatus.status": "none",
       "returnOrderStatus.reason": "none",
     }));
+    console.log('Inside place order 5 after cartProducts');
 
     const order = new Order({
       userId: userId,
@@ -251,6 +259,7 @@ const placeOrder = async (req, res) => {
       coupon: coupon,
       trackId: trackId,
     });
+    console.log('Inside place order 5 after Order CReated');
 
     //deleting existing cart
     const deletedCart = await Cart.deleteOne({ _id: cart._id });
@@ -260,6 +269,8 @@ const placeOrder = async (req, res) => {
 
     //returning a promise
     const newOrderPlaced = await order.save();
+    console.log('Inside place order 5 after Order saved');
+
 
     if (paymentSelected == "COD") {
       res.json({ message: "Order Placed successfully" });
@@ -318,7 +329,8 @@ const loadMyorders = async (req, res) => {
     const orders = await Order.find({ userId: userId }).populate(
       "products.productId"
     );
-
+console.log(orders);
+console.log(orders.products);
     res.render("users/myOrders", { orders, user, cart });
   } catch (error) {
     console.log("Couldn't load my orders");
@@ -385,11 +397,10 @@ const cancelProdOrder = async (req, res) => {
 
     //reducing total order amount
     // so that amount will not go below zero
-    if(order.totalAmount >= (product.actualPrice * productToUpdate.quantity)){
-      order.totalAmount =
-      order.totalAmount - product.actualPrice * productToUpdate.quantity;
+    if(order.totalAmount >= (product.unitPrice * productToUpdate.quantity)){
+      order.totalAmount = order.totalAmount - product.unitPrice * productToUpdate.quantity;
       await order.save();
-      console.log("THat");
+      console.log("That");
 
     }else{
       order.totalAmount =  order.totalAmount
@@ -571,6 +582,7 @@ async function changePaymentStatus(orderId) {
 const returnProductFn = async (req, res) => {
   try {
     const { returnReason, prodId, orderId } = req.body;
+    console.log('inside return product order function');
     const order = await Order.findById(orderId);
     const product = await Product.findById(prodId);
     const user = await User.findById(req.session.user_id);
@@ -579,6 +591,7 @@ const returnProductFn = async (req, res) => {
       return product.productId.toString() === prodId;
     });
     const quantity = productInOrder.quantity;
+    console.log('Quantity on line 593: ',quantity);
 
     productInOrder.ProductOrderStatus = "Returned";
     productInOrder.returnOrderStatus.status = "Returned";
@@ -587,54 +600,73 @@ const returnProductFn = async (req, res) => {
 
     //saving order after changing status to returned
     await order.save();
-    console.log("Saved");
+    console.log("Saved order after adding returned status");
 
     //no need to increase defective stock
     if (returnReason !== "Defective") {
       product.stock = product.stock + quantity;
       await product.save();
+    console.log('Product stock increased in ');
+
     }
 
     //updating refunded amount in users wallet
 
-    user.wallet.balance = user.wallet.balance + product.actualPrice * quantity;
-    const walletHistory = {
-      type: "Credit",
-      amount: product.actualPrice * quantity,
-      date: Date.now(),
-      reason: 'Order Return'
-    };
-    user.wallet.history.push(walletHistory);
-    await user.save();
+    // user.wallet.balance = user.wallet.balance + product.actualPrice * quantity;
+    // const walletHistory = {
+    //   type: "Credit",
+    //   amount: product.actualPrice * quantity,
+    //   date: Date.now(),
+    //   reason: 'Order Return'
+    // };
+    // user.wallet.history.push(walletHistory);
+    // await user.save();
 
     ///////////////
 
      // if order has a coupon used
-    if(order.coupon !== 'none'){
+    if(order.coupon !== null){
       console.log("Using coupon");
-      const coupon = await Coupon.findById(order.coupon)
-
+      console.log(order.coupon);
+      // console.log(new objectId(order.coupon));
+      // const couponId = new mongoose.Types.ObjectId(order.coupon);     
+      const coupon = await Coupon.findOne({_id:order.coupon.toString()})
+    
+console.log('Reaching here');
+console.log(coupon);
                   //if total amount becomes less then minimum coupon required amount
                   if(order.totalAmount < coupon.minimumSpend){
-                    user.wallet.balance = user.wallet.balance + ((product.actualPrice * quantity)-coupon.discount_amount)
+console.log('Reaching here inside');
+
+                    user.wallet.balance = user.wallet.balance + ((productInOrder.unitPrice * quantity)-coupon.discount_amount)
                   const walletHistory = {
                     type: "Credit",
-                    amount: (product.actualPrice * quantity) - coupon.discount_amount,
+                    amount: (productInOrder.unitPrice * quantity) - coupon.discount_amount,
                     date: Date.now(),
                     reason: 'Return Refund'
                   };
+                  console.log('Reaching here inside 2');
+
                   user.wallet.history.push(walletHistory);
                   await user.save();
+                  console.log('Reaching here inside 3 after saving ');
 
-                  order.coupon = 'none'
+                  order.coupon = null
                   await order.save()
-                  console.log("Saved None in coupon");
+                  console.log("Saved null in coupon");
                   }else{
-                    console.log("No using coupon");
-                    user.wallet.balance = user.wallet.balance + (product.actualPrice * quantity)
+                    console.log("No losing coupon");
+                    // if it is the only and last product
+                    let amount;
+                    if(order.products.length === 1){
+                       amount = (productInOrder.unitPrice  * quantity) - coupon.discount_amount
+                    }else{
+                       amount = (productInOrder.unitPrice  * quantity)
+                    }
+                    user.wallet.balance = user.wallet.balance + amount
                     const walletHistory = {
                       type: "Credit",
-                      amount: product.actualPrice * quantity,
+                      amount: amount,
                       date: Date.now(),
                       reason: 'Return Refund'
                     };
@@ -647,10 +679,10 @@ const returnProductFn = async (req, res) => {
     }else{
       //if order doesn't use a coupon
       console.log("No using coupon");
-      user.wallet.balance = user.wallet.balance + (product.actualPrice * productInOrder.quantity)
+      user.wallet.balance = user.wallet.balance + (productInOrder.unitPrice  * productInOrder.quantity)
       const walletHistory = {
         type: "Credit",
-        amount: product.actualPrice * productInOrder.quantity,
+        amount: productInOrder.unitPrice  * productInOrder.quantity,
         date: Date.now(),
         reason: 'Return Refund'      };
 

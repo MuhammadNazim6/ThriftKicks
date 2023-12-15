@@ -136,7 +136,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="text-lg mr-5" for="minSpend">Minimum Spend:</label>
-                    <select class="form-control bg-glass text-md" id="minSpend" name="minSpend">
+                    <select class="form-control bg-glass text-md txt-ind" id="minSpend" name="minSpend">
                       <option class="text-lg" value="2000">Rs 2000</option>
                       <option class="text-lg" value="3000">Rs 3000</option>
                       <option class="text-lg" value="4000">Rs 4000</option>
@@ -150,7 +150,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="text-lg mr-5" for="maxUse">Max No. of coupon usage:</label>
-                    <select class="form-control bg-glass text-md" id="maxUse" name="maxUse">
+                    <select class="form-control bg-glass text-md txt-ind" id="maxUse" name="maxUse">
                       <option class="text-lg" value="50">50</option>
                       <option class="text-lg" value="100">100</option>
                       <option class="text-lg" value="200">200</option>
@@ -185,7 +185,14 @@
     const maxUse = document.getElementById('maxUse')
     const description = document.getElementById('description')
 
+    //assigning todays date to min date
+    let today = new Date().toISOString().split('T')[0];
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    let tomorrowFormatted = tomorrow.toISOString().split('T')[0];
 
+    validFrom.min = today;
+    validTo.min = tomorrowFormatted;
 
 
     //events

@@ -1,5 +1,17 @@
 <%- include('../layouts/header.ejs')%>
 
+<style>
+    @media screen and (max-width: 768px) {
+            /* Your styles for smaller screens here */
+            .products-container{
+                display: none;
+            }
+            .pagination-container{
+                display: none;
+            }
+        }
+
+</style>
 
     <!-- Page Preloder -->
     <div id="preloder">
@@ -10,17 +22,9 @@
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
-            <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#">FAQs</a>
-            </div>
+              <h3 class="LSpacing">Thrift Kicks </h3>  
         </div>
-        <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="img/icon/search.png" alt="" /></a>
-            <a href="#"><img src="img/icon/heart.png" alt="" /></a>
-            <a href="#"><img src="img/icon/cart.png" alt="" /> <span>0</span></a>
-            <div class="price">$0.00</div>
-        </div>
+       
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">
             <p>Free shipping, 30-day return or refund guarantee.</p>
@@ -35,7 +39,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-7">
                         <div class="header__top__left">
-                            <p>Free , 30-day return or refund guarantee.</p>
+                            <p>Free shipping, 30-day return or refund guarantee.</p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5">
@@ -49,6 +53,7 @@
                 </div>
             </div>
         </div>
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3">
@@ -72,10 +77,6 @@
                                     <li><a href="/login">SignIn</a></li>
                                     <% } %>
 
-
-
-
-
                                     <li>
                                         <% if(typeof user !=='undefined' ) { %>
                                             <a class="cursor_cart" href="/cart">
@@ -89,8 +90,6 @@
                                                     </span></a>
                                                 <% } %>
                                     </li>
-
-
                         </ul>
                     </nav>
                 </div>
@@ -109,58 +108,62 @@
     </header>
     <!-- Header Section End -->
 
-    <div class="container">
+    <!-- <div class="container">
         <div class="container-fluid py-4">
             <div class="row">
-                <div class="col-12">
+                <div class="col-lg-8 mx-auto">
                     <form class="form-inline my-2 my-lg-0">
-                        <div class="input-group border" style="height: 43px;">
-                            <input class="form-control ms-5" type="text" placeholder="Search Products" name="search"
-                                style="width: 1100px;">
-                            <div class="input-group-append ">
-                                <button class="btn btn-outline-dark " type="submit">Search</button>
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Search Products" name="search">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-dark" type="submit">Search</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
+    
+    
     <!-- Hero Section Begin -->
-    <div class="container" >
-        <div id="carouselExampleIndicators" class="carousel slide mt-5 mb-5" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <% for (let i = 0; i < banner.length; i++) { %>
-                   <li data-target="#carouselExampleIndicators" data-slide-to="<%= i %>" <%= i === 0 ? 'class="active"' : '' %>></li>
-                <% } %>
-             </ol>
-             
-            <div class="carousel-inner">
-                <% banner.forEach((ban, index)=> { %>
-                    <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                        <a href="/shop?search=<%= ban.href %>"> <img class="d-block w-100" src="<%= ban.imageUrl %>" style="height: 600px; "
-                                alt="Slide <%= index + 1 %>"> </a>
-                        <div class="carousel-caption d-none d-md-block">
-                            <h3 class="text-white">
-                                <%= ban.title %>
-                            </h3>
-                                <p class="text-white">
-                                    <%= ban.description %>
-                                </p>
-                        </div>
+    <div class="container">
+    <div id="carouselExampleIndicators" class="carousel slide mt-5 mb-5" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <% for (let i = 0; i < banner.length; i++) { %>
+            <li data-target="#carouselExampleIndicators" data-slide-to="<%= i %>" <%= i === 0 ? 'class="active"' : '' %>></li>
+            <% } %>
+        </ol>
+        
+        <div class="carousel-inner">
+            <% banner.forEach((ban, index)=> { %>
+                <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                    <a href="/shop?search=<%= ban.href %>">
+                        <img class="d-block w-100" src="<%= ban.imageUrl %>" style="max-height: 600px; width: 100%; object-fit: cover;"
+                            alt="Slide <%= index + 1 %>">
+                    </a>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="text-white LSpacing">
+                            <%= ban.title %>
+                        </h3>
+                        <p class="text-white">
+                            <%= ban.description %>
+                        </p>
                     </div>
-                    <% }) %>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+                </div>
+            <% }) %>
         </div>
-    </div> 
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
 
 
         <!-- Hero Section End -->
@@ -228,7 +231,7 @@
 
 
         <!-- Product Section Start -->
-        <div class="container">
+        <div class="container products-container">
             <div class="row">
 
                 <div class="container-fluid">
@@ -327,7 +330,7 @@
         </div>
 
         <!-- pagination -->
-        <div class="container ">
+        <div class="container pagination-container">
             <div class="d-flex justify-content-center">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
@@ -357,7 +360,7 @@
                                 <img src="assets/banner/banner-1.jpg" alt="" />
                             </div>
                             <div class="banner__item__text">
-                                <h2>New Thrifted Collections</h2>
+                                <h2 class="LSpacing">New Thrifted Collections</h2>
                                 <a href="/shop">Shop now</a>
                             </div>
                         </div>
@@ -368,7 +371,7 @@
                                 <img src="assets/banner/banner-2.jpg" alt="" />
                             </div>
                             <div class="banner__item__text">
-                                <h2>Sneakers</h2>
+                                <h2 class="LSpacing">Sneakers</h2>
                                 <a href="/shop">Shop now</a>
                             </div>
                         </div>
@@ -379,7 +382,7 @@
                                 <img src="assets/banner/banner-3.jpg" alt="" />
                             </div>
                             <div class="banner__item__text">
-                                <h2>Shoes Spree</h2>
+                                <h2 class="LSpacing">Shoes Spree</h2>
                                 <a href="/shop">Shop now</a>
                             </div>
                         </div>

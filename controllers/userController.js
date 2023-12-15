@@ -44,7 +44,8 @@ const loadRegister = async (req, res) => {
   try {
     const refCode = req.query.refCode
     req.session.refCode = refCode
-    console.log(req.session.refCode);
+    console.log('Referral Code present : ',req.session.refCode);
+    console.log('Inside load register')
 
     res.render("users/registration");
   } catch (error) {
@@ -60,11 +61,11 @@ const verifyEmail = async (req, res, next) => {
     req.session.name = name;
     req.session.email = email;
     
-    
-
+    console.log('Inside verify Email');
     await generateOtp(req,res);
     const OTP = req.session.otp
     mailer.sendMail(email, OTP, name);
+    console.log('After sendmail Functin');
     next();
   } catch (error) {
     console.log(error.message);
@@ -88,28 +89,42 @@ const verifyOtp = async (req, res) => {
   try {
     const userOTP = req.body.otp;
     const emailId = req.body.email;
-    console.log(userOTP);
-    console.log(emailId);
+    console.log('Inside verifyOtp :',userOTP);
+    console.log('Inside verifyOtp :',emailId);
 
     if (req.session.otp === userOTP) {
       console.log("correct");
-      const user = await User.findOne({ email: emailId });
 
-      user.is_verified = true;
+      console.log(req.session.userData);
+      const userData = req.session.userData
+      console.log('Userdata: ',userData);
 
+      // const user = await User.findOne({ email: emailId });
+      const user = new User({
+        firstname:userData.firstname,
+        lastname: userData.lastname,
+        email: userData.email,
+        mobile: userData.mobile,
+        password: userData.password,
+        is_admin: 0,
+        refCode: userData.refCode,
+        is_verified: true
+      });
+
+      // user.is_verified = true;
       const verified = await user.save();
+      req.session.userData = {}
+
 
       if (verified) {
         req.session.user_id = user._id;
-        
-
+        console.log(req.session.userData);
+        console.log('Insde verified ');
         //if there is a referral code
         if(req.session.refCode){
-
           const referrerUser = await User.findOne({refCode:req.session.refCode})
           //if referral code is valid
           if(referrerUser){
-            
           console.log('Referral code present');
 
           user.wallet.balance = 200
@@ -122,7 +137,7 @@ const verifyOtp = async (req, res) => {
           user.wallet.history.push(history)
           await user.save()
 
-          //updateing referrer users wallet balance
+          //updating referrer users wallet balance
           
           referrerUser.wallet.balance += 200
           const referrerHistory = {
@@ -173,7 +188,6 @@ const resendOtp = async (req, res, next) => {
 const insertUser = async (req, res) => {
   try {
   
-
     const email = req.body.email;
     const mail = await User.findOne({ email: req.body.email });
     const currentValue = req.body;
@@ -223,7 +237,7 @@ const insertUser = async (req, res) => {
       const refCode = await generateReferralCode()
       console.log(refCode);
 
-      const user = new User({
+      req.session.userData = {
         firstname: req.body.fname,
         lastname: req.body.lname,
         email: req.body.email,
@@ -231,13 +245,22 @@ const insertUser = async (req, res) => {
         password: spassword,
         is_admin: 0,
         refCode: refCode
-        
-      });
+      }
+      console.log('Inside insert User : ',req.session.userData);
+      // const user = new User({
+      //   firstname: req.body.fname,
+      //   lastname: req.body.lname,
+      //   email: req.body.email,
+      //   mobile: req.body.mobile,
+      //   password: spassword,
+      //   is_admin: 0,
+      //   refCode: refCode
+      // });
 
       //returning a promise
-      const userData = await user.save(); 
+      // const userData = await user.save(); 
 
-      if (userData) {
+      if (req.session.userData) {
         res.redirect(`/verifyOtp?email=${encodeURIComponent(email)}`);
       } else {
         return res.render("users/registration", {
@@ -633,6 +656,15 @@ const addtoCart = async (req, res) => {
     const quantity = req.body.quantity ?? 1;
 
     const cartExist = await Cart.findOne({ userId: user_id });
+    const prod = await Product.findOne({_id : product_id})
+
+    if(prod.stock === 0 ){
+    return res.json({
+        message: "Product currently out of Stock",
+        length: cartExist?.products?.length
+      });
+    }
+
     //if No cart for user
     if (!cartExist) {
       const newCart = new Cart({
@@ -658,17 +690,7 @@ const addtoCart = async (req, res) => {
         (element) => element.productId.toString() === product_id
       );
 
-    const prod = await Product.findOne({_id : product_id})
-        if(prod.stock === 0 ){
-        return res.json({
-            message: "Product currently out of Stock",
-            length: cartExist.products.length
-          });
-        }
-
-        
       if (productExist) {
-  
       res.json({
           message: "Product already added to cart",
           length: cartExist.products.length
@@ -1011,11 +1033,16 @@ module.exports = {
   loadAccount,
   userLogout,
   loadShop,
-  loadcart,
   loadProductView,
+
+  //------------------cart functions----------------------------
+  loadcart,
   addtoCart,
   cartIncreaseDecrease,
   deleteCartProduct,
+  //------------------cart functions----------------------------
+
+
   editUserData,
   updateAddress,
   updateEditedAddress,
@@ -1028,6 +1055,5 @@ module.exports = {
   loadOtpchangepass,
   loadWishlist
   
-
 };
 

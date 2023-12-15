@@ -1,83 +1,68 @@
 <%- include('../layouts/header.ejs')%>
 
-  <section class="overflow-hidden bodyoflogin">
+<section class="overflow-hidden bodyoflogin">
+  <style>
+    body {
+      overflow-y: hidden;
+    }
+  </style>
+  <div class="container-fluid px-4 py-5 text-center text-lg-start my-5 ">
+      <div class="row gx-0 align-items-center mb-5 d-flex justify-content-center align-items-center">
+          <div class="col-lg-4 mb-5 mb-lg-0 position-relative">
+              <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+              <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 
+              <div class="card">
+                  <div class="card-body px-4 py-5 px-md-5">
+                      <form action="/login" method="post">
+                          <% if (typeof message !=='undefined' ) { %>
+                              <p class="alert alert-danger text-white mb-3">
+                                  <%= message %>
+                              </p>
+                          <% } %>
 
-    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-      <div class="row gx-lg-5 align-items-center mb-5">
-        <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-         
-                        <a class="navbar-brand logo-size-bgremoved" href="/home"><img src="assets/logos/bgRemInvLogo.png" alt="Thriffy" /></a>
-                
-          <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(220, 94%, 13%) hsl(220, 94%, 13%)">
-           <br />
-            <span style="color:  hsl(220, 94%, 13%)"> </span>
-          </h1>
-          <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-           
-          </p>
-        </div>
+                          <% if (typeof verif_message !=='undefined' ) { %>
+                              <p class="alert alert-danger text-white mb-3 text-center">
+                                  <%= verif_message %>&nbsp;&nbsp;&nbsp;<a class="text-light text-decoration-underline text-white" href="/resendOtp">Verify now</a>
+                              </p>
+                          <% } %>
 
-        <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-          <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-          <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+                          <!-- Email input -->
+                          <div class="form-outline mb-4">
+                              <input class="form-control bg-creme txt-ind" type="email" id="email" name="email" required />
+                              <label class="form-label text-black" for="email">Email address</label>
+                          </div>
 
-          <div class="card">
-            <div class="card-body px-4 py-5 px-md-5">
-              <form form action="/login" method="post">
+                          <!-- Password input -->
+                          <div class="form-outline mb-4">
+                              <input class="form-control bg-creme txt-ind" type="password" id="password" name="password" required />
+                              <label class="form-label text-black" for="password">Password</label>
+                          </div>
 
-                <% if (typeof message !=='undefined' ) { %>
+                          <!-- Submit button -->
+                          <div class="d-grid gap-2">
+                              <button class="primary-btn mb-4" type="submit">Login</button>
+                              
+                                  <span class="text-black txt-lg d-flex justify-content-center align-items-center"><a class="text-hover-effect text-decoration-underline" href="/forgotPassword">
 
-                  <p class="alert alert-danger text-white mb-3">
-                    <%= message %>
-                  </p>
-                  <% } %>
+                                  Forgot password? </a></span>
+                             
+                          </div>
+                      </form>
 
-                  <% if (typeof verif_message !=='undefined' ) { %>
-
-                    <p class="alert alert-danger text-white mb-3 text-center">
-                      <%= verif_message %>&nbsp;&nbsp;&nbsp;<a class="text-light text-decoration-underline text-white" href="/resendOtp">Verify now</a>
-                    </p>
-                    
-                    <% } %>
-
-                    <!-- Email input -->
-
-                    <div class="form-outline mb-4">
-                      <input class="form-control bg-creme txt-ind" type="email" id="email" name="email" required />
-                      <label class="form-label text-black" for="email">Email address</label>
-                    </div>
-
-
-                    <!-- Password input -->
-                    <div class="form-outline mb-4">
-                      <input class="form-control bg-creme txt-ind " type="password" id="password" name="password" required />
-
-                      <label class="form-label text-black" for="password">Password</label>
-                    </div>
-
-                    <!-- Submit button -->
-
-                    <div class="d-grid gap-2">
-                      <button class="btn btn-dark" type="submit">Login</button>
-                      <a class="text-hover-effect text-decoration-underline" href="/forgotPassword"><span class="text-black txt-lg d-flex justify-content-center align-items-center">Forgot password?</a></span>
-                    </div>
-                    
-
-            </div>
-            </form>
-
-            <div class="d-flex justify-content-center align-items-center mt-3">
-              <span class="text-black txt-lg">New user?
-                <a class="text-hover-effect text-decoration-underline" href="/register"> Signup here</a></span>
-            </div>
-            <div> &nbsp</div>
+                      <div class="d-flex justify-content-center align-items-center mt-3">
+                          <span class="text-black txt-lg">New user?
+                              <a class="text-hover-effect text-decoration-underline" href="/register"> Signup here</a>
+                          </span>
+                      </div>
+                      <div>&nbsp;</div>
+                  </div>
+              </div>
           </div>
-        </div>
       </div>
-    </div>
-    </div>
-  </section>
+  </div>
+</section>
+
   <!-- Section: Design Block -->
 
 

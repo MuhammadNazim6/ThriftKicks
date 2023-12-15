@@ -33,12 +33,12 @@ var data = {
         // "custom3": "custom value 3"
     },
     "information": {
-        // Invoice number
-        "number": "2021.0001",
-        // Invoice data
-        "date": "12-12-2021",
-        // Invoice due date
-        "due-date": "31-12-2021"
+            // Invoice number
+            "number": "2021.0001",
+            // Invoice data
+            "date": "12-12-2021",
+            // Invoice due date
+            "due-date": "31-12-2021"
     },
     // The products you would like to see on your invoice
     // Total values are being calculated automatically

@@ -9,7 +9,7 @@ require('dotenv').config();
 const config = require("./config/config")
 const user_route = require("./routes/userRoute")
 const admin_route = require("./routes/adminRoute")
-const blocked = require('./middleware/blocked')
+// const blocked = require('./middleware/blocked')
 // const invoice = require('./services/invoice.js')
 
 const path = require("path")
@@ -38,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "/public")));
 
-app.use(blocked.isBlocked)
+// app.use(blocked.isBlocked)
 
 app.use("/", user_route);
 app.use("/admin", admin_route);

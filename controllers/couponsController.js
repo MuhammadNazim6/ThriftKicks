@@ -125,8 +125,14 @@ const calculateTotalPrice = async (userId) => {
     let totalPrice = 0;
     for (const cartProduct of cart.products) {
       const { productId, quantity  } = cartProduct;
-      const productSubtotal = productId.actualPrice * quantity;
-      totalPrice += productSubtotal;
+      if(productId.actualPrice === productId.offerPrice){
+        const productSubtotal = productId.actualPrice * quantity;
+        totalPrice += productSubtotal;
+      }else{
+        const productSubtotal = productId.offerPrice * quantity;
+        totalPrice += productSubtotal;
+      }
+      
     }
 
     return totalPrice;
