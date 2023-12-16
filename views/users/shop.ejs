@@ -129,10 +129,13 @@
 
                         <!-- search bar Begin-->
                         <div class="shop__sidebar__search">
+            <a class="d-flex p-2 mb-4 text-bold text-lg LSpacing bg-light justify-content-center" href='/shop'> Clear Filters </a>
+                            
                             <form action="#">
                                 <input type="text" placeholder="Search..." name="search">
                                 <button class="btn" type="submit">Search</button>
                             </form>
+
                         </div>
 
                         <div class="shop__sidebar__accordion">
@@ -145,11 +148,11 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
-                                                    <li><a href="?search=boots">Boots</a></li>
-                                                    <li><a href="?search=Loafers">Loafers</a></li>
-                                                    <li><a href="?search=Sneakers">Sneakers</a></li>
-                                                    <li><a href="?search=Canvas">Canvas</a></li>
-                                                    <li><a href="?search=Sports">Sports</a></li>
+                                                    <li><a href="?category=Boots">Boots</a></li>
+                                                    <li><a href="?category=Loafers">Loafers</a></li>
+                                                    <li><a href="?category=Sneakers">Sneakers</a></li>
+                                                    <li><a href="?category=Canvas">Canvas</a></li>
+                                                    <li><a href="?category=Sports">Sports</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -176,19 +179,21 @@
                              
                                 <div class="card">
                                     <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFour">Size</a>
+                                        <a data-toggle="collapse" data-target="#collapseFour">Price</a>
                                     </div>
                                     <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__size">
                                                 <ul>
-                                                    <li><a href="?search=uk-5">UK-5</a></li>
-                                                    <li><a href="?search=uk-5.5">UK-5.5</a></li>
-                                                    <li><a href="?search=uk-7">UK-7</a></li>
+                                                    
+                                                    <li><a href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=asc&page=<%= page %>&category=<%= categoryFilter %>'>Low to high</a></li>
+
+                                                    <li><a href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=desc&page=<%= page %>&category=<%= categoryFilter %>'>High to low</a></li>
+                                                    <!-- <li><a href="?search=uk-7">UK-7</a></li>
                                                     <li><a href="?search=uk-7.5">UK-7.5</a></li>
                                                     <li><a href="?search=uk-8.5">UK-8.5</a></li>
                                                     <li><a href="?search=uk-9">UK-9</a></li>
-                                                    <li><a href="?search=uk-10">UK-10</a></li>
+                                                    <li><a href="?search=uk-10">UK-10</a></li> -->
                                                 </ul>
                                             </div>
                                         </div>
@@ -365,7 +370,7 @@
             <ul class="pagination">
                 <% for (let i = 1; i <= totalPages; i++) { %>
                     <li class="page-item">
-                        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                        <a class="page-link" href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=<%= sortOrder %>&page=<%= i %>&categoryFilter=<%= categoryFilter %>'><%= i %></a>
                     </li>
                 <% } %>
             </ul>

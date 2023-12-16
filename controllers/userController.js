@@ -14,6 +14,7 @@ const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
 const Wishlist = UserAddressModel.Wishlist;
 const Banner = BannerModel.Banner;
+const {Category} = require("../models/categoryModel");
 
 
 
@@ -435,6 +436,7 @@ const loadHome = async (req, res) => {
 //load user account details
 const loadAccount = async (req, res) => {
   try {
+    
     const userId = req.session.user_id;
     const userData = await User.findById({ _id: userId });
     const address = await Address.find({ userId: userId });
@@ -468,36 +470,65 @@ const userLogout = async (req, res) => {
 // shop loading
 const loadShop = async (req, res) => {
   try {
-    var search = "";
-    if (req.query.search) {
-      search = req.query.search;
-    }
-    var page = 1;
-    if (req.query.page) {
-      page = req.query.page;
-    }
+
+    let search = req.query.search || "";
+    let page = req.query.page || 1;
     const limit = 9;
 
-    const products = await Product.find({
+    const sortField = req.query.sortField || 'actualPrice';
+    const sortOrder = req.query.sortOrder || 'asc';
+    const categoryFilter = req.query.category || '';
+
+    // const products = await Product.find({
+    //   is_listed: true,
+    //   $or: [
+    //     { productName: { $regex: ".*" + search + ".*", $options: "i" } },
+    //     { description: { $regex: ".*" + search + ".*", $options: "i" } },
+    //     { size: { $regex: ".*" + search + ".*", $options: "i" } },
+    //   ],
+    // })
+    //   .populate("category_id")
+    //   .limit(limit * 1)
+    //   .skip((page - 1) * limit)
+    //   .exec();
+
+    
+    const query = {
       is_listed: true,
       $or: [
         { productName: { $regex: ".*" + search + ".*", $options: "i" } },
-        { description: { $regex: ".*" + search + ".*", $options: "i" } },
+      
         { size: { $regex: ".*" + search + ".*", $options: "i" } },
       ],
-    })
+    };
+
+    
+    if (categoryFilter && categoryFilter !== 'All') {
+      const category = await Category.findOne({ categoryName: categoryFilter });
+      if (category) {
+        query['category_id'] = category._id;
+      }
+    }
+    // if(search == ''){
+    //   search = categoryFilter
+    // }
+
+    const products = await Product.find(query)
       .populate("category_id")
+      .sort({ [sortField]: sortOrder })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
 
-    const count = await Product.find({
-      $or: [
-        { productName: { $regex: ".*" + search + ".*", $options: "i" } },
-        { description: { $regex: ".*" + search + ".*", $options: "i" } },
-        { size: { $regex: ".*" + search + ".*", $options: "i" } },
-      ],
-    }).countDocuments();
+    const count = await Product.find(query).countDocuments();
+
+    // const count = await Product.find({
+    //   $or: [
+    //     { productName: { $regex: ".*" + search + ".*", $options: "i" } },
+    //     { description: { $regex: ".*" + search + ".*", $options: "i" } },
+    //     { size: { $regex: ".*" + search + ".*", $options: "i" } },
+    //   ],
+    // }).countDocuments();
 
 // for badge
     const cart = await Cart.findOne({userId: req.session.user_id})
@@ -515,13 +546,27 @@ const loadShop = async (req, res) => {
         totalPages: Math.ceil(count / limit),
         currentPage: page,
         cart: cart,
-        wishlist
+        wishlist,
+        search,
+        page,
+        sortField,
+        sortOrder,
+        categoryFilter
+        
+        
       });
     } else {
       res.render("users/shop", {
         products: products,
         totalPages: Math.ceil(count / limit),
         currentPage: page,
+        search,
+        page,
+        sortField,
+        sortOrder,
+        categoryFilter
+
+
       });
     }
   } catch (error) {
@@ -530,6 +575,91 @@ const loadShop = async (req, res) => {
 
   }
 };
+
+// async function bb(){
+
+// const categories = await Category.find()
+// const categoryOptions = categories.map((category)=>  category.categoryName )
+// console.log(categoryOptions);
+// }
+
+// bb()
+
+
+// const loadShop = async (req, res) => {
+//   try {
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 5;
+//     const search = req.query.search || '';
+//     let sortField = req.query.sortField || 'actualPrice';
+//     let sortOrder = req.query.sortOrder || 'asc';
+//     let category = req.query.category || 'All';
+    
+//     // Fetching Categories
+//     const categories = await Category.find();
+//     const categoryOptions = categories.map(category => category.categoryName);
+    
+//     // Handling 'All' Category
+//     category = category === 'All' ? categoryOptions : category.split(',');
+    
+//     // Handling Sorting
+//     const sortBy = {};
+//     sortBy[sortField] = sortOrder;
+    
+//     // Fetching Products
+//     const query = {
+//       productName: { $regex: search, $options: 'i' },
+//       category: { $in: category }
+//     };
+    
+//     // Fetching Products
+// const products = await Product.find(query)
+// .populate('category_id')
+// .sort(sortBy)
+// .skip((page - 1) * limit)
+// .limit(limit);
+
+// // Counting Total Documents
+// const total = await Product.countDocuments(query);
+
+// // Fetching Cart and Wishlist
+// const cart = await Cart.findOne({ userId: req.session.user_id })
+// .populate("userId")
+// .populate("products.productId");
+
+// const wishlist = await Wishlist.findOne({ userId: req.session.user_id });
+
+// // Common rendering options
+// const commonOptions = {
+// error: false,
+// total,
+// totalPages: Math.ceil(total / limit),
+// currentPage: page,
+// limit,
+// category: categoryOptions,
+// products,
+// cart,
+// wishlist,
+// };
+
+// if (req.session.user_id) {
+// const userData = await User.findById({ _id: req.session.user_id });
+// res.render("users/shop", {
+//   user: userData,
+//   ...commonOptions,
+// });
+// } else {
+// res.render("users/shop", {
+//   ...commonOptions,
+// });
+// }
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(404).render('users/404') 
+
+//   }
+// };
+
 
 
 //loading shopping cart
