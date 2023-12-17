@@ -733,6 +733,23 @@ const addProdReview = async (req,res)=>{
   }
 }
 
+//Calculating total sales 
+const calculateTotalSales = async (req,res)=>{
+  try {
+    const orders = await Order.find()
+    const totalSales = orders.reduce((acc,order)=>{
+    return acc + order.totalAmount
+
+  },0)
+  console.log('totalSales: ',totalSales);
+  res.json({totalSales})
+
+  } catch (error) {
+    console.log('Unable to calculate sales');
+  }
+}
+
+
 module.exports = {
   loadCheckout,
   placeOrder,
@@ -745,5 +762,7 @@ module.exports = {
   addtoWishlist,
   verifyPaymentFn,
   returnProductFn,
-  addProdReview
+  addProdReview,
+
+  calculateTotalSales
 };

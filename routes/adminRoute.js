@@ -47,10 +47,10 @@ admin_route.post('/categories/editCategory', authAdmin.isLogin ,adminController.
 admin_route.get('/products/editProduct',authAdmin.isLogin,adminController.loadEditProduct)
 admin_route.post('/products/editProduct',upload.array('image',3),adminController.updateProduct)
 
-admin_route.get('/orders', adminController.loadOrdersAdmin)
+admin_route.get('/orders', authAdmin.isLogin, adminController.loadOrdersAdmin)
 
-admin_route.get('/manageOrders/:orderId',  adminController.loadManageOrder)
-admin_route.post('/changeOrderStatus', adminController.changeOrderStatus)
+admin_route.get('/manageOrders/:orderId', authAdmin.isLogin,  adminController.loadManageOrder)
+admin_route.post('/changeOrderStatus', authAdmin.isLogin, adminController.changeOrderStatus)
 admin_route.post('/cancelOrder', authAdmin.isLogin ,adminController.cancelOrder)
 
 admin_route.get('/coupons', authAdmin.isLogin , couponController.loadCoupons)
@@ -76,5 +76,8 @@ admin_route.post('/applyOffer-category',authAdmin.isLogin , offerController.appl
 admin_route.patch('/remove-category-offer',authAdmin.isLogin ,offerController.removeCategoryOfferFn)
 
 admin_route.delete('/deleteOffer',authAdmin.isLogin, offerController.deleteOfferFn)
+
+//calculating total sales
+admin_route.post('/loadTotalSalesData',authAdmin.isLogin, orderController.calculateTotalSales)
 
 module.exports = admin_route; 
