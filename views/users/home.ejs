@@ -11,6 +11,31 @@
             }
         }
 
+/* Popup Styles */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 6px solid #a09595;
+    padding: 15px;
+    background-color: #fff;
+    z-index: 110;
+}
+
+.popup-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 50px;
+
+}
+
 </style>
 
     <!-- Page Preloder -->
@@ -106,6 +131,52 @@
             <div class="canvas__open"><i class="fa fa-bars"></i></div>
         </div>
     </header>
+
+    
+    <!-- CCCCCCCCCCLLLLLLLLLLLLLLOOOOOOOOOOOOOOOCCCCCCCCCCCCKKKKKKKKKKKKKK -->
+    <!-- <div class="d-flex justify-content-center">
+        <input class="txt-ind display-1 bg-dark text-light p-5 m-3 text-bold" id="hour" type="number" style="width: 250px;" readonly> 
+        <input class="txt-ind display-1 bg-dark text-light p-5 m-3 text-bold" id="minute" type="number" style="width:250px;" readonly>
+        <input class="txt-ind display-1 bg-dark text-light p-5 m-3 text-bold"  id="second" type="number" style="width:250px;" readonly>
+    </div> -->
+    <!-- CCCCCCCCCCLLLLLLLLLLLLLLOOOOOOOOOOOOOOOCCCCCCCCCCCCKKKKKKKKKKKKKK -->
+
+    <!-- popup banner -->
+    <div id="popup-banner" class="popup" style="width: 470px;">
+        <div class="popup-content" style="width: 700px;">
+            <p class="close d-flex justify-content-end" onclick="closePopup()">&times;</p>
+            <br>
+            <br>
+            <h3 class="LSpacing" style="width: 700px;">Lowest price! Get now</h3>
+            <%  let index ,diff =-1;  %>
+            <% for(let i = 0 ; i < products.length ; i++){  %>
+                <%  if(products[i].actualPrice > products[i].offerPrice){   
+                    
+                if(products[i].actualPrice - products[i].offerPrice > diff){
+                        diff = products[i].actualPrice - products[i].offerPrice
+                        index = i
+                    }  
+
+                } %>
+            <% }
+                if(typeof index === 'undefined'){
+                    index = 2
+                }
+                %>
+
+                    <h5 class="d-flex justify-content-center text-danger" style="text-decoration: line-through;">₹ <%= products[index].actualPrice %></h5>
+                    <h5 class="d-flex justify-content-center text-dark"><%= products[index].offers[0].offerDiscount %> % Off/-</h4>
+
+                    <h4 class="d-flex justify-content-center text-dark">Now at ₹ <%= products[index].offerPrice %></h4>
+                
+                <a href="/productView?id=<%=products[index]._id %>">
+                    <img class="pl-5 ml-4" src="<%= products[index].image.path1 %>" style="height: 250px;">
+                    <h4 class="d-flex justify-content-center"><%= products[index].productName %></h4>
+                </a>
+
+        </div>
+    </div>
+
     <!-- Header Section End -->
 
     <!-- <div class="container">
@@ -505,6 +576,7 @@
         </div>
     </div>
     <div id="chart"></div>
+   
 
     <div id="chart-container"></div>
     <script src="/js/bootstrap.min.js"></script>
@@ -522,6 +594,35 @@
     <script>
 
 
+// const hour = document.getElementById('hour')
+// const minute= document.getElementById('minute')
+// const second = document.getElementById('second')
+
+// setInterval(()=>{
+// let date = new Date();
+// let Hours = date.getHours();
+// let Minutes = date.getMinutes();
+// let Seconds = date.getSeconds();
+
+// if(Hours.toString().length == 1){
+//     Hours = '0'+Hours
+// }
+// if(Hours > 12){
+//     Hours = Hours - 12
+//     if(Hours.toString().length == 1){
+//         Hours = '0'+Hours
+//     }
+    
+// }
+// if(Minutes.toString().length == 1){
+//     Minutes = '0'+Minutes
+// }if(Seconds.toString().length == 1){
+//     Seconds = '0'+Seconds
+// }
+//     hour.value = Hours
+//     minute.value = Minutes
+//     second.value = Seconds
+// },1000)
 
         //constants 
         const badge = document.getElementById('badge')
@@ -650,6 +751,26 @@
                 btn.classList.color = 'red'
             })
         })
+
+
+        //Functions for the popup alerts
+function showPopup() {
+    document.getElementById('popup-banner').style.display = 'block';
+    localStorage.setItem('modalShown',true)
+}
+function closePopup() {
+    document.getElementById('popup-banner').style.display = 'none';
+}
+let cond = localStorage.getItem('modalShown')
+
+if(!cond){
+    setTimeout(()=>{
+    showPopup()
+},4000)
+}
+
+
+
     </script>
 
     <%- include('../layouts/footer.ejs')%>

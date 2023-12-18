@@ -1150,6 +1150,8 @@ const loadWishlist = async (req,res)=>{
 
 
 
+
+
 module.exports = {
   loadLogin,
   loadRegister,
@@ -1183,7 +1185,7 @@ module.exports = {
   forgotPassEmail,
   forgetPassCheckOtp,
   loadOtpchangepass,
-  loadWishlist
+  loadWishlist,
   
 };
 
