@@ -362,7 +362,7 @@ const loadHome = async (req, res) => {
     const limit = 4;
 
     const listedProducts = await Product.find({
-      is_listed: true,
+      is_listed:true,
       $or: [
         { productName: { $regex: ".*" + search + ".*", $options: "i" } },
         { description: { $regex: ".*" + search + ".*", $options: "i" } },

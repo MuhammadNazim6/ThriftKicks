@@ -160,18 +160,18 @@
                 } %>
             <% }
                 if(typeof index === 'undefined'){
-                    index = 2
+                    index = 0
                 }
                 %>
 
-                    <h5 class="d-flex justify-content-center text-danger" style="text-decoration: line-through;">₹ <%= products[index].actualPrice %></h5>
-                    <h5 class="d-flex justify-content-center text-dark"><%= products[index].offers[0].offerDiscount %> % Off/-</h4>
+                    <h5 class="d-flex justify-content-center text-danger" style="text-decoration: line-through;">₹ <%= products[index]?.actualPrice %></h5>
+                    <h5 class="d-flex justify-content-center text-dark"><%= products[index]?.offers[0]?.offerDiscount %> % Off/-</h4>
 
-                    <h4 class="d-flex justify-content-center text-dark">Now at ₹ <%= products[index].offerPrice %></h4>
+                    <h4 class="d-flex justify-content-center text-dark">Now at ₹ <%= products[index]?.offerPrice %></h4>
                 
-                <a href="/productView?id=<%=products[index]._id %>">
-                    <img class="pl-5 ml-4" src="<%= products[index].image.path1 %>" style="height: 250px;">
-                    <h4 class="d-flex justify-content-center"><%= products[index].productName %></h4>
+                <a href="/productView?id=<%=products[index]?._id %>">
+                    <img class="pl-5 ml-4" src="<%= products[index]?.image.path1 %>" style="height: 250px;">
+                    <h4 class="d-flex justify-content-center"><%= products[index]?.productName %></h4>
                 </a>
 
         </div>
@@ -248,7 +248,7 @@
                         <div class="row">
                             <div class="col-xl-5 col-lg-7 col-md-8">
                                 <!-- Add an image using an <img> tag -->
-                                <img src="<%= products[0].image.path1 %>" alt="Your Alt Text">
+                                <img src="<%= products[0]?.image.path1 %>" alt="Your Alt Text">
 
                                 <div class="hero__text">
                                     <h6>Summer Collection</h6>
@@ -274,7 +274,7 @@
                         <div class="row">
                             <div class="col-xl-5 col-lg-7 col-md-8">
                                 <!-- Add an image using an <img> tag -->
-                                <img src="<%= products[0].image.path1 %>" alt="Your Alt Text">
+                                <img src="<%= products[0]?.image.path1 %>" alt="Your Alt Text">
 
                                 <div class="hero__text">
                                     <h6>Summer Collection</h6>
@@ -576,9 +576,9 @@
         </div>
     </div>
     <div id="chart"></div>
-   
 
     <div id="chart-container"></div>
+
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/jquery.countdown.min.js"></script>

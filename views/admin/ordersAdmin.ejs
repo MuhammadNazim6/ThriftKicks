@@ -179,7 +179,7 @@
 
                 <main class="main-content border-radius-lg h-100 mt-5">
                   <div class="container-fluid">
-                  <% if(typeof orders !== 'undefined') { %>
+                  <% if(typeof orders !== 'undefined' && orders.length !==0) { %>
                     <table class="table table-striped">
                       <thead>
                         <tr>
@@ -216,7 +216,13 @@
                       </tbody>
                     </table>
 
-                    <% } %>
+                    <% } else{ %>
+
+                      <tr>
+                        <td colspan="6"><p class="d-flex justify-content-center display-6 mt-5 pt-5">No Orders Found </p></td>
+                      </tr>
+
+                      <% } %>
                   </div>
               </div>
             </div>

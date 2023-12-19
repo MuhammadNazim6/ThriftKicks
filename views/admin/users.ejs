@@ -226,10 +226,10 @@
         </div>
       </nav>
       <!-- End Navbar -->
-      <div class="container-fluid py-4">
+      <div class="container-fluid">
         <div class="row">
-          <div class="col-12">
-            <div class="card my-4">
+          <div class="col-12" style="min-height: 800px;">
+            <div class="card my-4" style="height: fit-content;">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <div class="bg-gradient-secondary shadow-dark border-radius-lg pt-4 pb-3">
                   <h6 class="text-white text-capitalize ps-3">Users Data</h6>
@@ -443,7 +443,7 @@
 
 
               <div class="container-fluid">
-                <table class="table table-bordered table-striped table-hover">
+                <table class="table table-bordered table-striped table-hover" >
                   <tr>
                     <th class="text-dark text-lg text-bold p-4">Name</th>
                     <th class="text-dark text-lg text-bold p-4">Email</th>
@@ -472,7 +472,7 @@
 
                       <% } } else { %>
                         <tr>
-                          <td colspan="3">NO USER FOUND</td>
+                          <td colspan="6"><p class="d-flex justify-content-center display-6 mt-5 pt-5">No Users Found </p></td>
                         </tr>
                         <% } %>
                 </table>
@@ -481,19 +481,11 @@
           </div>
 
 
-          <footer class="footer py-4">
+          <footer class="footer ">
             <div class="container-fluid">
               <div class="row align-items-center justify-content-lg-between">
                 <div class="col-lg-6 mb-lg-0 mb-4">
-                  <div class="copyright text-center text-sm text-muted text-lg-start">
-                    ©
-                    <script>
-                      document.write(new Date().getFullYear())
-                    </script>,
-                    made with <i class="fa fa-heart"></i> by
-                    <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                    for a better web.
-                  </div>
+                 
                 </div>
                 <div class="col-lg-6">
                   <ul class="nav nav-footer justify-content-center justify-content-lg-end">

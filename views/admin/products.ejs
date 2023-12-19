@@ -235,9 +235,19 @@
                                   </div>
                             </td>
 
-                            <td class="text-dark p-4">
-                              ₹ <%= products[i].actualPrice %>
-                            </td>
+                            <% if(products[i].actualPrice > products[i].offerPrice){  %>
+                              <td class="text-dark p-4" >
+                               <span class="text-danger" style='text-decoration: line-through;'> ₹ <%= products[i].actualPrice %> </span> 
+                               <p class="text-bold mt-4 text-lg "> ₹ <%= products[i].offerPrice %> </p> 
+                            
+                              </td>
+                            
+                            <%  }else{ %>
+                              <td class="text-dark p-4">
+                                ₹ <%= products[i].actualPrice %>
+                              </td>
+                              <% } %>
+
                             <td class="text-dark p-4">
                               <%= products[i].category_id.categoryName %>
                             </td>
@@ -271,7 +281,7 @@
 
                           <% } } else { %>
                             <tr>
-                              <td colspan="3">No Products Found</td>
+                              <td colspan="6"><p class="d-flex justify-content-center display-6 mt-5 pt-5">No Products Found </p></td>
                             </tr>
                             <% } %>
                     </table>

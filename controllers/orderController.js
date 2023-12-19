@@ -161,7 +161,7 @@ const stockAdjusted = async (cartProducts) => {
 const placeOrder = async (req, res) => {
   try {
     console.log('Inside place order 1');
-    const { paymentSelected, addressSelected, couponId ,walletCheckedStatus } = req.body;
+    let { paymentSelected, addressSelected, couponId ,walletCheckedStatus } = req.body;
     console.log('Inside place order 2');
     const userId = req.session.user_id;
     const userData = await User.findOne({ _id: userId });
@@ -223,6 +223,7 @@ const placeOrder = async (req, res) => {
         await userData.save();
 
         totalAmount = 0;
+        paymentSelected= "Wallet"
 
       }
       
@@ -272,9 +273,9 @@ const placeOrder = async (req, res) => {
     console.log('Inside place order 5 after Order saved');
 
 
-    if (paymentSelected == "COD") {
+    if (paymentSelected == "COD" || paymentSelected == 'Wallet') {
       res.json({ message: "Order Placed successfully" });
-    } else {
+    } else {  
       const orderId = newOrderPlaced._id;
 
       generateRazorpay(orderId, totalAmount)
@@ -749,6 +750,124 @@ const calculateTotalSales = async (req,res)=>{
   }
 }
 
+//calculate weekly sales
+const calculateWeeklySales = async (req,res)=>{
+  try {
+    const weeklysales =  await Order.aggregate([
+      {
+        $group: {
+          _id: { $week: "$orderDate" },  
+          totalSales: { $sum: "$totalAmount" }  
+        }
+      }
+    ]); 
+
+  res.json({weeklysales})
+
+  } catch (error) {
+    console.log('Unable to calculate weekly sales');
+    console.log(error.message);
+
+  }
+}
+
+
+
+//calculate monthly sales
+const calculateMonthlySales = async (req, res) => {
+  try {
+    const monthlySales = await Order.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$orderDate" },
+            month: { $month: "$orderDate" }
+          },
+          totalSales: { $sum: "$totalAmount" }
+        }
+      },
+      {
+        $project: {
+          _id: 0, 
+          year: "$_id.year",
+          month: "$_id.month",
+          totalSales: 1
+        }
+      }
+    ]);
+
+    console.log(monthlySales);
+    res.json({ monthlySales });
+  } catch (error) {
+    console.log('Unable to calculate monthly sales:', error);
+  }
+};
+
+
+
+//calculate category sales
+const calculateCategorySales = async (req,res)=>{
+  try {
+    const categorySales = await Order.aggregate([
+      {
+        $unwind: "$products",
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "products.productId.category_id",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      {
+        $unwind: "$categoryDetails",
+      },
+      {
+        $group: {
+          _id: "$categoryDetails.categoryName",
+          totalSales: { $sum: "$products.amount" },
+        },
+      },
+      {
+        $sort: { totalSales: -1 },
+      },
+    ]); 
+
+    console.log('Category Sales:', categorySales);
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+calculateCategorySales()
+
+
+
+
+const paymentMethodsChart = async(req,res)=>{
+  try {
+
+    const paymentMethodCounts = await Order.aggregate([
+      {
+        $group: {
+          _id: "$paymentMethod",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { count: -1 } 
+      }
+    ]);
+    console.log('Payment Method Counts:', paymentMethodCounts);
+    res.json({paymentMethodCounts})
+
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 
 module.exports = {
   loadCheckout,
@@ -764,5 +883,10 @@ module.exports = {
   returnProductFn,
   addProdReview,
 
-  calculateTotalSales
+  calculateTotalSales,
+  calculateWeeklySales,
+  calculateMonthlySales,
+  calculateCategorySales,
+  paymentMethodsChart
+
 };

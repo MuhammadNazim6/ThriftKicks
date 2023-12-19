@@ -79,5 +79,10 @@ admin_route.delete('/deleteOffer',authAdmin.isLogin, offerController.deleteOffer
 
 //calculating total sales
 admin_route.post('/loadTotalSalesData',authAdmin.isLogin, orderController.calculateTotalSales)
+//calculating weekly sales
+admin_route.post('/loadWeeklySales',authAdmin.isLogin , orderController.calculateWeeklySales)
+admin_route.post('/loadMonthlySales',authAdmin.isLogin , orderController.calculateMonthlySales)
+// admin_route.post('/loadCategorySales',authAdmin.isLogin , orderController.calculateCategorySales)
+admin_route.post('/loadPaymentMethods',authAdmin.isLogin , orderController.paymentMethodsChart)
 
 module.exports = admin_route; 
