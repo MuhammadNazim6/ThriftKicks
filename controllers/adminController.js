@@ -605,6 +605,7 @@ const cancelOrder = async (req,res)=>{
 
 
 
+
 module.exports = {
   loadAdminLogin,
   verifyLogin,
@@ -633,5 +634,6 @@ module.exports = {
   loadManageOrder,
   changeOrderStatus,
   cancelOrder,
+  
 
 };

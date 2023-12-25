@@ -1,0 +1,366 @@
+<%- include('../layouts/header.ejs')%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+  <body class="g-sidenav-show bg-gray-200 ">
+    <!-- aside -->
+    <aside
+      class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
+      id="sidenav-main">
+      <div class="sidenav-header">
+        <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+          aria-hidden="true" id="iconSidenav"></i>
+          <a class="navbar-brand m-0" 
+          target="_blank">
+          <img src="/img/favicon.png" class="navbar-brand-img h-100" alt="main_logo">
+          <span class="ms-1 font-weight-bold text-white">Thrift Kicks</span>
+        </a>
+      </div>
+      <hr class="horizontal light mt-0 mb-2">
+      <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link text-white " href="/admin/dashboard">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-store"></i>
+              </div>
+              <span class="nav-link-text ms-1">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white active bg-gradient-secondary" href="/admin/salesReport">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-file"></i>
+              </div>
+              <span class="nav-link-text ms-1">Sales Report</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white " href="/admin/users">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa fa-users" aria-hidden="true"></i>
+              </div>
+              <span class="nav-link-text ms-1">Users</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white " href="/admin/orders">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">receipt_long</i>
+              </div>
+              <span class="nav-link-text ms-1">Orders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white " href="/admin/products">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">view_in_ar</i>
+              </div>
+              <span class="nav-link-text ms-1">Products</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white " href="/admin/categories">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-list"></i>
+              </div>
+              <span class="nav-link-text ms-1">Categories</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white " href="/admin/coupons">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <span class="nav-link-text ms-1">Coupons</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white " href="/admin/banners">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-newspaper"></i>
+              </div>
+              <span class="nav-link-text ms-1">Banners</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/admin/offers">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+              <span class="nav-link-text ms-1">Offers</span>
+            </a>
+          </li>
+          <hr class="horizontal light mt-0 mb-2">
+          <li class="nav-item">
+            <a class="nav-link text-white " href="/admin/logout">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">assignment</i>
+              </div>
+              <span class="nav-link-text ms-1">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </aside>
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+      <div class="mt-n3">
+        <!-- Navbar -->
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
+          data-scroll="true">
+          <div class="container-fluid py-1 px-3">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+                <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Banners</li>
+              </ol>
+              <h6 class="font-weight-bolder mb-0">Banners</h6>
+            </nav>
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+              <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+
+              </div>
+              <ul class="navbar-nav  justify-content-end">
+
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                  <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                    <div class="sidenav-toggler-inner">
+                      <i class="sidenav-toggler-line"></i>
+                      <i class="sidenav-toggler-line"></i>
+                      <i class="sidenav-toggler-line"></i>
+                    </div>
+                  </a>
+                </li>
+                <li class="nav-item px-3 d-flex align-items-center">
+                  <a href="javascript:;" class="nav-link text-body p-0">
+                    <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+                  </a>
+                </li>
+                <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                  <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-bell cursor-pointer"></i>
+                  </a>
+                  <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+
+
+                  </ul>
+                </li>
+                <li class="nav-item d-flex align-items-center">
+                  <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
+                    <i class="fa fa-user me-sm-1"></i>
+                    <span class="d-sm-inline d-none">Sign In</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <!-- End Navbar -->
+      </div>
+      <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12">
+            <div class=" my-4">
+
+              <div class="border-radius-xl mx-2 mx-md-3 position-relative"
+                style="background-image: url('..asssets/img/bg-pricing.jpg'); background-size: cover;">
+              </div>
+
+              <d<div class="container mt-5">
+                <div class="card mr-4">
+                  <div class="card-body">
+                    <h3 class="card-title text-center mb-4 LSpacing">Sales Report</h3>
+
+                    <form id="salesReportForm" class="d-flex justify-content-between my-5 mx-3">
+                      <div class="mb-3">
+                        <label for="startDate" class="form-label text-lg">From Date:</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate" style="width: 150px;" />
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="endDate" class="form-label text-bold text-lg">To Date:</label>
+                        <input type="date" class="form-control" id="endDate" name="endDate" style="width: 150px;" />
+                      </div>
+
+                      <button id="viewSalesBtn" type="button" class="btn btn-dark btn-sm ml-5 LSpacing"
+                        style="height: 50px;">View Sales Report</button>
+                      <button id="downloadBtn" type="button" class="btn btn-dark btn-sm ml-5 LSpacing"
+                        style="height: 50px;">Download Report</button>
+                    </form>
+                    <div id="dataDiv">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+            
+              <script>
+// ------------------------------------------------------
+                const viewSalesBtn = document.getElementById('viewSalesBtn')
+                viewSalesBtn.addEventListener('click', viewSalesReportFn)
+
+                async function viewSalesReportFn() {
+                  try {
+                    const startDate = document.getElementById('startDate').value
+                    const endDate = document.getElementById('endDate').value
+
+                    const response = await fetch('/admin/loadSalesReportData', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ startDate, endDate })
+                    })
+                    const data = await response.json()
+
+                    if (data.salesReportData) {
+                      const dataDiv = document.getElementById('dataDiv');
+
+                      function appendSalesReportData(salesReportData) {
+                          dataDiv.innerHTML = '';
+
+                        
+                          const table = document.createElement('table');
+                          table.classList.add('table','table-striped'); 
+
+                        
+                          const headerRow = table.createTHead().insertRow(0);
+                          headerRow.innerHTML = `
+                            <th>Order ID</th>
+                            <th>User ID</th>
+                            <th>Order Status</th>
+                            <th>Total Amount</th>
+                            <th>Order Date</th>
+                            <th>Payment method</th>
+    
+
+                          `;
+
+                      
+                          const tbody = table.createTBody();
+
+                      
+                          salesReportData.forEach(order => {
+                            const row = tbody.insertRow();
+                            row.innerHTML = `
+                              <td>${order._id}</td>
+                              <td>${order.userId}</td>
+                              <td class="p-3">${order.OrderStatus}</td>
+                              <td class="p-3">₹ ${order.totalAmount}</td>
+                              <td class="p-3">${order.orderDate.slice(0,10)}</td>
+                              <td class="p-3">${order.paymentMethod}</td>
+                              <!-- Add other relevant table cells -->
+                            `;
+                          });
+
+                        
+                          dataDiv.appendChild(table);
+                        }                      
+                        appendSalesReportData(data.salesReportData);
+                    }
+
+                  } catch (error) {
+                    console.log(error.message);
+                    console.log('Unable to load sales report');
+                  }
+                }
+
+// ------------------------------------------------------
+
+const btn = document.getElementById('downloadBtn'); 
+btn.addEventListener('click', downloadSales);
+
+
+const download = function (data) { 
+
+const blob = new Blob([data], { type: 'text/csv' }); 
+
+const url = window.URL.createObjectURL(blob) 
+
+const a = document.createElement('a') 
+
+a.setAttribute('href', url) 
+
+a.setAttribute('download', 'download.csv'); 
+
+// Performing a download with click 
+a.click() 
+} 
+
+const csvmaker = function (data) { 
+
+csvRows = []; 
+
+const headers = Object.keys(data); 
+
+csvRows.push(headers.join(',')); 
+
+
+const values = Object.values(data).join(','); 
+csvRows.push(values) 
+
+// Returning the array joining with new line 
+return csvRows.join('\n') 
+} 
+
+const get = async function (orders) {
+  const csvHeader = Object.keys(orders[0]).join(',');
+
+  // Create a CSV data array
+  const csvData = orders.map(order => Object.values(order).join(','));
+
+  const csvString = [csvHeader, ...csvData].join('\n');
+
+  // Trigger the download
+  downloadCSV(csvString, 'orders.csv');
+};
+
+// Function to trigger the download
+function downloadCSV(csv, filename) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+
+  if (link.download !== undefined) {
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}
+
+
+async function downloadSales() {
+                  try {
+                    const startDate = document.getElementById('startDate').value
+                    const endDate = document.getElementById('endDate').value
+
+                    const response = await fetch('/admin/downloadSalesData', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ startDate, endDate })
+                    })
+                    const data = await response.json()
+
+                    if (data.csvSalesData) {
+                      get(data.csvSalesData)
+
+
+                    }
+                  }catch{
+                    console.log(error.message);
+                  }
+                }
+            
+
+
+
+              </script>
+
+              <%- include('../layouts/footer.ejs')%>

@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema({
       required: true,
     },
     fullName: {
-      type: String,
+      type: String, 
       required: true,
     },
     mobile: {

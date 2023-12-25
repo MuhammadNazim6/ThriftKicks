@@ -120,7 +120,7 @@ const verifyOtp = async (req, res) => {
       if (verified) {
         req.session.user_id = user._id;
         console.log(req.session.userData);
-        console.log('Insde verified ');
+        console.log('Inside verified ');
         //if there is a referral code
         if(req.session.refCode){
           const referrerUser = await User.findOne({refCode:req.session.refCode})
@@ -695,7 +695,7 @@ const loadcart = async (req, res) => {
           if(!stockQuery){
             res.render("users/shopping-cart", {
               user: userData,
-              cart: cart,
+              cart,
               totalAmount: totalAmount,
             });
           }else{
@@ -835,7 +835,7 @@ const addtoCart = async (req, res) => {
         };
 
         cartExist.products.push(newProduct);
-        await cartExist.save(); // Save the updated cart
+        await cartExist.save(); 
         res.json({
           message: "Product added to the cart",
           length: cartExist.products.length

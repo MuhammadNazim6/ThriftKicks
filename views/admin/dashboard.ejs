@@ -13,16 +13,15 @@
 </style>
 
 
-  <body class="g-sidenav-show bg-gray-200">
-    <aside
-      class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
-      id="sidenav-main">
-      <div class="sidenav-header">
+<body class="g-sidenav-show bg-gray-200">
+  <div class="container-fluid">
+    <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
           aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" 
           target="_blank">
-          <img src="/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
+          <img src="/img/favicon.png" class="navbar-brand-img h-100" alt="main_logo">
           <span class="ms-1 font-weight-bold text-white">Thrift Kicks</span>
         </a>
       </div>
@@ -35,6 +34,14 @@
               <i class="fa-solid fa-store"></i>
               </div>
               <span class="nav-link-text ms-1">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/admin/salesReport">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa-solid fa-file"></i>
+              </div>
+              <span class="nav-link-text ms-1">Sales Report</span>
             </a>
           </li>
           <li class="nav-item">
@@ -92,20 +99,9 @@
               </div>
               <span class="nav-link-text ms-1">Offers</span>
             </a>
-          </li>
-          <li class="nav-item mt-3">
-            <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
-          </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link text-white " href="../pages/profile.html">
-              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="material-icons opacity-10">person</i>
-              </div>
-              <span class="nav-link-text ms-1">Profile</span>
-            </a>
-          </li> -->
-          
-          <li class="nav-item">
+          </li>  
+          <hr class="horizontal light mt-0 mb-2">
+          <li class="nav-item" >
             <a class="nav-link text-white " href="/admin/logout">
               <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i class="material-icons opacity-10">assignment</i>
@@ -115,14 +111,9 @@
           </li>
         </ul>
       </div>
-      <!-- <div class="sidenav-footer position-absolute w-100 bottom-0 ">
-        <div class="mx-3">
-          <a class="btn btn-outline-primary mt-4 w-100" href="https://www.creative-tim.com/learning-lab/bootstrap/overview/material-dashboard?ref=sidebarfree" type="button">Documentation</a>
-          <a class="btn bg-gradient-primary w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Upgrade to pro</a>
-        </div>
-      </div> -->
+    
     </aside>
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
       <!-- Navbar -->
       <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
         <div class="container-fluid py-1 px-3">
@@ -134,40 +125,29 @@
             <h6 class="font-weight-bolder mb-0">Dashboard</h6>
           </nav>
           <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-            <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-              <!-- <div class="input-group input-group-outline">
-                <label class="form-label">Type here...</label>
-                <input type="text" class="form-control">
-              </div> -->
-            </div>
-            <ul class="navbar-nav  justify-content-end">
-              <!-- <li class="nav-item d-flex align-items-center">
-                <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="https://www.creative-tim.com/builder?ref=navbar-material-dashboard">Online Builder</a>
-              </li> -->
-              <!-- <li class="mt-2">
-                <a class="github-button" href="https://github.com/creativetimofficial/material-dashboard" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
-              </li> -->
-              <!-- ______________________________________________________________________ -->
-              <!-- ______________________________________________________________________ -->
-              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" data-toggle="collapse" data-target="#sidenav-collapse-main">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                </div>
-              </a>
-
-              <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-
-                <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+            <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
+            <ul class="navbar-nav justify-content-end">
+              <li class="nav-item">
+                <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" onclick="toggleSidebar()">
                   <div class="sidenav-toggler-inner">
                     <i class="sidenav-toggler-line"></i>
                     <i class="sidenav-toggler-line"></i>
                     <i class="sidenav-toggler-line"></i>
                   </div>
                 </a>
-                
               </li>
+          
+              <li class="nav-item">
+                <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" onclick="toggleSidebar()">
+                  <div class="sidenav-toggler-inner">
+                    <i class="sidenav-toggler-line"></i>
+                    <i class="sidenav-toggler-line"></i>
+                    <i class="sidenav-toggler-line"></i>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
               
               <!-- ______________________________________________________________________ -->
 
@@ -260,19 +240,10 @@
         </div>
       </nav>
       <!-- End Navbar -->
-    
-
-
-          <!-- <div class="d-flex mt-5">
-            <div id="area-chart" style="width: 700px;"></div>
-            <div class="ml-5" id="bar-chart"></div>
-          </div>
-
-          <div class="d-flex mt-5 justify-content-center">
-          <div id="pie-chart"></div>
-          </div> -->
-
   
+
+      <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav" onclick="toggleSidebar()">
+        </a>
       
     <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -284,42 +255,55 @@
       <div class="content-area">
         <div class="container-fluid">
           <div class="text-right mt-3 mb-3 d-fixed">
-          </div>
+          
           <div class="main">
             <div class="row sparkboxes mt-4 mb-4">
               <div class="col-md-4">
                 <div class="box box1">
-                  <div id="spark1"></div>
+                  <h4>Total Sales</h4>
+                  <div class="bg-gradient-info pt-5" id="spark1"></div>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="box box2">
-                  <div id="spark2"></div>
+                  <h4>Total Users</h4>
+                  <div class="bg-gradient-success pt-5" id="spark2"></div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <!-- <div class="col-md-4">
                 <div class="box box3">
-                  <div id="spark3"></div>
+                  <h4>Total Users</h4>
+                  <div class="bg-gradient-warning pt-5 pr-2" id="spark3"></div>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <div class="row mt-5 mb-4">
               <div class="col-md-6">
                 <div class="box">
+                  <h4>Weekly Sales</h4>
                   <div id="bar"></div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="box">
+                  <h4>Monthly Sales</h4>
                   <div id="monthBar"></div>
                 </div>
               </div>
               <div class="col-md-6 mt-5">
                 <div class="box">
+                  <h4>Payment methods Chart</h4>
                   <div id="donut"></div>
                 </div>
               </div>
+              <div class="col-md-6 mt-5">
+                <div class="box">
+                  <h4>Category Sales Chart</h4>
+                  <div id="chartOfCategory"></div>
+                </div>
+              </div>
+
             </div>
 
             <div class="row mt-4 mb-4">
@@ -338,124 +322,19 @@
         </div>
       </div>
     </div>
+    </div>
 
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
       
-
-  // areaChart option
-    const chartOptions = {
-  series: [{
-    name: 'series1',
-    data: [31, 40, 28, 51, 42, 109, 100]
-  }, {
-    name: 'series2',
-    data: [11, 32, 45, 32, 34, 52, 41]
-  }],
-  chart: {
-    height: 350,
-    type: 'area'
-  },
-  dataLabels: {
-    enabled: false
-  },
-  stroke: {
-    curve: 'smooth'
-  },
-  xaxis: {
-    type: 'datetime',
-    categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-  },
-  tooltip: {
-    x: {
-      format: 'dd/MM/yy HH:mm'
-    },
-  },
-};
-
-const areaChart = new ApexCharts(document.querySelector("#area-chart"), chartOptions);
-areaChart.render();
-
-async function fetchSalesData(){
-  try {
-    const response = await fetch('/admin/fetchSalesData',{
-      method:'POST',
-     header: {'Content-Type':'application.json'},
-    })
-
-    const newData = await response.json()
-    
-
-
-    
-  } catch (error) {
-    console.log(error.message);
-    console.log('Unable to fetch data');
-  }
-}
-
-
-// Bar chart
-const barChartOptions = {
-  series: [{
-    data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
-  }],
-  chart: {
-    type: 'bar',
-    height: 350
-  },
-  plotOptions: {
-    bar: {
-      borderRadius: 4,
-      horizontal: true,
+      function toggleSidebar() {
+      const sidenavMain = document.getElementById('sidenav-main');
+      sidenavMain.classList.toggle('collapsed');
     }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  xaxis: {
-    categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-      'United States', 'China', 'Germany'
-    ],
-  }
-};
-
-
-const barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
-barChart.render();
-
-
-//Pie chart 
-const pieChartOptions = {
-          series: [44, 55, 13, 43, 22],
-          chart: {
-          width: 380,
-          type: 'pie',
-        },
-        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }]
-        };
-
-        const piChart = new ApexCharts(document.querySelector("#pie-chart"), pieChartOptions);
-        piChart.render();
-
-    
-
-
-
-
-
+//--------------------------------------------------GRAPHS  FUNCTIions -----------------------------------------------------------
 
         Apex.grid = {
   padding: {
@@ -489,8 +368,11 @@ var randomizeArray = function (arg) {
 var sparklineData = [47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53, 61, 27, 54, 43, 19, 46];
 
 // the default colorPalette for this dashboard
-//var colorPalette = ['#01BFD6', '#5564BE', '#F7A600', '#EDCD24', '#F74F58'];
-var colorPalette = ['#00D8B6','#008FFB',  '#FEB019', '#FF4560', '#775DD0']
+var colorPalette = ['#01BFD6', '#5564BE', '#F7A600', '#EDCD24', '#F74F58'];
+// var colorPalette = ['#00D8B6','#008FFB',  '#FEB019', '#FF4560', '#775DD0']
+
+
+
 
 // ------------------------------------------------------------- TOTAL SALES ----------------------------------------------------------
 var chart1;
@@ -534,15 +416,14 @@ async function loadTotalSalesData(){
   },
   colors: ['#DCE6EC'],
   title: {
-    text: '$424,652',
+    text: '₹ '+data.totalSales,
     offsetX: 30,
     style: {
-      fontSize: '24px',
+      fontSize: '30px',
       cssClass: 'apexcharts-yaxis-title'
     }
   },
   subtitle: {
-    text: 'Sales',
     offsetX: 30,
     style: {
       fontSize: '14px',
@@ -551,7 +432,8 @@ async function loadTotalSalesData(){
   }
 }
 
-      spark1.title.text = 'Rs: '+data.totalSales
+      // spark1.title.text = 
+
       if (!chart1) {
         chart1 = new ApexCharts(document.querySelector("#spark1"), spark1);
         chart1.render();
@@ -564,11 +446,158 @@ async function loadTotalSalesData(){
   }
   loadTotalSalesData()
 
-  // ------------------------------------------------------------- TOTAL SALES END----------------------------------------------------------
+// ------------------------------------------------------------- TOTAL SALES END----------------------------------------------------------
 
 
 
-    // ------------------------------------------------------------- WEEKLY SALES Start----------------------------------------------------------
+
+//---------------------------------------------------------Total Users Count start -----------------------------------------
+
+async function loadUsersCountData(){
+  try {
+    const response = await fetch('/admin/totalUsersCount',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json()
+    if (data.userCount) {
+      
+            var spark2 = {
+        chart: {
+          id: 'sparkline2',
+          group: 'sparklines',
+          type: 'area',
+          height: 160,
+          sparkline: {
+            enabled: true
+          },
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        fill: {
+          opacity: 1,
+        },
+        series: [{
+          name: 'Expenses',
+          data: randomizeArray(sparklineData)
+        }],
+        labels: [...Array(24).keys()].map(n => `2018-09-0${n+1}`),
+        yaxis: {
+          min: 0
+        },
+        xaxis: {
+          type: 'datetime',
+        },
+        colors: ['#DCE6EC'],
+        title: {
+          text: data.userCount,
+          offsetX: 30,
+          style: {
+            fontSize: '45px',
+            cssClass: 'apexcharts-yaxis-title'
+          }
+        },
+        subtitle: {
+          // text: 'Total Users',
+          offsetX: 30,
+          style: {
+            fontSize: '19px',
+            cssClass: 'apexcharts-yaxis-title'
+          }
+        }
+      }
+      new ApexCharts(document.querySelector("#spark2"), spark2).render();
+    }
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+loadUsersCountData()
+
+//---------------------------------------------------------Total Users Count END -----------------------------------------
+
+
+
+
+
+
+//---------------------------------------------------------Total Pending Orders start -----------------------------------------
+
+async function loadPendingOrderCount(){
+  try {
+    const response = await fetch('/admin/pendingOrdersCount',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await response.json()
+    if (data.userCount) {
+      
+            var spark2 = {
+        chart: {
+          id: 'sparkline2',
+          group: 'sparklines',
+          type: 'area',
+          height: 160,
+          sparkline: {
+            enabled: true
+          },
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        fill: {
+          opacity: 1,
+        },
+        series: [{
+          name: 'Expenses',
+          data: randomizeArray(sparklineData)
+        }],
+        labels: [...Array(24).keys()].map(n => `2018-09-0${n+1}`),
+        yaxis: {
+          min: 0
+        },
+        xaxis: {
+          type: 'datetime',
+        },
+        colors: ['#DCE6EC'],
+        title: {
+          text: data.userCount,
+          offsetX: 30,
+          style: {
+            fontSize: '45px',
+            cssClass: 'apexcharts-yaxis-title'
+          }
+        },
+        subtitle: {
+          // text: 'Total Users',
+          offsetX: 30,
+          style: {
+            fontSize: '19px',
+            cssClass: 'apexcharts-yaxis-title'
+          }
+        }
+      }
+      new ApexCharts(document.querySelector("#spark2"), spark2).render();
+    }
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+// loadPendingOrderCount()
+
+//---------------------------------------------------------Total Pending Orders END-----------------------------------------
+
+
+
+
+   // ------------------------------------------------------------- WEEKLY SALES Start----------------------------------------------------------
     async function loadWeeklySales() {
   try {
     const response = await fetch('/admin/loadWeeklySales', {
@@ -579,69 +608,103 @@ async function loadTotalSalesData(){
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error('Network response not ok');
     }
 
     const data = await response.json();
 
-    if (data.weeklysales) {
-      // Extracting series data
-      var seriesData = Object.keys(data.weeklysales[0]).map(category => ({
-        name: category,
-        data: data.weeklysales.map(item => item[category]),
-      }));
+    if (data.weeklySales) {
+      var seriesData = [
+  {
+    name: 'Total Sales',
+    data: data.weeklySales.map(item => item.totalSales),
+  },
+  {
+    name: 'Order Count',
+    data: data.weeklySales.map(item => item.orderCount),
+  },
+];
 
-      // Your existing optionsBar object
-      var optionsBar = {
-        chart: {
-          type: 'bar',
-          height: 380,
-          width: '100%',
-          stacked: false, // Set to false for grouped bars
-        },
-        plotOptions: {
-          bar: {
-            columnWidth: '45%',
-            horizontal: false, // Set to false for vertical bars
-          },
-        },
-        colors: colorPalette || ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0'],
-        series: seriesData,
-        xaxis: {
-          categories: data.weeklysales.map(item => `Week ${item._id}`),
-          labels: {
-            show: true,
-          },
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-        },
-        yaxis: {
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            style: {
-              colors: '#78909c',
-            },
-          },
-        },
-        title: {
-          text: 'Weekly Sales',
-          align: 'left',
-          style: {
-            fontSize: '18px',
-          },
-        },
-      };
+var categories = data.weeklySales.map(item => item.dateRange);
 
-      console.log('Chart options:', optionsBar);
+var optionsBar = {
+  chart: {
+    type: 'bar',
+    height: 380,
+    width: '100%',
+    stacked: false,
+  },
+  plotOptions: {
+    bar: {
+      columnWidth: '45%',
+      horizontal: false,
+    },
+  },
+  colors: ['#00D8B6', '#008FFB'],
+  series: seriesData,
+  xaxis: {
+    categories: categories,
+    labels: {
+      show: true,
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: [
+    {
+      axisBorder: {
+        show: false,
+      },
+      axisTicks: {
+        show: false,
+      },
+      labels: {
+        style: {
+          colors: '#78909c',
+        },
+      },
+      title: {
+        text: 'Total Sales',
+        style: {
+          fontSize: '14px',
+        },
+      },
+    },
+    {
+      opposite: true,
+      axisBorder: {
+        show: false,
+      },
+      axisTicks: {
+        show: false,
+      },
+      labels: {
+        style: {
+          colors: '#FEB019',
+        },
+      },
+      title: {
+        text: 'Order Count',
+        style: {
+          fontSize: '14px',
+        },
+      },
+    },
+  ],
+  title: {
+    align: 'left',
+    style: {
+      fontSize: '18px',
+    },
+  },
+};
+
+
+
 
       var chartBar = new ApexCharts(document.querySelector('#bar'), optionsBar);
       chartBar.render();
@@ -654,17 +717,14 @@ async function loadTotalSalesData(){
 }
 loadWeeklySales();
 
-
-
-
-
 // ------------------------------------------------------------- WEEKLY SALES END----------------------------------------------------------
+
 
 
 
 // ------------------------------------------------------------- MONTHLY SALES START----------------------------------------------------------
   
-  
+
 async function loadMonthlySales() {
   try {
     const response = await fetch('/admin/loadMonthlySales', {
@@ -686,25 +746,31 @@ async function loadMonthlySales() {
           name: 'Total Sales',
           data: data.monthlySales.map(item => item.totalSales),
         },
+        {
+          name: 'Order Count',
+          data: data.monthlySales.map(item => item.orderCount),
+        },
       ];
+
+      var categories = data.monthlySales.map(item => `${item.month} ${item.year}`);
 
       var optionsBar = {
         chart: {
           type: 'bar',
           height: 380,
           width: '100%',
-          stacked: false, 
+          stacked: false,
         },
         plotOptions: {
           bar: {
             columnWidth: '45%',
-            horizontal: false, 
+            horizontal: false,
           },
         },
-        colors: colorPalette || ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0'],
+        colors: ['#00D8B6', '#008FFB'],
         series: seriesData,
         xaxis: {
-          categories: data.monthlySales.map(item => `${item.year}-${item.month}`),
+          categories: categories,
           labels: {
             show: true,
           },
@@ -715,21 +781,48 @@ async function loadMonthlySales() {
             show: false,
           },
         },
-        yaxis: {
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            style: {
-              colors: '#78909c',
+        yaxis: [
+          {
+            axisBorder: {
+              show: false,
+            },
+            axisTicks: {
+              show: false,
+            },
+            labels: {
+              style: {
+                colors: '#78909c',
+              },
+            },
+            title: {
+              text: 'Total Sales',
+              style: {
+                fontSize: '14px',
+              },
             },
           },
-        },
+          {
+            opposite: true,
+            axisBorder: {
+              show: false,
+            },
+            axisTicks: {
+              show: false,
+            },
+            labels: {
+              style: {
+                colors: '#FEB019',
+              },
+            },
+            title: {
+              text: 'Order Count',
+              style: {
+                fontSize: '14px',
+              },
+            },
+          },
+        ],
         title: {
-          text: 'Monthly Sales',
           align: 'left',
           style: {
             fontSize: '18px',
@@ -737,7 +830,6 @@ async function loadMonthlySales() {
         },
       };
 
-      console.log('Chart options:', optionsBar);
 
       var chartBar = new ApexCharts(document.querySelector('#monthBar'), optionsBar);
       chartBar.render();
@@ -754,51 +846,162 @@ loadMonthlySales();
   
 // ------------------------------------------------------------- MONTHLY SALES END----------------------------------------------------------
 
-var spark2 = {
-  chart: {
-    id: 'sparkline2',
-    group: 'sparklines',
-    type: 'area',
-    height: 160,
-    sparkline: {
-      enabled: true
+
+
+
+// -------------------------------------------------------------  CATEGORY SALES START ----------------------------------------------------------
+
+async function cetegoryGraphDataFn(){
+
+  try {
+    const response = await fetch('/admin/loadCategorySales',{
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json",
+      },
+    })
+    const data = await response.json()
+    if(data.categorySales){
+
+      console.log(data.categorySales);
+      var labels = data.categorySales.map(item => item._id);
+      var values = data.categorySales.map(item => item.totalSales);
+      var salesCount = data.categorySales.map(item => item.salesCount);
+
+var options = {
+    chart: {
+      type: 'bar',
+      height: 350
     },
-  },
-  stroke: {
-    curve: 'straight'
-  },
-  fill: {
-    opacity: 1,
-  },
-  series: [{
-    name: 'Expenses',
-    data: randomizeArray(sparklineData)
-  }],
-  labels: [...Array(24).keys()].map(n => `2018-09-0${n+1}`),
-  yaxis: {
-    min: 0
-  },
-  xaxis: {
-    type: 'datetime',
-  },
-  colors: ['#DCE6EC'],
-  title: {
-    text: '$235,312',
-    offsetX: 30,
-    style: {
-      fontSize: '24px',
-      cssClass: 'apexcharts-yaxis-title'
+    series: [
+      {
+      name: 'Total Sales',
+      data: values
+    },
+    {
+        name: 'Sales Count',
+        data: salesCount
+      }
+  ],
+    xaxis: {
+      categories: labels
+    },
+    yaxis: [
+    {
+        title: {
+          text: 'Total Sales',
+        },
+      },
+      {
+        opposite: true,
+        title: {
+          text: 'Sales Count',
+        },
+      },
+    ],
+  };
+
+  var chart = new ApexCharts(document.querySelector("#chartOfCategory"), options);
+  chart.render();
+
     }
-  },
-  subtitle: {
-    text: 'Expenses',
-    offsetX: 30,
-    style: {
-      fontSize: '14px',
-      cssClass: 'apexcharts-yaxis-title'
-    }
+  } catch (error) {
+  console.log(error.message);
+    
   }
 }
+cetegoryGraphDataFn()
+
+// -------------------------------------------------------------  CATEGORY SALES END ----------------------------------------------------------
+
+
+
+// ---------------------------------------------------Payment Method Report Start-----------------------------------------------------------
+async function loadPaymentMethods() {
+  try {
+    const response = await fetch('/admin/loadPaymentMethods', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+
+    if (data.paymentMethodCounts) {
+  console.log(data.paymentMethodCounts);
+
+  const relevantPaymentMethods = ['COD', 'Wallet', 'Net Banking'];
+  const relevantData = data.paymentMethodCounts.filter(item => relevantPaymentMethods.includes(item._id));
+
+  const chartData = relevantData.map(item => ({
+    count: item.count,
+    totalSales: item.totalSales,
+  }));
+  const chartLabels = relevantData.map(item => item._id);
+
+  const updatedOptionDonut = {
+    chart: {
+      type: 'donut',
+      width: '100%',
+      height: 400,
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    plotOptions: {
+      pie: {
+        customScale: 0.8,
+        donut: {
+          size: '75%',
+        },
+        offsetY: 20,
+      },
+      stroke: {
+        colors: undefined,
+      },
+    },
+    colors: colorPalette,
+    title: {
+      style: {
+        fontSize: '18px',
+      },
+    },
+    series: chartData.map(item => item.count),
+    labels: chartLabels,
+    legend: {
+      position: 'left',
+      offsetY: 80,
+    },
+    tooltip: {
+      enabled: true,
+      y: {
+        formatter: function (value) {
+          const index = chartData.findIndex(item => item.count === value);
+          const totalSales = chartData[index].totalSales;
+          return `${value} (Total Sales: Rs ${totalSales} )`;
+        },
+      },
+    },
+  };
+
+  var donut = new ApexCharts(document.querySelector("#donut"), updatedOptionDonut);
+  donut.render();
+}
+
+
+  }catch{
+    console.log(error.message);
+  }
+}
+loadPaymentMethods()
+
+// ---------------------------------------------------Payment Method Report End-----------------------------------------------------------
+
 
 
 var spark3 = {
@@ -849,327 +1052,18 @@ var spark3 = {
 }
 
 
-
-new ApexCharts(document.querySelector("#spark2"), spark2).render();
-new ApexCharts(document.querySelector("#spark3"), spark3).render();
-
-// var monthlyEarningsChart = new ApexCharts(document.querySelector("#monthly-earnings-chart"), monthlyEarningsOpt);
-
-var optionsArea = {
-  chart: {
-    height: 340,
-    type: 'area',
-    zoom: {
-      enabled: false
-    },
-  },
-  stroke: {
-    curve: 'straight'
-  },
-  colors: colorPalette,
-  series: [
-    {
-      name: "Blog",
-      data: [{
-        x: 0,
-        y: 0
-      }, {
-        x: 4,
-        y: 5
-      }, {
-        x: 5,
-        y: 3
-      }, {
-        x: 9,
-        y: 8
-      }, {
-        x: 14,
-        y: 4
-      }, {
-        x: 18,
-        y: 5
-      }, {
-        x: 25,
-        y: 0
-      }]
-    },
-    {
-      name: "Social Media",
-      data: [{
-        x: 0,
-        y: 0
-      }, {
-        x: 4,
-        y: 6
-      }, {
-        x: 5,
-        y: 4
-      }, {
-        x: 14,
-        y: 8
-      }, {
-        x: 18,
-        y: 5.5
-      }, {
-        x: 21,
-        y: 6
-      }, {
-        x: 25,
-        y: 0
-      }]
-    },
-    {
-      name: "External",
-      data: [{
-        x: 0,
-        y: 0
-      }, {
-        x: 2,
-        y: 5
-      }, {
-        x: 5,
-        y: 4
-      }, {
-        x: 10,
-        y: 11
-      }, {
-        x: 14,
-        y: 4
-      }, {
-        x: 18,
-        y: 8
-      }, {
-        x: 25,
-        y: 0
-      }]
-    }
-  ],
-  fill: {
-    opacity: 1,
-  },
-  title: {
-    text: 'Daily Visits Insights',
-    align: 'left',
-    style: {
-      fontSize: '18px'
-    }
-  },
-  markers: {
-    size: 0,
-    style: 'hollow',
-    hover: {
-      opacity: 5,
-    }
-  },
-  tooltip: {
-    intersect: true,
-    shared: false,
-  },
-  xaxis: {
-    tooltip: {
-      enabled: false
-    },
-    labels: {
-      show: false
-    },
-    axisTicks: {
-      show: false
-    }
-  },
-  yaxis: {
-    tickAmount: 4,
-    max: 12,
-    axisBorder: {
-      show: false
-    },
-    axisTicks: {
-      show: false
-    },
-    labels: {
-      style: {
-        colors: '#78909c'
-      }
-    }
-  },
-  legend: {
-    show: false
-  }
-}
-
-var chartArea = new ApexCharts(document.querySelector('#area'), optionsArea);
-chartArea.render();
+// new ApexCharts(document.querySelector("#spark3"), spark3).render();
 
 
 
-// ---------------------------------------------------Payment Method Report Start-----------------------------------------------------------
-async function loadPaymentMethods() {
-  try {
-    const response = await fetch('/admin/loadPaymentMethods', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-
-    if (data.paymentMethodCounts) {
-      console.log(data.paymentMethodCounts);
-
-      const relevantPaymentMethods = ['COD', 'Wallet', 'Net Banking'];
-      const relevantData = data.paymentMethodCounts.filter(item => relevantPaymentMethods.includes(item._id));
-
-      const chartData = relevantData.map(item => item.count);
-      const chartLabels = relevantData.map(item => item._id);
-
-      
-      const updatedOptionDonut = {
-  chart: {
-    type: 'donut',
-    width: '100%',
-    height: 400
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  plotOptions: {
-    pie: {
-      customScale: 0.8,
-      donut: {
-        size: '75%',
-      },
-      offsetY: 20,
-    },
-    stroke: {
-      colors: undefined
-    }
-  },
-  colors: colorPalette,
-  title: {
-    text: 'Payment Methods Count',
-    style: {
-      fontSize: '18px'
-    }
-  },
-  series: chartData,
-  labels: chartLabels,
-  legend: {
-    position: 'left',
-    offsetY: 80
-  }
-};
-
-var donut = new ApexCharts(document.querySelector("#donut"), updatedOptionDonut);
-donut.render();
-    }
-
-  }catch{
-    console.log(error.message);
-  }
-}
-loadPaymentMethods()
-
-// ---------------------------------------------------Payment Method Report End-----------------------------------------------------------
 
 
-function trigoSeries(cnt, strength) {
-  var data = [];
-  for (var i = 0; i < cnt; i++) {
-      data.push((Math.sin(i / strength) * (i / strength) + i / strength+1) * (strength*2));
-  }
-  return data;
-}
+// END---------END---------END---------END---------END---------END---------END---------END 
 
 
 
-var optionsLine = {
-  chart: {
-    height: 340,
-    type: 'line',
-    zoom: {
-      enabled: false
-    }
-  },
-  plotOptions: {
-    stroke: {
-      width: 4,
-      curve: 'smooth'
-    },
-  },
-  colors: colorPalette,
-  series: [
-    {
-      name: "Day Time",
-      data: trigoSeries(52, 20)
-    },
-    {
-      name: "Night Time",
-      data: trigoSeries(52, 27)
-    },
-  ],
-  title: {
-    floating: false,
-    text: 'Customers',
-    align: 'left',
-    style: {
-      fontSize: '18px'
-    }
-  },
-  subtitle: {
-    text: '168,215',
-    align: 'center',
-    margin: 30,
-    offsetY: 40,
-    style: {
-      color: '#222',
-      fontSize: '24px',
-    }
-  },
-  markers: {
-    size: 0
-  },
 
-  grid: {
-
-  },
-  xaxis: {
-    labels: {
-      show: false
-    },
-    axisTicks: {
-      show: false
-    },
-    tooltip: {
-      enabled: false
-    }
-  },
-  yaxis: {
-    tickAmount: 2,
-    labels: {
-      show: false
-    },
-    axisBorder: {
-      show: false,
-    },
-    axisTicks: {
-      show: false
-    },
-    min: 0,
-  },
-  legend: {
-    position: 'top',
-    horizontalAlign: 'left',
-    offsetY: -20,
-    offsetX: -30
-  }
-
-}
-
-var chartLine = new ApexCharts(document.querySelector('#line'), optionsLine);
+// var chartLine = new ApexCharts(document.querySelector('#line'), optionsLine);
 
 // a small hack to extend height in website sample dashboard
 chartLine.render().then(function () {
@@ -1180,37 +1074,6 @@ chartLine.render().then(function () {
 });
 
 
-// on smaller screen, change the legends position for donut
-var mobileDonut = function() {
-  if($(window).width() < 768) {
-    donut.updateOptions({
-      plotOptions: {
-        pie: {
-          offsetY: -15,
-        }
-      },
-      legend: {
-        position: 'bottom'
-      }
-    }, false, false)
-  }
-  else {
-    donut.updateOptions({
-      plotOptions: {
-        pie: {
-          offsetY: 20,
-        }
-      },
-      legend: {
-        position: 'left'
-      }
-    }, false, false)
-  }
-}
-
-$(window).resize(function() {
-  mobileDonut()
-});
 
 
 </script>

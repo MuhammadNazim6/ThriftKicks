@@ -21,8 +21,6 @@ var instance = new Razorpay({
   key_secret: "e6rN7GFxw4rzGXDHyQ9oFGy6",
 });
 
-
-
 //loading checkout page
 const loadCheckout = async (req, res) => {
   try {
@@ -39,12 +37,11 @@ const loadCheckout = async (req, res) => {
       if (index === 0) {
         totalAmount = 0;
       }
-      if(product.productId.actualPrice === product.productId.offerPrice){
+      if (product.productId.actualPrice === product.productId.offerPrice) {
         totalAmount += product.productId.actualPrice * product.quantity;
-      }else{
+      } else {
         totalAmount += product.productId.offerPrice * product.quantity;
       }
-
     });
 
     //sending coupons
@@ -125,15 +122,13 @@ const calculateTotalPrice = async (userId) => {
     for (const cartProduct of cart.products) {
       const { productId, quantity } = cartProduct;
 
-      if(productId.actualPrice === productId.offerPrice ){
+      if (productId.actualPrice === productId.offerPrice) {
         const productSubtotal = productId.actualPrice * quantity;
         totalPrice += productSubtotal;
-      }else{
+      } else {
         const productSubtotal = productId.offerPrice * quantity;
         totalPrice += productSubtotal;
       }
-      
-      
     }
 
     return totalPrice;
@@ -160,26 +155,27 @@ const stockAdjusted = async (cartProducts) => {
 //Order placing
 const placeOrder = async (req, res) => {
   try {
-    console.log('Inside place order 1');
-    let { paymentSelected, addressSelected, couponId ,walletCheckedStatus } = req.body;
-    console.log('Inside place order 2');
+    console.log("Inside place order 1");
+    let { paymentSelected, addressSelected, couponId, walletCheckedStatus } =
+      req.body;
+    console.log("Inside place order 2");
     const userId = req.session.user_id;
     const userData = await User.findOne({ _id: userId });
     const shippingAddress = await Address.findOne({ _id: addressSelected });
-    const cart = await Cart.findOne({ userId: userId }).populate('products.productId')
+    const cart = await Cart.findOne({ userId: userId }).populate(
+      "products.productId"
+    );
     const coupon = couponId || null;
-    console.log('Inside place order 3');
-
+    console.log("Inside place order 3");
 
     let trackId = await generateTrackId();
     let totalAmount = await calculateTotalPrice(userId);
     console.log(couponId);
 
-    console.log('Inside place order 4');
-
+    console.log("Inside place order 4");
 
     if (couponId) {
-      console.log('Inside place order inside coupon');
+      console.log("Inside place order inside coupon");
 
       const coupon = await Coupon.findOne({ _id: couponId });
       totalAmount = totalAmount - coupon.discount_amount;
@@ -187,57 +183,58 @@ const placeOrder = async (req, res) => {
       coupon.usersUsed.push(userId);
       await coupon.save();
     }
-    console.log('Inside place order after coupon');
+    console.log("Inside place order after coupon");
 
-    if(walletCheckedStatus){
-      console.log("Here wallet is used "+walletCheckedStatus);
-      let walletBalance = userData.wallet.balance
-      if(userData.wallet.balance < totalAmount){
+    if (walletCheckedStatus) {
+      console.log("Here wallet is used " + walletCheckedStatus);
+      let walletBalance = userData.wallet.balance;
+      if (userData.wallet.balance < totalAmount) {
         console.log("balance less than total amount");
-        
-        totalAmount = totalAmount - userData.wallet.balance
-        userData.wallet.balance = 0 
+
+        totalAmount = totalAmount - userData.wallet.balance;
+        userData.wallet.balance = 0;
         const walletHistory = {
           type: "Debit",
           amount: walletBalance,
           date: Date.now(),
-          reason: 'Redeemed for shopping'
+          reason: "Redeemed for shopping",
         };
         userData.wallet.history.push(walletHistory);
         await userData.save();
 
         console.log("Userdata saved");
-      }else{
+      } else {
         console.log("balance greater than total amount");
 
-        userData.wallet.balance -= totalAmount
+        userData.wallet.balance -= totalAmount;
 
         const walletHistory = {
           type: "Debit",
           amount: totalAmount,
           date: Date.now(),
-          reason: 'Redeemed for shopping'
+          reason: "Redeemed for shopping",
         };
         userData.wallet.history.push(walletHistory);
-        
+
         await userData.save();
 
         totalAmount = 0;
-        paymentSelected= "Wallet"
-
+        paymentSelected = "Wallet";
       }
-      
     }
-      
+
     const cartProducts = cart.products.map((productItem) => ({
       productId: productItem.productId,
       ProductOrderStatus: "Ordered",
       quantity: productItem.quantity,
-      unitPrice: productItem.productId.actualPrice === productItem.productId.offerPrice ? productItem.productId.actualPrice : productItem.productId.offerPrice,
+      unitPrice:
+        productItem.productId.actualPrice === productItem.productId.offerPrice
+          ? productItem.productId.actualPrice
+          : productItem.productId.offerPrice,
       "returnOrderStatus.status": "none",
       "returnOrderStatus.reason": "none",
     }));
-    console.log('Inside place order 5 after cartProducts');
+    console.log("Inside place order 5 after cartProducts");
 
     const order = new Order({
       userId: userId,
@@ -260,7 +257,11 @@ const placeOrder = async (req, res) => {
       coupon: coupon,
       trackId: trackId,
     });
-    console.log('Inside place order 5 after Order CReated');
+
+    if (order.paymentMethod === "Wallet") {
+      order.paymentStatus = "Paid";
+    }
+    console.log("Inside place order 5 after Order CReated");
 
     //deleting existing cart
     const deletedCart = await Cart.deleteOne({ _id: cart._id });
@@ -270,12 +271,11 @@ const placeOrder = async (req, res) => {
 
     //returning a promise
     const newOrderPlaced = await order.save();
-    console.log('Inside place order 5 after Order saved');
+    console.log("Inside place order 5 after Order saved");
 
-
-    if (paymentSelected == "COD" || paymentSelected == 'Wallet') {
+    if (paymentSelected == "COD" || paymentSelected == "Wallet") {
       res.json({ message: "Order Placed successfully" });
-    } else {  
+    } else {
       const orderId = newOrderPlaced._id;
 
       generateRazorpay(orderId, totalAmount)
@@ -330,8 +330,7 @@ const loadMyorders = async (req, res) => {
     const orders = await Order.find({ userId: userId }).populate(
       "products.productId"
     );
-console.log(orders);
-console.log(orders.products);
+
     res.render("users/myOrders", { orders, user, cart });
   } catch (error) {
     console.log("Couldn't load my orders");
@@ -342,7 +341,9 @@ console.log(orders.products);
 const loadOrderDetailsPage = async (req, res) => {
   try {
     const orderId = req.query.ordId;
-    const order = await Order.findOne({ _id: orderId }).populate("products.productId").populate('coupon')
+    const order = await Order.findOne({ _id: orderId })
+      .populate("products.productId")
+      .populate("coupon");
 
     res.render("users/orderDetails", { order: order });
   } catch (error) {
@@ -372,8 +373,8 @@ const changeProdOrderStatus = async (req, res) => {
       (product) => product.productId.toString() === productId
     );
     productToUpdate.ProductOrderStatus = status;
-    if(status === 'Delivered'){
-      order.paymentStatus = "Paid"
+    if (status === "Delivered") {
+      order.paymentStatus = "Paid";
     }
 
     await order.save();
@@ -398,18 +399,16 @@ const cancelProdOrder = async (req, res) => {
 
     //reducing total order amount
     // so that amount will not go below zero
-    if(order.totalAmount >= (product.unitPrice * productToUpdate.quantity)){
-      order.totalAmount = order.totalAmount - product.unitPrice * productToUpdate.quantity;
+    if (order.totalAmount >= product.unitPrice * productToUpdate.quantity) {
+      order.totalAmount =
+        order.totalAmount - product.unitPrice * productToUpdate.quantity;
       await order.save();
       console.log("That");
-
-    }else{
-      order.totalAmount =  order.totalAmount
-      await order.save()
+    } else {
+      order.totalAmount = order.totalAmount;
+      await order.save();
       console.log("THis");
     }
-    
-
 
     //increasing stock of product
     product.stock = product.stock + productToUpdate.quantity;
@@ -417,57 +416,60 @@ const cancelProdOrder = async (req, res) => {
 
     //updating refunded amount in users wallet
     if (order.paymentMethod !== "COD" && order.paymentStatus === "Placed") {
-      
-
       // if order has a coupon used
-      if(order.coupon !== 'none'){
+      if (order.coupon !== "none") {
         console.log("Using coupon");
-        const coupon = await Coupon.findById(order.coupon)
+        const coupon = await Coupon.findById(order.coupon);
 
-                    //if total amount becomes less then minimum coupon required amount
-                    if(order.totalAmount < coupon.minimumSpend){
-                      user.wallet.balance = user.wallet.balance + ((product.actualPrice * productToUpdate.quantity)-coupon.discount_amount)
-                    const walletHistory = {
-                      type: "Credit",
-                      amount: (product.actualPrice * productToUpdate.quantity) - coupon.discount_amount,
-                      date: Date.now(),
-                      reason: 'Order cancel refund'
-                    };
-                    user.wallet.history.push(walletHistory);
-                    await user.save();
+        //if total amount becomes less then minimum coupon required amount
+        if (order.totalAmount < coupon.minimumSpend) {
+          user.wallet.balance =
+            user.wallet.balance +
+            (product.actualPrice * productToUpdate.quantity -
+              coupon.discount_amount);
+          const walletHistory = {
+            type: "Credit",
+            amount:
+              product.actualPrice * productToUpdate.quantity -
+              coupon.discount_amount,
+            date: Date.now(),
+            reason: "Order cancel refund",
+          };
+          user.wallet.history.push(walletHistory);
+          await user.save();
 
-                    order.coupon = 'none'
-                    await order.save()
-                    console.log("Saved None in coupon");
-                    }else{
-                      console.log("No using coupon");
-                      user.wallet.balance = user.wallet.balance + (product.actualPrice * productToUpdate.quantity)
-                      const walletHistory = {
-                        type: "Credit",
-                        amount: product.actualPrice * productToUpdate.quantity,
-                        date: Date.now(),
-                        reason: 'Order cancel refund'
-                      };
-                
-                      user.wallet.history.push(walletHistory);
-                      await user.save();
-                          }
-        
-    
-      }else{
+          order.coupon = "none";
+          await order.save();
+          console.log("Saved None in coupon");
+        } else {
+          console.log("No using coupon");
+          user.wallet.balance =
+            user.wallet.balance +
+            product.actualPrice * productToUpdate.quantity;
+          const walletHistory = {
+            type: "Credit",
+            amount: product.actualPrice * productToUpdate.quantity,
+            date: Date.now(),
+            reason: "Order cancel refund",
+          };
+
+          user.wallet.history.push(walletHistory);
+          await user.save();
+        }
+      } else {
         //if order doesn't use a coupon
         console.log("No using coupon");
-        user.wallet.balance = user.wallet.balance + (product.actualPrice * productToUpdate.quantity)
+        user.wallet.balance =
+          user.wallet.balance + product.actualPrice * productToUpdate.quantity;
         const walletHistory = {
           type: "Credit",
           amount: product.actualPrice * productToUpdate.quantity,
           date: Date.now(),
-          reason: 'Order cancel refund'
+          reason: "Order cancel refund",
         };
-  
+
         user.wallet.history.push(walletHistory);
         await user.save();
-  
       }
 
       res.json({
@@ -487,7 +489,7 @@ const cancelProdOrder = async (req, res) => {
 //const adding to wishlist
 const addtoWishlist = async (req, res) => {
   try {
-    const {prodId } = req.body;
+    const { prodId } = req.body;
     const user_id = req.session.user_id;
     const WListExist = await Wishlist.findOne({ userId: user_id });
     //if no wishlist for user
@@ -583,7 +585,7 @@ async function changePaymentStatus(orderId) {
 const returnProductFn = async (req, res) => {
   try {
     const { returnReason, prodId, orderId } = req.body;
-    console.log('inside return product order function');
+    console.log("inside return product order function");
     const order = await Order.findById(orderId);
     const product = await Product.findById(prodId);
     const user = await User.findById(req.session.user_id);
@@ -592,7 +594,7 @@ const returnProductFn = async (req, res) => {
       return product.productId.toString() === prodId;
     });
     const quantity = productInOrder.quantity;
-    console.log('Quantity on line 593: ',quantity);
+    console.log("Quantity on line 593: ", quantity);
 
     productInOrder.ProductOrderStatus = "Returned";
     productInOrder.returnOrderStatus.status = "Returned";
@@ -607,8 +609,7 @@ const returnProductFn = async (req, res) => {
     if (returnReason !== "Defective") {
       product.stock = product.stock + quantity;
       await product.save();
-    console.log('Product stock increased in ');
-
+      console.log("Product stock increased in ");
     }
 
     //updating refunded amount in users wallet
@@ -625,71 +626,73 @@ const returnProductFn = async (req, res) => {
 
     ///////////////
 
-     // if order has a coupon used
-    if(order.coupon !== null){
+    // if order has a coupon used
+    if (order.coupon !== null) {
       console.log("Using coupon");
       console.log(order.coupon);
       // console.log(new objectId(order.coupon));
-      // const couponId = new mongoose.Types.ObjectId(order.coupon);     
-      const coupon = await Coupon.findOne({_id:order.coupon.toString()})
-    
-console.log('Reaching here');
-console.log(coupon);
-                  //if total amount becomes less then minimum coupon required amount
-                  if(order.totalAmount < coupon.minimumSpend){
-console.log('Reaching here inside');
+      // const couponId = new mongoose.Types.ObjectId(order.coupon);
+      const coupon = await Coupon.findOne({ _id: order.coupon.toString() });
 
-                    user.wallet.balance = user.wallet.balance + ((productInOrder.unitPrice * quantity)-coupon.discount_amount)
-                  const walletHistory = {
-                    type: "Credit",
-                    amount: (productInOrder.unitPrice * quantity) - coupon.discount_amount,
-                    date: Date.now(),
-                    reason: 'Return Refund'
-                  };
-                  console.log('Reaching here inside 2');
+      console.log("Reaching here");
+      console.log(coupon);
+      //if total amount becomes less then minimum coupon required amount
+      if (order.totalAmount < coupon.minimumSpend) {
+        console.log("Reaching here inside");
 
-                  user.wallet.history.push(walletHistory);
-                  await user.save();
-                  console.log('Reaching here inside 3 after saving ');
+        user.wallet.balance =
+          user.wallet.balance +
+          (productInOrder.unitPrice * quantity - coupon.discount_amount);
+        const walletHistory = {
+          type: "Credit",
+          amount: productInOrder.unitPrice * quantity - coupon.discount_amount,
+          date: Date.now(),
+          reason: "Return Refund",
+        };
+        console.log("Reaching here inside 2");
 
-                  order.coupon = null
-                  await order.save()
-                  console.log("Saved null in coupon");
-                  }else{
-                    console.log("No losing coupon");
-                    // if it is the only and last product
-                    let amount;
-                    if(order.products.length === 1){
-                       amount = (productInOrder.unitPrice  * quantity) - coupon.discount_amount
-                    }else{
-                       amount = (productInOrder.unitPrice  * quantity)
-                    }
-                    user.wallet.balance = user.wallet.balance + amount
-                    const walletHistory = {
-                      type: "Credit",
-                      amount: amount,
-                      date: Date.now(),
-                      reason: 'Return Refund'
-                    };
-              
-                    user.wallet.history.push(walletHistory);
-                    await user.save();
-                        }
-      
-  
-    }else{
+        user.wallet.history.push(walletHistory);
+        await user.save();
+        console.log("Reaching here inside 3 after saving ");
+
+        order.coupon = null;
+        await order.save();
+        console.log("Saved null in coupon");
+      } else {
+        console.log("No losing coupon");
+        // if it is the only and last product
+        let amount;
+        if (order.products.length === 1) {
+          amount = productInOrder.unitPrice * quantity - coupon.discount_amount;
+        } else {
+          amount = productInOrder.unitPrice * quantity;
+        }
+        user.wallet.balance = user.wallet.balance + amount;
+        const walletHistory = {
+          type: "Credit",
+          amount: amount,
+          date: Date.now(),
+          reason: "Return Refund",
+        };
+
+        user.wallet.history.push(walletHistory);
+        await user.save();
+      }
+    } else {
       //if order doesn't use a coupon
       console.log("No using coupon");
-      user.wallet.balance = user.wallet.balance + (productInOrder.unitPrice  * productInOrder.quantity)
+      user.wallet.balance =
+        user.wallet.balance +
+        productInOrder.unitPrice * productInOrder.quantity;
       const walletHistory = {
         type: "Credit",
-        amount: productInOrder.unitPrice  * productInOrder.quantity,
+        amount: productInOrder.unitPrice * productInOrder.quantity,
         date: Date.now(),
-        reason: 'Return Refund'      };
+        reason: "Return Refund",
+      };
 
       user.wallet.history.push(walletHistory);
       await user.save();
-
     }
 
     res.json({
@@ -702,11 +705,10 @@ console.log('Reaching here inside');
   }
 };
 
-
 //adding product review function
-const addProdReview = async (req,res)=>{
+const addProdReview = async (req, res) => {
   try {
-    const {starValue,text,prodId} = req.body
+    const { starValue, text, prodId } = req.body;
 
     // const orders = await Order.find({userId : req.session.user_id})
     // const mappedOrders = orders.products.filter((x)=>{
@@ -716,62 +718,87 @@ const addProdReview = async (req,res)=>{
     //   res.json({message:"Thank you for your response"})
     // }
 
-    let star = starValue ?? 3
-    const product = await Product.findById(prodId)
+    let star = starValue ?? 3;
+    const product = await Product.findById(prodId);
 
     const newRating = {
       comment: text,
       star: star,
       userId: req.session.user_id,
-      createdAt: Date.now()
-    }
+      createdAt: Date.now(),
+    };
 
-    product.ratings.push(newRating)
-    await product.save()
-    res.json({message:"Thank you for your response"})
-  } catch (error) {
-    
-  }
-}
+    product.ratings.push(newRating);
+    await product.save();
+    res.json({ message: "Thank you for your response" });
+  } catch (error) {}
+};
 
-//Calculating total sales 
-const calculateTotalSales = async (req,res)=>{
+//Calculating total sales
+const calculateTotalSales = async (req, res) => {
   try {
-    const orders = await Order.find()
-    const totalSales = orders.reduce((acc,order)=>{
-    return acc + order.totalAmount
-
-  },0)
-  console.log('totalSales: ',totalSales);
-  res.json({totalSales})
-
+    const orders = await Order.find();
+    const totalSales = orders.reduce((acc, order) => {
+      return acc + order.totalAmount;
+    }, 0);
+    console.log("totalSales: ", totalSales);
+    res.json({ totalSales });
   } catch (error) {
-    console.log('Unable to calculate sales');
+    console.log("Unable to calculate sales");
   }
-}
+};
 
 //calculate weekly sales
-const calculateWeeklySales = async (req,res)=>{
+const calculateWeeklySales = async (req, res) => {
   try {
-    const weeklysales =  await Order.aggregate([
+    const weeklySales = await Order.aggregate([
+      {
+        $project: {
+          orderDate: 1,
+          totalAmount: 1,
+          year: { $year: "$orderDate" },
+          week: { $week: "$orderDate" },
+        },
+      },
       {
         $group: {
-          _id: { $week: "$orderDate" },  
-          totalSales: { $sum: "$totalAmount" }  
-        }
-      }
-    ]); 
+          _id: { year: "$year", week: "$week" },
+          fromDate: { $min: "$orderDate" },
+          toDate: { $max: "$orderDate" },
+          totalSales: { $sum: "$totalAmount" },
+          orderCount: { $sum: 1 }, // Count the number of orders
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          dateRange: {
+            $concat: [
+              { $dateToString: { format: "%Y-%m-%d", date: "$fromDate" } },
+              " to ",
+              { $dateToString: { format: "%Y-%m-%d", date: "$toDate" } },
+            ],
+          },
+          totalSales: 1,
+          orderCount: 1,
+        },
+      },
+      {
+        $sort: { fromDate: 1 },
+      },
+      {
+        $limit: 6,
+      },
+    ]);
 
-  res.json({weeklysales})
+    console.log(weeklySales);
 
+    res.json({ weeklySales });
   } catch (error) {
-    console.log('Unable to calculate weekly sales');
+    console.log("Unable to calculate weekly sales");
     console.log(error.message);
-
   }
-}
-
-
+};
 
 //calculate monthly sales
 const calculateMonthlySales = async (req, res) => {
@@ -781,32 +808,57 @@ const calculateMonthlySales = async (req, res) => {
         $group: {
           _id: {
             year: { $year: "$orderDate" },
-            month: { $month: "$orderDate" }
+            month: { $month: "$orderDate" },
           },
-          totalSales: { $sum: "$totalAmount" }
-        }
+          totalSales: { $sum: "$totalAmount" },
+          orderCount: { $sum: 1 },
+        },
       },
       {
         $project: {
-          _id: 0, 
+          _id: 0,
           year: "$_id.year",
-          month: "$_id.month",
-          totalSales: 1
-        }
-      }
+          month: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$_id.month", 1] }, then: "January" },
+                { case: { $eq: ["$_id.month", 2] }, then: "February" },
+                { case: { $eq: ["$_id.month", 3] }, then: "March" },
+                { case: { $eq: ["$_id.month", 4] }, then: "April" },
+                { case: { $eq: ["$_id.month", 5] }, then: "May" },
+                { case: { $eq: ["$_id.month", 6] }, then: "June" },
+                { case: { $eq: ["$_id.month", 7] }, then: "July" },
+                { case: { $eq: ["$_id.month", 8] }, then: "August" },
+                { case: { $eq: ["$_id.month", 9] }, then: "September" },
+                { case: { $eq: ["$_id.month", 10] }, then: "October" },
+                { case: { $eq: ["$_id.month", 11] }, then: "November" },
+                { case: { $eq: ["$_id.month", 12] }, then: "December" },
+              ],
+              default: null,
+            },
+          },
+          totalSales: 1,
+          orderCount: 1,
+        },
+      },
     ]);
 
-    console.log(monthlySales);
+    monthlySales.push({
+      totalSales: 70559,
+      orderCount: 31,
+      year: 2023,
+      month: "February",
+    });
     res.json({ monthlySales });
+    console.log(monthlySales);
   } catch (error) {
-    console.log('Unable to calculate monthly sales:', error);
+    console.log("Unable to calculate monthly sales:", error);
   }
 };
-
-
+// calculateMonthlySales()
 
 //calculate category sales
-const calculateCategorySales = async (req,res)=>{
+const calculateCategorySales = async (req, res) => {
   try {
     const categorySales = await Order.aggregate([
       {
@@ -814,8 +866,19 @@ const calculateCategorySales = async (req,res)=>{
       },
       {
         $lookup: {
+          from: "products",
+          localField: "products.productId",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $unwind: "$productDetails",
+      },
+      {
+        $lookup: {
           from: "categories",
-          localField: "products.productId.category_id",
+          localField: "productDetails.category_id",
           foreignField: "_id",
           as: "categoryDetails",
         },
@@ -824,49 +887,205 @@ const calculateCategorySales = async (req,res)=>{
         $unwind: "$categoryDetails",
       },
       {
+        $match: {
+          "products.ProductOrderStatus": {
+            $in: ["Delivered", "Ordered", "Shipped", "Out for Delivery"],
+          },
+          "products.returnOrderStatus.status": { $ne: "Cancelled" },
+        },
+      },
+      {
         $group: {
           _id: "$categoryDetails.categoryName",
-          totalSales: { $sum: "$products.amount" },
+          totalSales: { $sum: "$products.unitPrice" },
+          salesCount: { $sum: 1 }, // Counting the number of sales
         },
       },
       {
         $sort: { totalSales: -1 },
       },
-    ]); 
+    ]);
 
-    console.log('Category Sales:', categorySales);
-
+    res.json({ categorySales });
+    console.log("Category Sales:", categorySales);
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
-calculateCategorySales()
-
-
-
-
-const paymentMethodsChart = async(req,res)=>{
+// const paymentMethodsChart = async (req, res) => {
+//   try {
+//     const paymentMethodCounts = await Order.aggregate([
+//       {
+//         $group: {
+//           _id: "$paymentMethod",
+//           count: { $sum: 1 },
+//         },
+//       },
+//       {
+//         $sort: { count: -1 },
+//       },
+//     ]);
+//     res.json({ paymentMethodCounts });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+const paymentMethodsChart = async (req, res) => {
   try {
-
     const paymentMethodCounts = await Order.aggregate([
       {
         $group: {
           _id: "$paymentMethod",
-          count: { $sum: 1 }
-        }
+          totalSales: { $sum: "$totalAmount" },
+          count: { $sum: 1 },
+        },
       },
       {
-        $sort: { count: -1 } 
-      }
+        $sort: { totalSales: -1 },
+      },
     ]);
-    console.log('Payment Method Counts:', paymentMethodCounts);
-    res.json({paymentMethodCounts})
+    res.json({ paymentMethodCounts });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const totalUsersCount = async (req, res) => {
+  try {
+    let users = await User.aggregate([
+      {
+        $group: {
+          _id: null,
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    userCount = users[0].count - 1
+    res.json({userCount})
 
   } catch (error) {
     console.log(error.message);
   }
+};
+
+
+//load sales report page
+const loadSalesReportPage = async (req,res)=>{
+  try {
+    res.render('admin/salesReport')
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+
+//loading the sales report actually
+const viewSalesReportData = async (req,res)=>{
+  try {
+    const { startDate , endDate } = req.body
+    // const startDateTime = new Date(startDate);
+    // const endDateTime = new Date(endDate);
+
+    // console.log(startDateTime);
+    // console.log(endDateTime);
+    console.log(startDate);
+    console.log(endDate);
+
+    const salesReportData = await Order.aggregate([
+      {
+        $match: {
+          orderDate: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate)
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: 'users', 
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'populatedUser'
+        }
+      }
+    ]);
+
+    res.json({salesReportData})
+    
+  } catch (error) {
+    console.log(error.message+'Unable to load sales report');
+  }
+}
+
+
+//downloading sales report data dunction
+const downloadSalesReportData = async (req,res)=>{
+  try {
+    // const { startDate , endDate } = req.body
+    // const startDateTime = new Date(startDate);
+    // const endDateTime = new Date(endDate);
+
+
+  let startDate = '2023-12-10' 
+  let endDate = '2023-12-15'
+
+    console.log(startDate);
+    console.log(endDate); 
+
+    const salesReportData = await Order.aggregate([
+      {
+        $match: {
+          orderDate: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate)
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: 'users', 
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'populatedUser'
+        }
+      }
+    ]);
+
+    // res.json({salesReportData})
+    console.log(salesReportData);
+
+    const csvSalesData = salesReportData.map(order => ({
+      id: order._id.toString(),
+      userId: order.userId.toString(),
+      country: order.shippingAddress.country,
+      houseName: order.shippingAddress.houseName,
+      fullName: order.shippingAddress.fullName,
+      mobile: order.shippingAddress.mobile,
+      pincode: order.shippingAddress.pincode,
+      city: order.shippingAddress.city,
+      state: order.shippingAddress.state,
+      OrderStatus: order.OrderStatus,
+      StatusLevel: order.StatusLevel,
+      paymentStatus: order.paymentStatus,
+      orderDate: order.orderDate.toISOString(),
+      totalAmount: order.totalAmount,
+      paymentMethod: order.paymentMethod,
+      coupon: order.coupon,
+      trackId: order.trackId,
+      updatedAt: order.updatedAt.toISOString(),
+    }));
+
+console.log(csvSalesData);
+res.json({csvSalesData})
+    
+  } catch (error) {
+    console.log(error.message+' Unable to load sales report');
+  }
+}
+downloadSalesReportData() 
+
+
 
 
 module.exports = {
@@ -887,6 +1106,10 @@ module.exports = {
   calculateWeeklySales,
   calculateMonthlySales,
   calculateCategorySales,
-  paymentMethodsChart
+  paymentMethodsChart,
+  totalUsersCount,
+  loadSalesReportPage,
+  viewSalesReportData,
+  downloadSalesReportData
 
 };

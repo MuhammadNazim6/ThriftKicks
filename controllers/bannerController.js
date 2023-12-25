@@ -1,16 +1,6 @@
-// const UserAddressModel = require("../models/userModel");
-// const ProductsModel = require("../models/productsModel");
-// const OrdersModel = require('../models/ordersModel')
+
 const BannerModel = require('../models/bannerModel')
-// const mailer = require("../services/mail");
-// const bcrypt = require("bcrypt");
-// const otplib = require("otplib");
-// const uuid = require('uuid');
-// const User = UserAddressModel.User;
-// const Address = UserAddressModel.Address;
-// const Cart = UserAddressModel.Cart;
-// const Product = ProductsModel.Product;
-// const Order = OrdersModel.Order;
+
 const Banner = BannerModel.Banner;
 
 
