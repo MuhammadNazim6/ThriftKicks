@@ -1083,7 +1083,7 @@ res.json({csvSalesData})
     console.log(error.message+' Unable to load sales report');
   }
 }
-downloadSalesReportData() 
+
 
 
 
