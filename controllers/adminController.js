@@ -560,7 +560,7 @@ const changeOrderStatus = async (req,res)=>{
       }
       
       if(status === 'Delivered'){
-        order.products.forEach((prod)=>{
+        order.products.forEach((prod)=>{ 
           prod.ProductOrderStatus = "Delivered"
         })
         order.paymentStatus = 'Paid'

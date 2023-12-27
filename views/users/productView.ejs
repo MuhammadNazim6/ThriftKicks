@@ -307,7 +307,7 @@
                                     <div class="product__details__tab__content ml-5">
                                         <div class="d-flex ml-5 mt-4 bg-light p-3" style="width:1000px; border-radius: 10px;">
                                             <div class="product__details__tab__content__item ml-5">
-                                                <p class="text-dark text-md mb-1"><%= product.ratings[i].userId.firstname + " " + product.ratings[i].userId.lastname %></p>
+                                                <p class="text-dark text-md mb-1"><%= product?.ratings[i]?.userId?.firstname + " " + product?.ratings[i]?.userId?.lastname %></p>
                                                 <p class="text-sm mb-4 " style="color: #7e7575;"><%= product.ratings[i].createdAt.toLocaleDateString() %></p>
                                                 <% for (let j = 0; j < 5; j++) { %>
                                                     <i class="fa-solid fa-star <%= j < product.ratings[i].star ? 'text-warning' : '' %>"></i>
