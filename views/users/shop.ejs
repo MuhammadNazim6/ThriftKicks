@@ -225,143 +225,86 @@
                 
                 <div class="col-lg-9">
                     <div class="row">
-                        <!-- <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-                                    <ul class="product__hover">
-                                        <li><a href="#"><img src="img/icons/heart.png" alt=""></a></li>
-                                        <li><a href="#"><img src="img/icons/compare.png" alt=""> <span>Compare</span></a>
-                                        </li>
-                                        <li><a href="#"><img src="img/icons/search.png" alt=""></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6>Piqué Biker Jacket</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
-                                    <div class="rating">
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                    </div>
-                                    <h5>$67.24</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-4">
-                                            <input type="radio" id="pc-4">
-                                        </label>
-                                        <label class="active black" for="pc-5">
-                                            <input type="radio" id="pc-5">
-                                        </label>
-                                        <label class="grey" for="pc-6">
-                                            <input type="radio" id="pc-6">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                     -->
 
 
  <!-- Product Section Start -->
  <div class="container">
     <div class="row">
-       
-  <% if(products.length>0){
-    for(let i=0;i<products.length ;i++){  %>
-         
-        
-         <div class="col-lg-4" >
-           
-            
-            <div class="card m-3 " style="width: 15rem; height:30rem">
-                <a href="/productView?id=<%=products[i]._id %>">
-        
-                        <div class="hoverable">
-
-                            <% if(products[i]?.offers.length !== 0){  %>
-                                <p class="offerBadge"><%= products[i]?.offers[0]?.offerDiscount %>%&nbsp;</p>
-                                <% } %>
-                                
-                            <a href="/productView?id=<%=products[i]._id %>">
-                                <img src="<%= products[i].image.path1 %>" class="card-image"
-                                    onmouseout="unhoverCardImage()">
-                            </a>
-                            <div class="icon wishlistIcon  
-                            
-                            <%   if(typeof wishlist !== 'undefined'){  %>
-
-                            <% let isInWishlist = false; %>
-                            <% for (let j = 0; j < wishlist?.products?.length; j++) {
-                                const x = wishlist.products[j];
-                                if (x.productId.toString() === products[i]._id.toString()) {
-                                    isInWishlist = true;
-                                    break;
-                                }
-                            } %>
-                            <%= isInWishlist ? 'text-danger' : '' %>" 
-
-                            <% } %>
-
-
-                            onmouseover="hoverCardImage()" data-prodId="<%= products[i]._id %>">
-                                <i class="fa fa-heart"></i>
-                                
-                            </div>
-                            <% let avgStar = 0 
-                            products[i].ratings.forEach( (elem)=>{
-                             avgStar = avgStar + elem.star
-                          })
-                            avgStar = Math.floor(avgStar/products[i].ratings.length)
-                         %>
-                                    <div class="d-flex ml-3 mt-3 iconStar">
-                                        <% for (let j = 0; j < 5; j++) { %>
-                                            <i class="fa-solid fa-star <%= j < avgStar  ? 'text-warning' : 'text-light' %>"></i>
-                                        <% } %>
-                                    </div>
-                        </div>
-                
-                </a>
-                <div class="card-body">
-                    <h6 class="text-bold text-md">
+        <% if(products.length > 0){
+            for(let i=0; i < products.length; i++){  %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card m-3">
                         <a href="/productView?id=<%=products[i]._id %>">
-                            <%= products[i].productName %>
+                            <div class="hoverable">
+                                <% if(products[i]?.offers.length !== 0){  %>
+                                    <p class="offerBadge"><%= products[i]?.offers[0]?.offerDiscount %>%&nbsp;</p>
+                                <% } %>
+                                <a href="/productView?id=<%=products[i]._id %>">
+                                    <img src="<%= products[i].image.path1 %>" class="card-image card-img-top" style="border-radius: 0px; ">
+                                </a>
+                                <div class="icon wishlistIcon  
+                                    <% if(typeof wishlist !== 'undefined'){  %>
+                                        <% let isInWishlist = false; %>
+                                        <% for (let j = 0; j < wishlist?.products?.length; j++) {
+                                            const x = wishlist.products[j];
+                                            if (x.productId.toString() === products[i]._id.toString()) {
+                                                isInWishlist = true;
+                                                break;
+                                            }
+                                        } %>
+                                        <%= isInWishlist ? 'text-danger' : '' %>"
+                                    <% } %>
+                                    onmouseover="hoverCardImage()" data-prodId="<%= products[i]._id %>">
+                                    <i class="fa fa-heart"></i>
+                                </div>
+                                <% let avgStar = 0 
+                                products[i].ratings.forEach( (elem)=>{
+                                    avgStar = avgStar + elem.star
+                                })
+                                avgStar = Math.floor(avgStar/products[i].ratings.length)
+                                %>
+                                <div class="d-flex ml-3 mt-3 iconStar">
+                                    <% for (let j = 0; j < 5; j++) { %>
+                                        <i class="fa-solid fa-star <%= j < avgStar ? 'text-warning' : 'text-light' %>"></i>
+                                    <% } %>
+                                </div>
+                            </div>
                         </a>
-                    </h>
-                    
-                    <% if(products[i].actualPrice === products[i].offerPrice){  %>
-
-                        <p class="text-md text-bold mt-1">₹<%= products[i].actualPrice %>/-</p>
-
-                            <% }else{ %>
-                                
+                        <div class="card-body">
+                            <h6 class="card-title text-bold text-md">
+                                <a href="/productView?id=<%=products[i]._id %>">
+                                    <%= products[i].productName %>
+                                </a>
+                            </h6>
+                            <% if(products[i].actualPrice === products[i].offerPrice){  %>
+                                <p class="text-md text-bold mt-1">₹<%= products[i].actualPrice %>/-</p>
+                            <% } else { %>
                                 <div class="d-flex justify-content-between">
                                     <p class="text-md text-bold discounted-price mt-1 text-danger">
-                                        ₹<%= products[i].actualPrice %>/- 
+                                        ₹<%= products[i].actualPrice %>/-
                                     </p>
                                     <p class="text-md text-bold mt-1">
-                                        ₹<%= products[i].offerPrice %>/- 
+                                        ₹<%= products[i].offerPrice %>/-
                                     </p>
-
                                 </div>
-                            
-                                <% } %>
-                    <p class="card-text">    </p>
-                    <button data-product-id="<%= products[i]._id %>"
-                        class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% }else{%> cartButton <%}%>">Add
-                        to Cart</button>
-                    
+                            <% } %>
+                            <p class="card-text"></p>
+                            <button data-product-id="<%= products[i]._id %>"
+                                class="btn addtocart-button <% if(typeof user !=='undefined'){ %>addtoCartButton <% } else { %> cartButton <%}%>">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 </div>
-          </div>
-          
-        </div>
- 
-  <%  }  %>
-<%  }  %> 
+            <%  }  %>
+        <%  }  %> 
+    </div>
+</div>
+
 </div>
 </div>
 </div>
-</div>
+<!-- product section end -->
 
 <!--Pagination starts-->
 <div class="container ">
