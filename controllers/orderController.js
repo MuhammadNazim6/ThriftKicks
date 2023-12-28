@@ -612,26 +612,12 @@ const returnProductFn = async (req, res) => {
       console.log("Product stock increased in ");
     }
 
-    //updating refunded amount in users wallet
-
-    // user.wallet.balance = user.wallet.balance + product.actualPrice * quantity;
-    // const walletHistory = {
-    //   type: "Credit",
-    //   amount: product.actualPrice * quantity,
-    //   date: Date.now(),
-    //   reason: 'Order Return'
-    // };
-    // user.wallet.history.push(walletHistory);
-    // await user.save();
-
-    ///////////////
 
     // if order has a coupon used
     if (order.coupon !== null) {
       console.log("Using coupon");
       console.log(order.coupon);
-      // console.log(new objectId(order.coupon));
-      // const couponId = new mongoose.Types.ObjectId(order.coupon);
+      
       const coupon = await Coupon.findOne({ _id: order.coupon.toString() });
 
       console.log("Reaching here");
@@ -710,14 +696,6 @@ const addProdReview = async (req, res) => {
   try {
     const { starValue, text, prodId } = req.body;
 
-    // const orders = await Order.find({userId : req.session.user_id})
-    // const mappedOrders = orders.products.filter((x)=>{
-    //  return x.productId === prodId && x.ProductOrderStatus === 'Delivered'
-    // })
-    // if(mappedOrders.length === 0 ){
-    //   res.json({message:"Thank you for your response"})
-    // }
-
     let star = starValue ?? 3;
     const product = await Product.findById(prodId);
 
@@ -741,7 +719,6 @@ const calculateTotalSales = async (req, res) => {
     const totalSales = orders.reduce((acc, order) => {
       return acc + order.totalAmount;
     }, 0);
-    console.log("totalSales: ", totalSales);
     res.json({ totalSales });
   } catch (error) {
     console.log("Unable to calculate sales");
@@ -791,7 +768,6 @@ const calculateWeeklySales = async (req, res) => {
       },
     ]);
 
-    console.log(weeklySales);
 
     res.json({ weeklySales });
   } catch (error) {
@@ -843,19 +819,13 @@ const calculateMonthlySales = async (req, res) => {
       },
     ]);
 
-    monthlySales.push({
-      totalSales: 70559,
-      orderCount: 31,
-      year: 2023,
-      month: "February",
-    });
+  
     res.json({ monthlySales });
     console.log(monthlySales);
   } catch (error) {
     console.log("Unable to calculate monthly sales:", error);
   }
 };
-// calculateMonthlySales()
 
 //calculate category sales
 const calculateCategorySales = async (req, res) => {
@@ -913,24 +883,7 @@ const calculateCategorySales = async (req, res) => {
   }
 };
 
-// const paymentMethodsChart = async (req, res) => {
-//   try {
-//     const paymentMethodCounts = await Order.aggregate([
-//       {
-//         $group: {
-//           _id: "$paymentMethod",
-//           count: { $sum: 1 },
-//         },
-//       },
-//       {
-//         $sort: { count: -1 },
-//       },
-//     ]);
-//     res.json({ paymentMethodCounts });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
+
 const paymentMethodsChart = async (req, res) => {
   try {
     const paymentMethodCounts = await Order.aggregate([
@@ -984,14 +937,7 @@ const loadSalesReportPage = async (req,res)=>{
 const viewSalesReportData = async (req,res)=>{
   try {
     const { startDate , endDate } = req.body
-    // const startDateTime = new Date(startDate);
-    // const endDateTime = new Date(endDate);
-
-    // console.log(startDateTime);
-    // console.log(endDateTime);
-    console.log(startDate);
-    console.log(endDate);
-
+   
     const salesReportData = await Order.aggregate([
       {
         $match: {
@@ -1022,16 +968,8 @@ const viewSalesReportData = async (req,res)=>{
 //downloading sales report data dunction
 const downloadSalesReportData = async (req,res)=>{
   try {
-    // const { startDate , endDate } = req.body
-    // const startDateTime = new Date(startDate);
-    // const endDateTime = new Date(endDate);
-
-
-  let startDate = '2023-12-10' 
-  let endDate = '2023-12-15'
-
-    console.log(startDate);
-    console.log(endDate); 
+    const { startDate , endDate } = req.body
+  
 
     const salesReportData = await Order.aggregate([
       {
@@ -1051,9 +989,6 @@ const downloadSalesReportData = async (req,res)=>{
         }
       }
     ]);
-
-    // res.json({salesReportData})
-    console.log(salesReportData);
 
     const csvSalesData = salesReportData.map(order => ({
       id: order._id.toString(),
@@ -1076,8 +1011,7 @@ const downloadSalesReportData = async (req,res)=>{
       updatedAt: order.updatedAt.toISOString(),
     }));
 
-console.log(csvSalesData);
-res.json({csvSalesData})
+    res.json({csvSalesData})
     
   } catch (error) {
     console.log(error.message+' Unable to load sales report');

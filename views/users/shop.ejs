@@ -148,11 +148,11 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
-                                                    <li><a href="?category=Boots">Boots</a></li>
-                                                    <li><a href="?category=Loafers">Loafers</a></li>
-                                                    <li><a href="?category=Sneakers">Sneakers</a></li>
-                                                    <li><a href="?category=Canvas">Canvas</a></li>
-                                                    <li><a href="?category=Sports">Sports</a></li>
+                                                    <li><a href="?category=Boots" class="<%= categoryFilter === 'Boots'? 'text-black text-lg text-bold':'' %>">Boots</a></li>
+                                                    <li><a href="?category=Loafers" class="<%= categoryFilter === 'Loafers'? 'text-black text-lg text-bold':'' %>">Loafers</a></li>
+                                                    <li><a href="?category=Sneakers" class="<%= categoryFilter === 'Sneakers'? 'text-black text-lg text-bold':'' %>">Sneakers</a></li>
+                                                    <li><a href="?category=Canvas" class="<%= categoryFilter === 'Canvas'? 'text-black text-lg text-bold':'' %>">Canvas</a></li>
+                                                    <li><a href="?category=Sports" class="<%= categoryFilter === 'Sports'? 'text-black text-lg text-bold':'' %>">Sports</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -166,17 +166,17 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__brand">
                                                 <ul>
-                                                    <li><a href="?search=Nike">Nike</a></li>
-                                                    <li><a href="?search=Vans">Vans</a></li>
-                                                    <li><a href="?search=Converse">Converse</a></li>
-                                                    <li><a href="?search=NewBalance">NewBalance</a></li>
-                                                    <li><a href="?search=Martens">Dr Martens</a></li>
+                                                    <li><a href="?search=Nike" class="<%= search === 'Nike'? 'text-black text-lg text-bold':'' %>">Nike</a></li>
+                                                    <li><a href="?search=Vans" class="<%= search === 'Vans'? 'text-black text-lg text-bold':'' %>">Vans</a></li>
+                                                    <li><a href="?search=Converse" class="<%= search === 'Converse'? 'text-black text-lg text-bold':'' %>">Converse</a></li>
+                                                    <li><a href="?search=NewBalance" class="<%= search === 'NewBalance'? 'text-black text-lg text-bold':'' %>">NewBalance</a></li>
+                                                    <li><a href="?search=Martens" class="<%= search === 'Martens'? 'text-black text-lg text-bold':'' %>">Dr Martens</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                             
+                            
                                 <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseFour">Price</a>
@@ -189,35 +189,14 @@
                                                     <li><a href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=asc&page=<%= page %>&category=<%= categoryFilter %>'>Low to high</a></li>
 
                                                     <li><a href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=desc&page=<%= page %>&category=<%= categoryFilter %>'>High to low</a></li>
-                                                    <!-- <li><a href="?search=uk-7">UK-7</a></li>
-                                                    <li><a href="?search=uk-7.5">UK-7.5</a></li>
-                                                    <li><a href="?search=uk-8.5">UK-8.5</a></li>
-                                                    <li><a href="?search=uk-9">UK-9</a></li>
-                                                    <li><a href="?search=uk-10">UK-10</a></li> -->
+                                                
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                             
-                                <!-- <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
-                                    </div>
-                                    <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__tags">
-                                                <a href="#">Product</a>
-                                                <a href="#">Bags</a>
-                                                <a href="#">Shoes</a>
-                                                <a href="#">Fashio</a>
-                                                <a href="#">Clothing</a>
-                                                <a href="#">Hats</a>
-                                                <a href="#">Accessories</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
+                            
+                    
                             </div>
                         </div>
                     </div>

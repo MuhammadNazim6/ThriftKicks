@@ -470,7 +470,6 @@ const loadShop = async (req, res) => {
     const sortOrder = req.query.sortOrder || 'asc';
     const categoryFilter = req.query.category || '';
 
-    
     const query = {
       is_listed: true,
       $or: [
