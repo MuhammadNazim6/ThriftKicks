@@ -28,7 +28,8 @@ const addBanner = async (req,res)=>{
     const link = req.body.link;
 
     imagePath = image.path.slice(6);
-
+    console.log(image.path);
+    console.log(imagePath);
     const banner = new Banner({
       imageUrl: imagePath,
       title: titleValue,
