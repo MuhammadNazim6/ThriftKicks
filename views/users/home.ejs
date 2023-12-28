@@ -2,7 +2,6 @@
 
 <style>
     @media screen and (max-width: 768px) {
-            /* Your styles for smaller screens here */
             .products-container{
                 display: none;
             }
@@ -18,7 +17,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 6px solid #a09595;
+    border: 6px solid #ddd9d9;
     padding: 15px;
     background-color: #fff;
     z-index: 110;
@@ -47,9 +46,9 @@
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
-              <h3 class="LSpacing">Thrift Kicks </h3>  
+            <h3 class="LSpacing">Thrift Kicks </h3>  
         </div>
-       
+    
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">
             <p>Free shipping, 30-day return or refund guarantee.</p>
@@ -70,8 +69,7 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                <!-- <a href="#">Sign in</a>
-                                <a href="#">null</a> -->
+                                
                             </div>
                         </div>
                     </div>
@@ -142,59 +140,87 @@
     <!-- CCCCCCCCCCLLLLLLLLLLLLLLOOOOOOOOOOOOOOOCCCCCCCCCCCCKKKKKKKKKKKKKK -->
 
     <!-- popup banner -->
-    <div id="popup-banner" class="popup" style="width: 470px;">
-        <div class="popup-content" style="width: 700px;">
+    <div id="popup-banner" class="popup" style="max-width: 100%;">
+
+        <div class="popup-content" style="max-width: 100%; box-sizing: border-box; position: relative;">
             <p class="close d-flex justify-content-end" onclick="closePopup()">&times;</p>
             <br>
             <br>
-            <h3 class="LSpacing" style="width: 700px;">Lowest price! Get now</h3>
-            <%  let index ,diff =-1;  %>
-            <% for(let i = 0 ; i < products.length ; i++){  %>
-                <%  if(products[i].actualPrice > products[i].offerPrice){   
+            <br>
+    
+            <h4 class="LSpacing banner-heading d-flex justify-content-center" style="max-width: 100%;">Lowest price!</h4>
+    
+            <% let index, diff = -1; %>
+            <% for (let i = 0; i < products.length; i++) { %>
+                <% if (products[i].actualPrice > products[i].offerPrice) {   
                     
-                if(products[i].actualPrice - products[i].offerPrice > diff){
-                        diff = products[i].actualPrice - products[i].offerPrice
-                        index = i
+                if (products[i].actualPrice - products[i].offerPrice > diff) {
+                        diff = products[i].actualPrice - products[i].offerPrice;
+                        index = i;
                     }  
-
+        
                 } %>
             <% }
-                if(typeof index === 'undefined'){
-                    index = 0
-                }
-                %>
-
-                    <h5 class="d-flex justify-content-center text-danger" style="text-decoration: line-through;">₹ <%= products[index]?.actualPrice %></h5>
-                    <h5 class="d-flex justify-content-center text-dark"><%= products[index]?.offers[0]?.offerDiscount %> % Off/-</h4>
-
-                    <h4 class="d-flex justify-content-center text-dark">Now at ₹ <%= products[index]?.offerPrice %></h4>
-                
-                <a href="/productView?id=<%=products[index]?._id %>">
-                    <img class="pl-5 ml-4" src="<%= products[index]?.image.path1 %>" style="height: 250px;">
-                    <h4 class="d-flex justify-content-center"><%= products[index]?.productName %></h4>
-                </a>
-
+            if (typeof index === 'undefined') {
+                index = 0;
+            }
+            %>
+    
+            <h6 class="d-flex justify-content-center text-danger" style="text-decoration: line-through; max-width: 100%;">₹ <%= products[index]?.actualPrice %></h6>
+            <h6 class="d-flex justify-content-center text-dark"><%= products[index]?.offers[0]?.offerDiscount %>% Off/-</h6>
+            <h5 class="d-flex justify-content-center text-dark">Now at ₹ <%= products[index]?.offerPrice %></h5>
+    
+            <a href="/productView?id=<%= products[index]?._id %>">
+                <img class="img-fluid" src="<%= products[index]?.image.path1 %>" style="max-width: 100%; height: auto;">
+    
+                <h4 class="d-flex justify-content-center"><%= products[index]?.productName %></h4>
+            </a>
+    
         </div>
     </div>
-
-    <!-- Header Section End -->
-
-    <!-- <div class="container">
-        <div class="container-fluid py-4">
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <form class="form-inline my-2 my-lg-0">
-                        <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Search Products" name="search">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-dark" type="submit">Search</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> -->
+    
+    <style>
+        @media (max-width: 768px) {
+            #popup-banner {
+                max-width: 100%;
+            }
+    
+            .popup-content {
+                max-width: 100%;
+                padding: 10px; 
+            }
+    
+            h3, h5, h4 {
+                font-size: 16px;
+            }
+        }
+    
+        @media (max-width: 450px) {
+            h3, h5, h4 {
+                font-size: 14px; 
+            }
+    
+            .popup-content {
+                padding: 5px; 
+            }
+        }
+    
+        @media (min-width: 751px) {
+            #popup-banner {
+                max-height: 700px; 
+            }
+        }
+        @media (min-width: 751px) {
+                        img.img-fluid {
+                            max-height: 300px; 
+                        }
+    
+                        .popup-content {
+                            max-height: 600px; 
+                        }
+                    }
+    </style>
+    
     
     
     <!-- Hero Section Begin -->
@@ -768,6 +794,7 @@ if(!cond){
     showPopup()
 },4000)
 }
+showPopup()
 
 
 
