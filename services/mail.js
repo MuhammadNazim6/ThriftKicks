@@ -29,7 +29,7 @@ async function sendMail(toMail,otp,name){
 
   try {
     const result = await transporter.sendMail(mailOptions)
-    console.log("Email sent successfully");
+
   } catch (error) {
     console.log("Sending Email failed with error:",error);
   }

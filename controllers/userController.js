@@ -45,8 +45,6 @@ const loadRegister = async (req, res) => {
   try {
     const refCode = req.query.refCode
     req.session.refCode = refCode
-    console.log('Referral Code present : ',req.session.refCode);
-    console.log('Inside load register')
 
     res.render("users/registration");
   } catch (error) {
@@ -62,11 +60,10 @@ const verifyEmail = async (req, res, next) => {
     req.session.name = name;
     req.session.email = email;
     
-    console.log('Inside verify Email');
     await generateOtp(req,res);
     const OTP = req.session.otp
     mailer.sendMail(email, OTP, name);
-    console.log('After sendmail Functin');
+  
     next();
   } catch (error) {
     console.log(error.message);
@@ -78,7 +75,7 @@ const verifyEmail = async (req, res, next) => {
 const loadVerifyOtp = async (req, res) => {
   try {
     const email = req.session.email;
-    console.log(email + " is here");
+    
     res.render("users/enterOtp", { email: email });
   } catch (error) {
     console.log(error.message);
@@ -90,17 +87,12 @@ const verifyOtp = async (req, res) => {
   try {
     const userOTP = req.body.otp;
     const emailId = req.body.email;
-    console.log('Inside verifyOtp :',userOTP);
-    console.log('Inside verifyOtp :',emailId);
+
 
     if (req.session.otp === userOTP) {
-      console.log("correct");
-
-      console.log(req.session.userData);
+    
       const userData = req.session.userData
-      console.log('Userdata: ',userData);
 
-      // const user = await User.findOne({ email: emailId });
       const user = new User({
         firstname:userData.firstname,
         lastname: userData.lastname,
@@ -112,21 +104,20 @@ const verifyOtp = async (req, res) => {
         is_verified: true
       });
 
-      // user.is_verified = true;
+    
       const verified = await user.save();
       req.session.userData = {}
 
 
       if (verified) {
         req.session.user_id = user._id;
-        console.log(req.session.userData);
-        console.log('Inside verified ');
+      
         //if there is a referral code
         if(req.session.refCode){
           const referrerUser = await User.findOne({refCode:req.session.refCode})
           //if referral code is valid
           if(referrerUser){
-          console.log('Referral code present');
+        
 
           user.wallet.balance = 200
           const history = {
@@ -189,48 +180,62 @@ const resendOtp = async (req, res, next) => {
 const insertUser = async (req, res) => {
   try {
   
+    console.log("Inside insert user ");
+
+   
+    console.log(req.body.fname);
+    console.log(req.body.lname);
+    console.log(req.body.email);
+    console.log(req.body.mobile);
+ 
+    console.log(req.body.password);
+    console.log(req.body.cpassword);
+    
+    console.log("Reached users here");
+
+
     const email = req.body.email;
     const mail = await User.findOne({ email: req.body.email });
     const currentValue = req.body;
-    if(currentValue.fname.includes(" ") || /^[0-9]+$/.test(req.body.fname)) {
-      return res.render("users/registration", {
-        msgFname: "Enter a valid Name",
-        currentValue: currentValue,
-      });
-    }
-    if (
-      currentValue.lname.includes(" ") ||
-      /^[0-9]+$/.test(currentValue.lname)
-    ) {
-      return res.render("users/registration", {
-        msgLname: "Enter a valid Name",
-        currentValue: currentValue,
-      });
-    }
-    if (mail) {
-      return res.render("users/registration", {
-        msgPass: "This User have already registered",
-        currentValue: currentValue,
-      });
-    }
-    const mob = currentValue.mobile;
-    if (
-      mob.length > 10 ||
-      mob.length < 10 ||
-      mob.includes(" ") ||
-      /[a-zA-Z]/.test(mob)
-    ) {
-      return res.render("users/registration", {
-        msgMobile: "Enter a Proper Mobile number",
-        currentValue: currentValue,
-      });
-    }
-    if (currentValue.password.length < 6) {
-      return res.render("users/registration", {
-        msgPassword: "Enter a strong Password",
-        currentValue: currentValue,
-      });
-    }
+    // if(currentValue.fname.includes(" ") || /^[0-9]+$/.test(req.body.fname)) {
+    //   return res.render("users/registration", {
+    //     msgFname: "Enter a valid Name",
+    //     currentValue: currentValue,
+    //   });
+    // } 
+    // if (
+    //   currentValue.lname.includes(" ") ||
+    //   /^[0-9]+$/.test(currentValue.lname)
+    // ) {
+    //   return res.render("users/registration", {
+    //     msgLname: "Enter a valid Name",
+    //     currentValue: currentValue,
+    //   });
+    // }
+    // if (mail) {
+    //   return res.render("users/registration", {
+    //     msgPass: "This User have already registered",
+    //     currentValue: currentValue,
+    //   });
+    // }
+    // const mob = currentValue.mobile;
+    // if (
+    //   mob.length > 10 ||
+    //   mob.length < 10 ||
+    //   mob.includes(" ") ||
+    //   /[a-zA-Z]/.test(mob)
+    // ) {
+    //   return res.render("users/registration", {
+    //     msgMobile: "Enter a Proper Mobile number",
+    //     currentValue: currentValue,
+    //   });
+    // }
+    // if (currentValue.password.length < 6) {
+    //   return res.render("users/registration", {
+    //     msgPassword: "Enter a strong Password",
+    //     currentValue: currentValue,
+    //   });
+    // }
 
     if (currentValue.password == currentValue.cpassword) {
       const spassword = await securePassword(req.body.password);
@@ -247,19 +252,6 @@ const insertUser = async (req, res) => {
         is_admin: 0,
         refCode: refCode
       }
-      console.log('Inside insert User : ',req.session.userData);
-      // const user = new User({
-      //   firstname: req.body.fname,
-      //   lastname: req.body.lname,
-      //   email: req.body.email,
-      //   mobile: req.body.mobile,
-      //   password: spassword,
-      //   is_admin: 0,
-      //   refCode: refCode
-      // });
-
-      //returning a promise
-      // const userData = await user.save(); 
 
       if (req.session.userData) {
         res.redirect(`/verifyOtp?email=${encodeURIComponent(email)}`);
@@ -310,7 +302,6 @@ const verifyLogin = async (req, res) => {
     const password = req.body.password;
     const userData = await User.findOne({ email: email });
 
-    
     if (!userData) {
       return res.render("users/login", {
           message: "Email and password is incorrect",
@@ -479,19 +470,6 @@ const loadShop = async (req, res) => {
     const sortOrder = req.query.sortOrder || 'asc';
     const categoryFilter = req.query.category || '';
 
-    // const products = await Product.find({
-    //   is_listed: true,
-    //   $or: [
-    //     { productName: { $regex: ".*" + search + ".*", $options: "i" } },
-    //     { description: { $regex: ".*" + search + ".*", $options: "i" } },
-    //     { size: { $regex: ".*" + search + ".*", $options: "i" } },
-    //   ],
-    // })
-    //   .populate("category_id")
-    //   .limit(limit * 1)
-    //   .skip((page - 1) * limit)
-    //   .exec();
-
     
     const query = {
       is_listed: true,
@@ -509,9 +487,7 @@ const loadShop = async (req, res) => {
         query['category_id'] = category._id;
       }
     }
-    // if(search == ''){
-    //   search = categoryFilter
-    // }
+  
 
     const products = await Product.find(query)
       .populate("category_id")
@@ -522,13 +498,7 @@ const loadShop = async (req, res) => {
 
     const count = await Product.find(query).countDocuments();
 
-    // const count = await Product.find({
-    //   $or: [
-    //     { productName: { $regex: ".*" + search + ".*", $options: "i" } },
-    //     { description: { $regex: ".*" + search + ".*", $options: "i" } },
-    //     { size: { $regex: ".*" + search + ".*", $options: "i" } },
-    //   ],
-    // }).countDocuments();
+
 
 // for badge
     const cart = await Cart.findOne({userId: req.session.user_id})
@@ -575,91 +545,6 @@ const loadShop = async (req, res) => {
 
   }
 };
-
-// async function bb(){
-
-// const categories = await Category.find()
-// const categoryOptions = categories.map((category)=>  category.categoryName )
-// console.log(categoryOptions);
-// }
-
-// bb()
-
-
-// const loadShop = async (req, res) => {
-//   try {
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = parseInt(req.query.limit) || 5;
-//     const search = req.query.search || '';
-//     let sortField = req.query.sortField || 'actualPrice';
-//     let sortOrder = req.query.sortOrder || 'asc';
-//     let category = req.query.category || 'All';
-    
-//     // Fetching Categories
-//     const categories = await Category.find();
-//     const categoryOptions = categories.map(category => category.categoryName);
-    
-//     // Handling 'All' Category
-//     category = category === 'All' ? categoryOptions : category.split(',');
-    
-//     // Handling Sorting
-//     const sortBy = {};
-//     sortBy[sortField] = sortOrder;
-    
-//     // Fetching Products
-//     const query = {
-//       productName: { $regex: search, $options: 'i' },
-//       category: { $in: category }
-//     };
-    
-//     // Fetching Products
-// const products = await Product.find(query)
-// .populate('category_id')
-// .sort(sortBy)
-// .skip((page - 1) * limit)
-// .limit(limit);
-
-// // Counting Total Documents
-// const total = await Product.countDocuments(query);
-
-// // Fetching Cart and Wishlist
-// const cart = await Cart.findOne({ userId: req.session.user_id })
-// .populate("userId")
-// .populate("products.productId");
-
-// const wishlist = await Wishlist.findOne({ userId: req.session.user_id });
-
-// // Common rendering options
-// const commonOptions = {
-// error: false,
-// total,
-// totalPages: Math.ceil(total / limit),
-// currentPage: page,
-// limit,
-// category: categoryOptions,
-// products,
-// cart,
-// wishlist,
-// };
-
-// if (req.session.user_id) {
-// const userData = await User.findById({ _id: req.session.user_id });
-// res.render("users/shop", {
-//   user: userData,
-//   ...commonOptions,
-// });
-// } else {
-// res.render("users/shop", {
-//   ...commonOptions,
-// });
-// }
-//   } catch (error) {
-//     console.log(error.message);
-//     res.status(404).render('users/404') 
-
-//   }
-// };
-
 
 
 //loading shopping cart
