@@ -186,9 +186,9 @@
                                             <div class="shop__sidebar__size">
                                                 <ul>
                                                     
-                                                    <li><a href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=asc&page=<%= page %>&category=<%= categoryFilter %>'>Low to high</a></li>
+                                                    <li><a href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=asc&page=<%= page %>&category=<%= categoryFilter %>' class="<%= sortOrder === 'asc'? 'text-black text-lg text-bold':'' %>">Low to high</a></li>
 
-                                                    <li><a href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=desc&page=<%= page %>&category=<%= categoryFilter %>'>High to low</a></li>
+                                                    <li><a href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=desc&page=<%= page %>&category=<%= categoryFilter %>' class="<%= sortOrder === 'desc'? 'text-black text-lg text-bold':'' %>">High to low</a></li>
                                                 
                                                 </ul>
                                             </div>
@@ -292,7 +292,7 @@
             <ul class="pagination">
                 <% for (let i = 1; i <= totalPages; i++) { %>
                     <li class="page-item">
-                        <a class="page-link" href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=<%= sortOrder %>&page=<%= i %>&categoryFilter=<%= categoryFilter %>'><%= i %></a>
+                        <a class="page-link <%= page == i ? 'text-black text-lg text-bold border-dark':'' %>" href='/shop?search=<%= search %>&sortField=<%= sortField %>&sortOrder=<%= sortOrder %>&page=<%= i %>&categoryFilter=<%= categoryFilter %>' ><%= i %></a>
                     </li>
                 <% } %>
             </ul>
@@ -534,6 +534,7 @@
                 });
             }
         }
+
 
     </script>
 

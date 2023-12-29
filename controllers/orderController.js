@@ -417,60 +417,63 @@ const cancelProdOrder = async (req, res) => {
     //updating refunded amount in users wallet
     if (order.paymentMethod !== "COD" && order.paymentStatus === "Placed") {
       // if order has a coupon used
-      if (order.coupon !== "none") {
+      if (order.coupon !== null) {
         console.log("Using coupon");
         const coupon = await Coupon.findById(order.coupon);
 
-        //if total amount becomes less then minimum coupon required amount
-        if (order.totalAmount < coupon.minimumSpend) {
-          user.wallet.balance =
-            user.wallet.balance +
-            (product.actualPrice * productToUpdate.quantity -
-              coupon.discount_amount);
-          const walletHistory = {
-            type: "Credit",
-            amount:
-              product.actualPrice * productToUpdate.quantity -
-              coupon.discount_amount,
-            date: Date.now(),
-            reason: "Order cancel refund",
-          };
-          user.wallet.history.push(walletHistory);
-          await user.save();
+                //if total amount becomes less then minimum coupon required amount
+                if (order.totalAmount < coupon.minimumSpend) {
+                  user.wallet.balance =
+                    user.wallet.balance +
+                    (product.actualPrice * productToUpdate.quantity -
+                      coupon.discount_amount);
+                  const walletHistory = {
+                    type: "Credit",
+                    amount:
+                      product.actualPrice * productToUpdate.quantity -
+                      coupon.discount_amount,
+                    date: Date.now(),
+                    reason: "Order cancel refund",
+                  };
+                  user.wallet.history.push(walletHistory);
+                  await user.save();
 
-          order.coupon = "none";
-          await order.save();
-          console.log("Saved None in coupon");
-        } else {
-          console.log("No using coupon");
-          user.wallet.balance =
-            user.wallet.balance +
-            product.actualPrice * productToUpdate.quantity;
-          const walletHistory = {
-            type: "Credit",
-            amount: product.actualPrice * productToUpdate.quantity,
-            date: Date.now(),
-            reason: "Order cancel refund",
-          };
+                  order.coupon = "none";
+                  await order.save();
+                  console.log("Saved None in coupon");
+                } else {
+                  console.log("No using coupon");
+                  console.log(user.wallet.balance);
+                  console.log(product.actualPrice);
+                  console.log(productToUpdate.quantity);
+                  user.wallet.balance =
+                    user.wallet.balance +
+                    product.actualPrice * productToUpdate.quantity;
+                  const walletHistory = {
+                    type: "Credit",
+                    amount: product.actualPrice * productToUpdate.quantity,
+                    date: Date.now(),
+                    reason: "Order cancel refund",
+                  };
 
-          user.wallet.history.push(walletHistory);
-          await user.save();
-        }
-      } else {
-        //if order doesn't use a coupon
-        console.log("No using coupon");
-        user.wallet.balance =
-          user.wallet.balance + product.actualPrice * productToUpdate.quantity;
-        const walletHistory = {
-          type: "Credit",
-          amount: product.actualPrice * productToUpdate.quantity,
-          date: Date.now(),
-          reason: "Order cancel refund",
-        };
+                  user.wallet.history.push(walletHistory);
+                  await user.save();
+                }
+              } else {
+                //if order doesn't use a coupon
+                console.log("No using coupon");
+                user.wallet.balance =
+                  user.wallet.balance + product.actualPrice * productToUpdate.quantity;
+                const walletHistory = {
+                  type: "Credit",
+                  amount: product.actualPrice * productToUpdate.quantity,
+                  date: Date.now(),
+                  reason: "Order cancel refund",
+                };
 
-        user.wallet.history.push(walletHistory);
-        await user.save();
-      }
+                user.wallet.history.push(walletHistory);
+                await user.save();
+              }
 
       res.json({
         message: "Product order cancelled",
