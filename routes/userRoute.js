@@ -5,7 +5,34 @@ const couponController = require("../controllers/couponsController")
 const user_route = express();
 const path = require("path")
 const auth = require("../middleware/auth")
+// const authGoogle = require("../middleware/authGoogle")
 const blocked = require('../middleware/blocked')
+const passport = require('passport')
+
+// ===================================================================
+user_route.get('/auth/google',
+  passport.authenticate('google', { scope:
+      [ 'email', 'profile' ] }
+));
+
+user_route.get( '/auth/google/callback',
+    passport.authenticate( 'google', {
+        successRedirect: '/auth/google/success',
+        failureRedirect: '/auth/google/failure'
+}));
+
+user_route.get('/auth/google/success',(req,res)=>{
+  let name = req.user.displayName;
+
+  res.send(`Hello ${name}`);
+})
+user_route.get('/auth/google/failure',(req,res)=>{
+  res.send('Something went wrong ! ');
+})
+// ===================================================================
+
+
+
 
 user_route.get("/register", auth.isLogout, userController.loadRegister)
 user_route.post("/register", auth.isLogout, userController.verifyEmail, userController.insertUser)

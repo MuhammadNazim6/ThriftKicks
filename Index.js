@@ -6,13 +6,16 @@ const nocache = require("nocache")
 const session = require("express-session")
 const cookieParser = require('cookie-parser')
 require('dotenv').config();
+require('./middleware/authGoogle')
 const config = require("./config/config")
 const user_route = require("./routes/userRoute")
 const admin_route = require("./routes/adminRoute")
-const blocked = require('./middleware/blocked')
 
-const path = require("path")
-const morgan = require("morgan")
+const path = require("path");
+// =========================
+const passport = require("passport");
+// =========================
+
 
 app.use(cookieParser());
 
@@ -30,7 +33,10 @@ app.use(
   })
 );
 app.use(nocache());
-// app.use(morgan('tiny'))
+
+// =========================
+app.use(passport.initialize())
+// =========================
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
