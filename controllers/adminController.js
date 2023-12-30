@@ -219,7 +219,7 @@ const loadAddProduct = async (req, res) => {
     console.log(error.message);
   }
 };
-
+    
 //adding products
 const addProduct = async (req, res) => {
   try {
