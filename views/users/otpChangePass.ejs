@@ -1,4 +1,45 @@
 <%- include('../layouts/header.ejs')%>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .otp-container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .bg-glass {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+
+    .txt-ind {
+        padding-left: 10px;
+    }
+
+    .text-lg {
+        font-size: 18px;
+    }
+
+    .mt-5 {
+        margin-top: 5rem;
+    }
+
+    #changePassBtn {
+        width: 100%;
+    }
+
+    #passAlertSuccess,
+    #passAlertFailed {
+        max-width: 350px;
+    }
+</style>
 
     <!-- Header Section Begin -->
     <header class="header">
@@ -35,67 +76,59 @@
     </header>
     <!-- Header Section End -->
 
-
     <div class="container">
         <div class="row otp-container">
+    
             <div class="container mt-5">
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
-
+    
                         <div class="form-group d-flex justify-content-center">
-
                             <div class="container">
                                 <div class="row">
-                                    <div class="" id="account-change-password">
-                                        <div class="card-body pb-2">
-                                                <input type="hidden" value="<%=email%>" id="email">
-                                            <div class="form-group">
-                                                <label class="form-label text-lg">New password</label>
-                                                <input type="password" id="newPass"
-                                                    class="form-control text-lg bg-glass txt-ind" />
-                                            </div>
-                                            <div class="form-group mb-5">
-                                                <label class="form-label text-lg">Repeat new password</label>
-                                                <input type="password" id="confirmPass"
-                                                    class="form-control text-lg mb-5 bg-glass txt-ind" />
-                                            </div>
-
-
+                                    <div id="account-change-password" class="card-body pb-2">
+                                        <input type="hidden" value="<%=email%>" id="email">
+                                        <div class="form-group">
+                                            <label class="form-label text-lg">New password</label>
+                                            <input type="password" id="newPass"
+                                                   class="form-control text-lg bg-glass txt-ind" />
                                         </div>
-                                        <div class="container d-flex justify-content-center">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <button id="changePassBtn"
-                                                        class="d-flex justify-content-center btn btn-dark mt-3">
-                                                        Change Password
-                                                    </button>
-                                                </div>
-                                                    
-                                            </div>
-                                            
+                                        <div class="form-group mb-5">
+                                            <label class="form-label text-lg">Re-enter new password</label>
+                                            <input type="password" id="confirmPass"
+                                                   class="form-control text-lg mb-5 bg-glass txt-ind" />
                                         </div>
-                                        <div class="container d-flex justify-content-center mt-5">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <span id="passAlertSuccess"
-                                                    class="alert alert-success text-white mr-5 mb-4"
-                                                    style="width: 350px; display:none;"> </span>
-                                                 <span id="passAlertFailed" class="alert alert-danger text-white m-5"
-                                                    style="width: 350px; display:none;"></span>
-                                                </div>
-                                                    
+                                    </div>
+                                    <div class="container d-flex justify-content-center">
+                                        <div class="row">
+                                            <div class="col">
+                                                <button id="changePassBtn"
+                                                        class="d-flex justify-content-center btn btn-dark mt-3 LSpacing">
+                                                    Change Password
+                                                </button>
                                             </div>
-                                            
                                         </div>
-
-
+                                    </div>
+                                    <div class="container d-flex justify-content-center mt-5">
+                                        <div class="row">
+                                            <div class="col">
+                                                <span id="passAlertSuccess"
+                                                      class="alert alert-success text-white mr-5 mb-4"
+                                                      style="width: 350px; display:none;"> </span>
+                                                <span id="passAlertFailed"
+                                                      class="alert alert-danger text-white m-5"
+                                                      style="width: 350px; display:none;"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+    
                     </div>
                 </div>
             </div>
+    
         </div>
     </div>
 
