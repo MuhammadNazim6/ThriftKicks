@@ -1,4 +1,45 @@
 <%- include('../layouts/header.ejs')%>
+<style>
+  body {
+      background-color: #f8f9fa;
+  }
+
+  .otp-container {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 50px;
+      margin-bottom: 50px;
+  }
+
+  .otp-holder {
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      padding: 10px;
+      width: 70%;
+      margin-right: 10px;
+      font-size: 16px;
+  }
+
+  .otp-button {
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+  }
+
+  .otp-button:hover {
+      background-color: #0056b3;
+  }
+
+  .verif-message {
+      margin-top: 20px;
+  }
+</style>
+
 
   <!-- Header Section Begin -->
   <header class="header">
@@ -36,53 +77,40 @@
   <!-- Header Section End -->
 
 
-  <div class="container">
+  <div class="container mt-5">
     <div class="row otp-container">
-     
-      
-      <span class="text-center text-lg text-dark"> Enter OTP sent to your mail "<%= email %>"</span>
+        <span class="text-center text-lg text-dark mt-5 text-bold"> Enter OTP sent to your mail "<%= email %>"</span>
 
-      <div class="col-lg-6 mt-3">
-
-        <form method="post">
-          <div class="d-flex justify-content-center">
-            
-            <input type='text' name='otp' class="otp-holder p-3 txt-ind text-dark" id="otp">
-            <input class="otp-button" type="submit">
-          </div>
-          <input type="hidden" value="<%= email %>" name="email">
-          <br>
-          <span class="d-flex justify-content-center"> OTP not recieved ?? &nbsp;&nbsp;<a type="submit" href="/resendOtp?"><b>resend
-            otp</b> </a></span>
-        </form>
-
-      </div>
+        <div class="col-lg-6 mt-3">
+            <form method="post">
+                <div class="d-flex justify-content-center">
+                    <input type='number' name='otp' class="otp-holder p-3 txt-ind text-dark" id="otp">
+                    <input class="otp-button" type="submit">
+                </div>
+                <input type="hidden" value="<%= email %>" name="email">
+                <br>
+                <span class="d-flex justify-content-center">
+                    OTP not received? &nbsp;&nbsp;<a type="submit" href="/resendOtp"><b>resend otp</b></a>
+                </span>
+            </form>
+        </div>
 
     </div>
     <br>
     <div class="d-flex justify-content-center">
-
-      <input id="verified" type="hidden" value="<%= typeof message !== 'undefined' ? 'verified' : 'not-verified' %>" >
-      <% if(typeof message !=='undefined' ){ %>
-
-        <div class="alert alert-success text-center verif-message align-items-center" role="alert">
-          <%= message %>
-        </div>
-      <div class=""></div>  
-   
-        <% } %>
-
-          <% if(typeof fmessage !=='undefined' ){ %>
-
-            <div class="alert alert-danger text-center verif-message" role="alert">
-              <%= fmessage %>
+        <input id="verified" type="hidden" value="<%= typeof message !== 'undefined' ? 'verified' : 'not-verified' %>">
+        <% if(typeof message !=='undefined' ){ %>
+            <div class="alert alert-success text-center verif-message align-items-center" role="alert">
+                <%= message %>
             </div>
-            <% } %>
-
+        <% } %>
+        <% if(typeof fmessage !=='undefined' ){ %>
+            <div class="alert alert-danger text-center verif-message" role="alert">
+                <%= fmessage %>
+            </div>
+        <% } %>
     </div>
-
-
-  </div>
+</div>
 
 
   <!-- Js Plugins -->
