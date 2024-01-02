@@ -103,7 +103,7 @@ img {
 
           <div class="container mt-5">
             <h1>Add Product</h1>
-            <form action="/admin/products/addProduct" method="post" enctype="multipart/form-data">
+            <form action="/admin/products/addProduct" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
               <!-- Product Name -->
               <div class="form-group">
                 <label for="productName">Product Name:</label>
@@ -153,10 +153,10 @@ img {
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="image1" name="image" accept="image/*" multiple required>
                         <label class="custom-file-label" for="image1">Choose Image</label>
-                        <div class="imagePreview d-flex m-5" id="imagePreview1">
+                        <!-- <div class="imagePreview d-flex m-5" id="imagePreview1">
                             <img id="croppedImage1" src="" alt="Cropped Image 1">
                         </div>
-                        <button class="cropButton" data-target="image1">Crop and Upload</button>
+                        <button class="cropButton" data-target="image1">Crop and Upload</button> -->
                     </div>
                 </div>
         
@@ -166,10 +166,10 @@ img {
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="image2" name="image" accept="image/*" multiple required>
                             <label class="custom-file-label" for="image2">Choose Image</label>
-                            <div class="imagePreview d-flex m-5" id="imagePreview2">
+                            <!-- <div class="imagePreview d-flex m-5" id="imagePreview2">
                                 <img id="croppedImage2" src="" alt="Cropped Image 2">
                             </div>
-                            <button class="cropButton" data-target="image2">Crop and Upload</button>
+                            <button class="cropButton" data-target="image2">Crop and Upload</button> -->
                         </div>
                     </div>
             
@@ -178,10 +178,10 @@ img {
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="image3" name="image" accept="image/*" multiple required>
                             <label class="custom-file-label" for="image3">Choose Image</label>
-                            <div class="imagePreview d-flex m-5" id="imagePreview3">
+                            <!-- <div class="imagePreview d-flex m-5" id="imagePreview3">
                                 <img id="croppedImage3" src="" alt="Cropped Image 3">
                             </div>
-                            <button class="cropButton" data-target="image3">Crop and Upload</button>
+                            <button class="cropButton" data-target="image3">Crop and Upload</button> -->
                         </div>
                     </div>
                 </div>
@@ -333,5 +333,38 @@ img {
             });
           </script> -->
           
+
+          <script>
+          function validateForm() {
+  if (validateProdName()) {
+  
+    const Toast = Swal.mixin({
+  toast: true,
+  position: "center",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+Toast.fire({
+  icon: "error",
+  text: "Enter a proper product name"
+});
+
+    return false; 
+  }
+  return true; 
+}
+
+function validateProdName() {
+  const regex = /^\s*$/;
+  const productName = document.getElementById('productName').value;
+  return regex.test(productName);
+}
+
+          </script>
 
           <%- include('../layouts/footer.ejs')%>

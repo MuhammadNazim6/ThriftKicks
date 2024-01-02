@@ -223,6 +223,7 @@ const loadAddProduct = async (req, res) => {
 //adding products
 const addProduct = async (req, res) => {
   try {
+    
     const filePaths = req.files.map((file) => file.path);
 
     const Path1 = "\\Images\\" + path.basename(filePaths[0]);

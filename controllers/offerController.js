@@ -70,9 +70,7 @@ const applyOfferToProduct = async (req, res) => {
     product.offerPrice = offerPrice;
 
     await product.save();
-    console.log(
-      "Added " + offer.offerName + " to product " + product.productName
-    );
+   
 
     res.json({
       message:
@@ -134,27 +132,6 @@ const applyOfferToCategory = async (req, res) => {
     console.log(error.message);
   }
 };
-
-// async function cat() {
-//   const categoryProducts = await Product.find({
-//     category_id: "65416848a43ee5b5ac829f1f",
-//   });
-
-//   const offer = await Offer.findById("6575c7ccf96490b4723ddbcf");
-//   console.log(offer);
-//   const changed = categoryProducts.map(async (product) => {
-//     product.offers = [];
-//     product.offers.push(offer);
-//     const offerPrice = Math.floor(
-//       product.actualPrice - product.actualPrice * (offer.offerDiscount / 100)
-//     );
-//     product.offerPrice = offerPrice;
-
-//     await product.save();
-//   });
-// }
-
-// cat()
 
 
 

@@ -155,10 +155,8 @@ const stockAdjusted = async (cartProducts) => {
 //Order placing
 const placeOrder = async (req, res) => {
   try {
-    console.log("Inside place order 1");
     let { paymentSelected, addressSelected, couponId, walletCheckedStatus } =
       req.body;
-    console.log("Inside place order 2");
     const userId = req.session.user_id;
     const userData = await User.findOne({ _id: userId });
     const shippingAddress = await Address.findOne({ _id: addressSelected });
@@ -166,16 +164,12 @@ const placeOrder = async (req, res) => {
       "products.productId"
     );
     const coupon = couponId || null;
-    console.log("Inside place order 3");
 
     let trackId = await generateTrackId();
     let totalAmount = await calculateTotalPrice(userId);
-    console.log(couponId);
 
-    console.log("Inside place order 4");
 
     if (couponId) {
-      console.log("Inside place order inside coupon");
 
       const coupon = await Coupon.findOne({ _id: couponId });
       totalAmount = totalAmount - coupon.discount_amount;
@@ -183,7 +177,6 @@ const placeOrder = async (req, res) => {
       coupon.usersUsed.push(userId);
       await coupon.save();
     }
-    console.log("Inside place order after coupon");
 
     if (walletCheckedStatus) {
       console.log("Here wallet is used " + walletCheckedStatus);
@@ -403,11 +396,9 @@ const cancelProdOrder = async (req, res) => {
       order.totalAmount =
         order.totalAmount - product.unitPrice * productToUpdate.quantity;
       await order.save();
-      console.log("That");
     } else {
       order.totalAmount = order.totalAmount;
       await order.save();
-      console.log("THis");
     }
 
     //increasing stock of product
@@ -442,10 +433,7 @@ const cancelProdOrder = async (req, res) => {
                   await order.save();
                   console.log("Saved None in coupon");
                 } else {
-                  console.log("No using coupon");
-                  console.log(user.wallet.balance);
-                  console.log(product.actualPrice);
-                  console.log(productToUpdate.quantity);
+                  
                   user.wallet.balance =
                     user.wallet.balance +
                     product.actualPrice * productToUpdate.quantity;
@@ -824,7 +812,7 @@ const calculateMonthlySales = async (req, res) => {
 
   
     res.json({ monthlySales });
-    console.log(monthlySales);
+    
   } catch (error) {
     console.log("Unable to calculate monthly sales:", error);
   }
@@ -880,7 +868,6 @@ const calculateCategorySales = async (req, res) => {
     ]);
 
     res.json({ categorySales });
-    console.log("Category Sales:", categorySales);
   } catch (error) {
     console.log(error.message);
   }
