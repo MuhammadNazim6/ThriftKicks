@@ -52,7 +52,7 @@ const productSchema = new mongoose.Schema({
     type: Number,
   },
   ratings: [ratingSchema], 
-  // An array of the Rating subdocument
+  
   stock: {
     type: Number
     

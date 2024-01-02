@@ -192,7 +192,7 @@
                         </tr>
                       </thead>
                       <tbody>
-
+                        <% coupons.reverse() %>
                         <% if(typeof coupons !=='undefined' ){ coupons.forEach(coupon=>{ %>
                           <tr class="coupon-container" data-coupId="<%= coupon._id %>">
                             <td class="text-dark text-md text-bold p-4">
@@ -272,7 +272,8 @@
           confirmButtonText: "Yes, Delete Coupon !"
         }).then(async (result) => {
           if (result.isConfirmed) {
-
+            
+            
           const response = await fetch('/admin/coupon/delete',{
             method: "POST",
             headers: {
@@ -285,7 +286,21 @@
             }
             const data = await response.json()
             if (data.message) { 
-              Swal.fire(data.message);
+              const Toast = Swal.mixin({
+  toast: true,
+  position: "center",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+Toast.fire({
+  icon: "success",
+  title: data.message
+});
               divToRemove.remove()
               
             }
