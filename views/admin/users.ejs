@@ -543,7 +543,6 @@
               })
               .then((data) => {
                 // Handling a successful response
-                console.log(data.message);
                 if (currentState === "blocked") {
                   this.textContent = "Block";
                   this.setAttribute("data-state", "unblocked");

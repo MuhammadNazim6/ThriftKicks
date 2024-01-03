@@ -166,9 +166,9 @@ const deleteOfferFn = async (req,res)=>{
 
   try {
     const { offerId } = req.body;
-    console.log(offerId);
+    
     await Offer.deleteOne({_id:offerId})
-    console.log('deleted');
+   
     res.json({ message: "Offer Deleted Successfully" });
   } catch (error) {
     res.json({ fmessage: "Unable to delete the offer" });

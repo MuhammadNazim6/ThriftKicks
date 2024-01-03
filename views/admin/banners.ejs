@@ -477,7 +477,6 @@ document.querySelectorAll(".unlistButton").forEach(function (button) {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json()
-        console.log(data.message);
 
         if (currentState === "listed") {
           this.textContent = "List";

@@ -26,7 +26,6 @@ const generateOtp = async (req,res) => {
     console.log(`OTP: ${req.session.otp}`);
   } catch (error) {
     console.log(error.message);
-    console.log("we got error here in generateOtp");
   }
 };
 
@@ -67,7 +66,6 @@ const verifyEmail = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
-    console.log("we got errpr here in verifyEmail");
   }
 };
 
@@ -180,68 +178,17 @@ const resendOtp = async (req, res, next) => {
 const insertUser = async (req, res) => {
   try {
   
-    console.log("Inside insert user ");
-
-   
-    console.log(req.body.fname);
-    console.log(req.body.lname);
-    console.log(req.body.email);
-    console.log(req.body.mobile);
- 
-    console.log(req.body.password);
-    console.log(req.body.cpassword);
-    
-    console.log("Reached users here");
 
 
     const email = req.body.email;
     const mail = await User.findOne({ email: req.body.email });
     const currentValue = req.body;
-    // if(currentValue.fname.includes(" ") || /^[0-9]+$/.test(req.body.fname)) {
-    //   return res.render("users/registration", {
-    //     msgFname: "Enter a valid Name",
-    //     currentValue: currentValue,
-    //   });
-    // } 
-    // if (
-    //   currentValue.lname.includes(" ") ||
-    //   /^[0-9]+$/.test(currentValue.lname)
-    // ) {
-    //   return res.render("users/registration", {
-    //     msgLname: "Enter a valid Name",
-    //     currentValue: currentValue,
-    //   });
-    // }
-    // if (mail) {
-    //   return res.render("users/registration", {
-    //     msgPass: "This User have already registered",
-    //     currentValue: currentValue,
-    //   });
-    // }
-    // const mob = currentValue.mobile;
-    // if (
-    //   mob.length > 10 ||
-    //   mob.length < 10 ||
-    //   mob.includes(" ") ||
-    //   /[a-zA-Z]/.test(mob)
-    // ) {
-    //   return res.render("users/registration", {
-    //     msgMobile: "Enter a Proper Mobile number",
-    //     currentValue: currentValue,
-    //   });
-    // }
-    // if (currentValue.password.length < 6) {
-    //   return res.render("users/registration", {
-    //     msgPassword: "Enter a strong Password",
-    //     currentValue: currentValue,
-    //   });
-    // }
+    
 
     if (currentValue.password == currentValue.cpassword) {
       const spassword = await securePassword(req.body.password);
 
       const refCode = await generateReferralCode()
-      console.log(refCode);
 
       req.session.userData = {
         firstname: req.body.fname,
@@ -691,7 +638,6 @@ const addtoCart = async (req, res) => {
         ],
       });
       const cartAdded = await newCart.save();
-      console.log("New cart added to user");
       res.json({
         message: "Product added to the cart",
         length: cartAdded.products.length
@@ -847,7 +793,6 @@ const updateAddress = async (req, res) => {
 
     //returning a promise
     const newAddress = await address.save();
-    console.log("Done address");
     res.json({ message: "Address Addes Successfully" });
   } catch (error) {
     console.log(error.message);
@@ -873,7 +818,6 @@ const updateEditedAddress = async (req, res) => {
       //save the changes
       await firstAddress.save();
 
-      console.log("First address updated successfully");
     }
     res.json({ message: "Address Added Successfully" });
   } catch (error) {
@@ -1001,7 +945,6 @@ const forgetPassCheckOtp = async (req,res)=>{
 const loadOtpchangepass = async (req,res)=>{
   try {
     const email = req.query.email
-    console.log(email);
     res.render('users/otpChangePass',{email})
 
   } catch (error) {

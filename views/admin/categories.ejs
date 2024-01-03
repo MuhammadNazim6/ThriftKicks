@@ -270,7 +270,6 @@
           throw new Error("Failed to fetch data");
         }
         const data = await response.json()
-        console.log(data.message);
         if (currentState === "listed") {
           this.textContent = "List";
           this.setAttribute("data-state", "unlisted");

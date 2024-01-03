@@ -69,7 +69,7 @@ const deleteCoupon = async (req,res)=>{
     const cart = await Cart.findOne({userId:req.session.user_id})
     
     const deletedCoupon = await Coupon.deleteOne({_id:couponId})
-    console.log("deleted"+deletedCoupon);
+    
     
     res.json({ message: "Coupon Deleted Successfully" });
   } catch (error) {

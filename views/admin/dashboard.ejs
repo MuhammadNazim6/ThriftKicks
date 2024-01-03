@@ -863,7 +863,6 @@ async function cetegoryGraphDataFn(){
     const data = await response.json()
     if(data.categorySales){
 
-      console.log(data.categorySales);
       var labels = data.categorySales.map(item => item._id);
       var values = data.categorySales.map(item => item.totalSales);
       var salesCount = data.categorySales.map(item => item.salesCount);
@@ -933,7 +932,6 @@ async function loadPaymentMethods() {
     const data = await response.json();
 
     if (data.paymentMethodCounts) {
-  console.log(data.paymentMethodCounts);
 
   const relevantPaymentMethods = ['COD', 'Wallet', 'Net Banking'];
   const relevantData = data.paymentMethodCounts.filter(item => relevantPaymentMethods.includes(item._id));

@@ -764,128 +764,6 @@
 
     <script>
 
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     //updating user details start
-        //     const editAddressBtn = document.querySelector('.editAddress')
-        //     let changeReadonly = document.querySelectorAll('.readonly')
-        //     let saveUsereditsBtn = document.getElementById('saveUserEdits')
-        //     let editUserBtn = document.getElementById('editUserBtn');
-
-
-        //         editUserBtn.addEventListener('click',()=>{
-        //         changeReadonly.forEach((x)=>{
-        //             x.readOnly = !x.readOnly;
-        //         })
-        //         editUserBtn.style.display = 'none'
-        //         saveUsereditsBtn.style.display = 'inline'
-        //         document.getElementById('userDataUpdatedAlert').style.display = 'none'
-        //     })
-
-        //     //save button of user details
-        //     saveUsereditsBtn.addEventListener('click',updateUserEdits)
-
-        //   async function updateUserEdits(){
-        //     try {
-
-        //         const fnameIp = document.getElementById('fname')
-        //         const lnameIp = document.getElementById('lname')
-        //         const mobileIp = document.getElementById('mobile')
-        //         const emailIp = document.getElementById('email')
-        //         const fname = fnameIp.value
-        //         const lname = lnameIp.value
-        //         const mobile = mobileIp.value
-        //         const email = emailIp.value
-
-
-        //         const response = await fetch(`/editUserData`, {
-        //                 method: "POST",
-        //                 headers: {
-        //                     "Content-Type": "application/json",
-        //                 },
-        //                 body: JSON.stringify({ email, fname ,lname ,mobile})
-        //             })
-        //             if (!response.ok) {
-        //                 throw new Error("Failed to fetch data");
-        //             }
-        //             const data = await response.json()
-        //             console.log(data.message);
-        //             if(data.message){
-        //                 document.getElementById('userDataUpdatedAlert').style.display = 'inline'
-        //                 editUserBtn.style.display = 'inline'
-        //                 saveUsereditsBtn.style.display = 'none'
-        //             }
-        //     } catch (error) {
-        //         console.log("Error in Sending Fetch API or Fetching data");
-        //     }
-        //     }
-        // //updating user details END
-
-
-
-        // //ADD ADDRESS START
-
-        // const addAddressBtn = document.getElementById('addAddress')
-        // const inputs = document.querySelectorAll('.address-form input');
-
-
-        // addAddressBtn.addEventListener('click',updateAddress)
-
-        // async function updateAddress(){
-        //     try {
-        //         const emailIp = document.getElementById('email')
-        //         const email = emailIp.value
-        //         const Address = Array.from(inputs).map(inp=>inp.value)
-        //         Address.push(email)
-        //         console.log(Address);
-        //         const response = await fetch(`/updateAddress`, {
-        //                 method: "POST",
-        //                 headers: {
-        //                     "Content-Type": "application/json",
-        //                 },
-        //                 body: JSON.stringify(Address)
-        //             })
-
-        //             if (!response.ok) {
-        //                 throw new Error("Failed to fetch data");
-        //             }
-        //             const data = await response.json()
-        //             console.log(data.message);
-        //             if(data.message){
-        //                 addAddressBtn.style.display = 'none'
-        //                 location.reload();
-        //             }
-
-        //     } catch (error) {
-        //         console.log("Addres coudnt be updated");
-        //     }
-        // }
-
-
-
-        // //Edit address
-
-        // editAddressBtn.addEventListener('click',()=>{
-        //     console.log("hey");
-        //     alert("jhsd")
-        // })
-        // // let editReadonlyRemove = document.querySelectorAll('.readonly')
-        // // const inputs = document.querySelectorAll('.address-form input');
-
-        // async function editAddress(){
-        //      var houseNameInput = document.getElementById('houseName');
-        //       var cityInput = document.getElementById('city');
-        //       var stateInput = document.getElementById('state');
-        //       var countryInput = document.getElementById('country');
-        //       var pincodeInput = document.getElementById('pincode');
-        //       houseNameInput.readOnly = false;
-        //       cityInput.readOnly = false;
-        //       stateInput.readOnly = false;
-        //       countryInput.readOnly = false;
-        //       pincodeInput.readOnly = false;
-        // }
-
-
-        // })
 
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -1013,9 +891,7 @@
                 try {
                     const emailIp = document.getElementById('email');
                     const email = emailIp.value;
-                    console.log(email + "its here");
                     const Address = Array.from(inputs).map((inp) => inp.value);
-                    console.log(Address + "hereeeeee");
 
                     if (Address.some((x) => x.includes(' '))) {
                         Swal.fire({
@@ -1027,7 +903,6 @@
                         });
                     }
 
-                    console.log(Address);
 
                     const response = await fetch(`/updateAddress`, {
                         method: 'POST',
@@ -1042,7 +917,6 @@
                     }
 
                     const data = await response.json();
-                    console.log(data.message);
                     if(data.failmessage){
                         return Swal.fire(data.failmessage);
                     }
@@ -1102,7 +976,6 @@
             }
 
             const data = await response.json();
-            console.log(data.message);
 
             if (data.message) {
 
@@ -1235,14 +1108,8 @@
                 })
 
                 const data = await response.json();
-                console.log(data.message);
                 if (data.message) {
-                    // passAlert.style.display = 'inline'
-                    // passAlert.classList.replace('alert-danger','alert-success')
-                    // passAlert.textContent = data.message
-                    // setTimeout(() => {
-                    //     passAlert.style.display = 'none';
-                    // }, 1000);
+                
                     Swal.fire({
                         position: "top-end",
                         icon: "success",

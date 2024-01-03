@@ -339,7 +339,7 @@
             })
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
-                console.log("sdfbsdb");
+            
             }
             const data = await response.json()
             if (data.message) {
@@ -347,7 +347,7 @@
                     text: data.message,
                 });
             }
-            console.log(data.message);
+            
             if (data.length) {
 
                 badge.textContent = data.length

@@ -153,7 +153,6 @@
                 let newPassVal = newPassElem.value
                 let confPass = confPassElem.value
                 let email = emailElem.value
-                console.log("email is here"+email);
 
                 if (newPassVal.length <= 5 || newPassVal.includes(" ")) {
                     alertFailed.style.display = 'inline'
@@ -173,7 +172,6 @@
                     })
 
                     const data = await response.json();
-                    console.log(data.message);
                     if (data.message) {
                         alertSuccess.style.display = 'block'
                         alertSuccess.textContent = data.message

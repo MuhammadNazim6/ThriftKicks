@@ -179,10 +179,10 @@ const placeOrder = async (req, res) => {
     }
 
     if (walletCheckedStatus) {
-      console.log("Here wallet is used " + walletCheckedStatus);
+     
       let walletBalance = userData.wallet.balance;
       if (userData.wallet.balance < totalAmount) {
-        console.log("balance less than total amount");
+      
 
         totalAmount = totalAmount - userData.wallet.balance;
         userData.wallet.balance = 0;
@@ -195,10 +195,9 @@ const placeOrder = async (req, res) => {
         userData.wallet.history.push(walletHistory);
         await userData.save();
 
-        console.log("Userdata saved");
+      
       } else {
-        console.log("balance greater than total amount");
-
+      
         userData.wallet.balance -= totalAmount;
 
         const walletHistory = {
@@ -227,7 +226,7 @@ const placeOrder = async (req, res) => {
       "returnOrderStatus.status": "none",
       "returnOrderStatus.reason": "none",
     }));
-    console.log("Inside place order 5 after cartProducts");
+  
 
     const order = new Order({
       userId: userId,
@@ -254,7 +253,7 @@ const placeOrder = async (req, res) => {
     if (order.paymentMethod === "Wallet") {
       order.paymentStatus = "Paid";
     }
-    console.log("Inside place order 5 after Order CReated");
+    
 
     //deleting existing cart
     const deletedCart = await Cart.deleteOne({ _id: cart._id });
@@ -264,7 +263,7 @@ const placeOrder = async (req, res) => {
 
     //returning a promise
     const newOrderPlaced = await order.save();
-    console.log("Inside place order 5 after Order saved");
+    
 
     if (paymentSelected == "COD" || paymentSelected == "Wallet") {
       res.json({ message: "Order Placed successfully" });
@@ -280,7 +279,7 @@ const placeOrder = async (req, res) => {
         });
     }
 
-    console.log("done");
+    
   } catch (error) {
     console.log(error.message);
   }
@@ -298,7 +297,7 @@ const generateRazorpay = (orderId, totalAmount) => {
       if (err) {
         console.log(err);
       } else {
-        console.log("New Order : ", order);
+       
         resolve(order);
       }
     });
@@ -326,7 +325,7 @@ const loadMyorders = async (req, res) => {
 
     res.render("users/myOrders", { orders, user, cart });
   } catch (error) {
-    console.log("Couldn't load my orders");
+    
     console.log(error.message);
   }
 };
@@ -576,7 +575,7 @@ async function changePaymentStatus(orderId) {
 const returnProductFn = async (req, res) => {
   try {
     const { returnReason, prodId, orderId } = req.body;
-    console.log("inside return product order function");
+    
     const order = await Order.findById(orderId);
     const product = await Product.findById(prodId);
     const user = await User.findById(req.session.user_id);
@@ -594,28 +593,24 @@ const returnProductFn = async (req, res) => {
 
     //saving order after changing status to returned
     await order.save();
-    console.log("Saved order after adding returned status");
 
     //no need to increase defective stock
     if (returnReason !== "Defective") {
       product.stock = product.stock + quantity;
       await product.save();
-      console.log("Product stock increased in ");
     }
 
 
     // if order has a coupon used
     if (order.coupon !== null) {
-      console.log("Using coupon");
-      console.log(order.coupon);
+    
       
       const coupon = await Coupon.findOne({ _id: order.coupon.toString() });
 
-      console.log("Reaching here");
-      console.log(coupon);
+      
       //if total amount becomes less then minimum coupon required amount
       if (order.totalAmount < coupon.minimumSpend) {
-        console.log("Reaching here inside");
+      
 
         user.wallet.balance =
           user.wallet.balance +
@@ -626,17 +621,13 @@ const returnProductFn = async (req, res) => {
           date: Date.now(),
           reason: "Return Refund",
         };
-        console.log("Reaching here inside 2");
 
         user.wallet.history.push(walletHistory);
         await user.save();
-        console.log("Reaching here inside 3 after saving ");
 
         order.coupon = null;
         await order.save();
-        console.log("Saved null in coupon");
       } else {
-        console.log("No losing coupon");
         // if it is the only and last product
         let amount;
         if (order.products.length === 1) {
@@ -657,7 +648,6 @@ const returnProductFn = async (req, res) => {
       }
     } else {
       //if order doesn't use a coupon
-      console.log("No using coupon");
       user.wallet.balance =
         user.wallet.balance +
         productInOrder.unitPrice * productInOrder.quantity;

@@ -488,7 +488,6 @@
                 }
 
                 const data = await response.json();
-                console.log(data.message);
                 if (data.message) {
                     addressAlert.style.display = 'inline'
                     addressAlert.classList.replace('alert-danger', 'alert-success')
@@ -580,7 +579,6 @@
                 }
 
                 const data = await response.json();
-                console.log(data.message);
                 if (data.message) {
                     Swal.fire({
                         position: "center",
@@ -680,7 +678,6 @@
 
         async function applyCouponFn() {
             const couponCode = couponCodeElem.value
-            console.log("coupon", couponCode);
             const response = await fetch('/applyCoupon', {
                 method: "POST",
                 headers: {

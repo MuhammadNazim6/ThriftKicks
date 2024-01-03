@@ -461,7 +461,7 @@
                 const totalAmount = document.getElementById("totalAmount")
                 let numericPrice = parseInt(totalAmount.textContent);
 
-                console.log("here it is"+numericPrice);
+                
                 
 
                 if (quantityValue !== 1) {
@@ -509,7 +509,7 @@
                 throw new Error("Failed to fetch data");
             }
             const data = await response.json()
-            console.log(data.message);
+            
             if (data.message) {
 
                 inputTag.value = parseInt(inputTag.value) + incdecValue;
@@ -552,14 +552,7 @@
         //FETCH of cart product delete
         async function deleteCartProduct(prodId , button) {
 
-            // alert(button)
-            // console.log(button.parentElement.parentElement.querySelector('.cart__price').querySelector('.prices').textContent.trim());
-            // const productCost = button.parentElement.parentElement.querySelector('.cart__price').querySelector('.prices').textContent.trim()
-
-            // const subTotalCell = document.getElementById('subtotalAmount')
-            // subTotalCell.textContent -= productCost
-
-            // return
+            
 
             const confirm = await document.querySelector(".confirm");
             const response = await fetch(`/deleteProduct/${prodId}`, {

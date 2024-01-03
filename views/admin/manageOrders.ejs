@@ -310,7 +310,6 @@
                 });
               }
               location.reload()
-              console.log(data.message);
             } catch (error) {
               console.log("Could not change Order status");
             }
@@ -340,7 +339,6 @@
                     body: JSON.stringify({ orderId }),
                   })
                   const data = await response.json();
-                  console.log(data.message);
                   if (data.message) {
                     Swal.fire({
                       title: "Order Cancelled!",
