@@ -70,8 +70,13 @@
              <div class="col-lg-3 col-md-3">
                  <div class="header__nav__option">
                  
-                    <a class="text-bold text-info" href="/myOrders">My orders</a>
-                     <a href="/wishlist"><img src="assets/icon/heart.png" alt=""></a>
+                    <% if(typeof user !=='undefined' ){ %>
+                        <a href="/wishlist"><img src="assets/icon/heart.png" alt="" /></a>
+                        <a href="/myOrders">My orders</a>
+
+                        <a href="/logout">Logout &nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i></a>
+
+                        <% } %> 
              
                  </div>
              </div>
