@@ -1,9 +1,6 @@
 const UserAddressModel = require("../models/userModel");
 const ProductsModel = require("../models/productsModel");
 const OrdersModel = require("../models/ordersModel");
-// const mailer = require("../services/mail");
-// const bcrypt = require("bcrypt");
-// const otplib = require("otplib");
 const uuid = require("uuid");
 const crypto = require("crypto");
 const Razorpay = require("razorpay");
@@ -15,7 +12,6 @@ const Product = ProductsModel.Product;
 const Order = OrdersModel.Order;
 const Coupon = OrdersModel.Coupon;
 const Wishlist = UserAddressModel.Wishlist;
-// const Rating = ProductsModel.Rating;
 var instance = new Razorpay({
   key_id: "rzp_test_hrcgmUAQIlTJWz",
   key_secret: "e6rN7GFxw4rzGXDHyQ9oFGy6",
@@ -68,6 +64,7 @@ const loadCheckout = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -148,6 +145,7 @@ const stockAdjusted = async (cartProducts) => {
       );
     } catch (error) {
       console.error(`Error fetching product `);
+      res.status(500).render('error', { error: error.message });
     }
   }
 };
@@ -282,6 +280,7 @@ const placeOrder = async (req, res) => {
     
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -310,6 +309,7 @@ const loadOrderPlacedPage = async (req, res) => {
     res.render("users/orderPlaced");
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -325,10 +325,11 @@ const loadMyorders = async (req, res) => {
 
     res.render("users/myOrders", { orders, user, cart });
   } catch (error) {
-    
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
+
 //laoding order placed page
 const loadOrderDetailsPage = async (req, res) => {
   try {
@@ -340,6 +341,7 @@ const loadOrderDetailsPage = async (req, res) => {
     res.render("users/orderDetails", { order: order });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -353,6 +355,7 @@ const cancelOrder = async (req, res) => {
     res.json({ message: "Order has been Cancelled" });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -373,6 +376,7 @@ const changeProdOrderStatus = async (req, res) => {
     res.json({ message: "Product order status changed to " + status });
   } catch (error) {
     console.log("Couldn't change product order status");
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -473,6 +477,7 @@ const cancelProdOrder = async (req, res) => {
     });
   } catch (error) {
     console.log("Could not cancel the product order");
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -526,6 +531,7 @@ const addtoWishlist = async (req, res) => {
     }
   } catch (error) {
     console.log("Unable to add to wishlist");
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -549,6 +555,7 @@ const verifyPaymentFn = async (req, res) => {
     }
   } catch (error) {
     console.log("Could not verify payment");
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -568,6 +575,7 @@ async function changePaymentStatus(orderId) {
     console.log("Payment updated order" + order);
   } catch (error) {
     console.log("Could not change the payment status");
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -668,7 +676,7 @@ const returnProductFn = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    console.log("Was unable to return product");
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -690,7 +698,9 @@ const addProdReview = async (req, res) => {
     product.ratings.push(newRating);
     await product.save();
     res.json({ message: "Thank you for your response" });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).render('error', { error: error.message });
+  }
 };
 
 //Calculating total sales
@@ -703,6 +713,7 @@ const calculateTotalSales = async (req, res) => {
     res.json({ totalSales });
   } catch (error) {
     console.log("Unable to calculate sales");
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -752,8 +763,8 @@ const calculateWeeklySales = async (req, res) => {
 
     res.json({ weeklySales });
   } catch (error) {
-    console.log("Unable to calculate weekly sales");
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -800,11 +811,12 @@ const calculateMonthlySales = async (req, res) => {
       },
     ]);
 
-  
+    console.log(monthlySales);
     res.json({ monthlySales });
     
   } catch (error) {
     console.log("Unable to calculate monthly sales:", error);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -860,6 +872,7 @@ const calculateCategorySales = async (req, res) => {
     res.json({ categorySales });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -881,6 +894,7 @@ const paymentMethodsChart = async (req, res) => {
     res.json({ paymentMethodCounts });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -899,6 +913,7 @@ const totalUsersCount = async (req, res) => {
 
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -909,6 +924,7 @@ const loadSalesReportPage = async (req,res)=>{
     res.render('admin/salesReport')
   } catch (error) {
     console.log(error);
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -926,21 +942,13 @@ const viewSalesReportData = async (req,res)=>{
             $lte: new Date(endDate)
           }
         }
-      },
-      {
-        $lookup: {
-          from: 'users', 
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'populatedUser'
-        }
       }
     ]);
 
     res.json({salesReportData})
     
   } catch (error) {
-    console.log(error.message+'Unable to load sales report');
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -995,6 +1003,7 @@ const downloadSalesReportData = async (req,res)=>{
     
   } catch (error) {
     console.log(error.message+' Unable to load sales report');
+    res.status(500).render('error', { error: error.message });
   }
 }
 

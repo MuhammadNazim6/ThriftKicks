@@ -55,12 +55,10 @@ const productSchema = new mongoose.Schema({
   
   stock: {
     type: Number
-    
   },
   is_listed: {
     type: Boolean,
     default: true
-
   },
   offers: {
     type: Array

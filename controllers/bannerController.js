@@ -40,7 +40,7 @@ const addBanner = async (req,res)=>{
     res.json({success:"Banner added"})
 
   } catch (error) {
-    console.log("Unable to add Banner");
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -57,7 +57,7 @@ const unlistBannerFn = async (req,res)=>{
     res.json({ message: "Banner Unlisted successfully" });
 
   } catch (error) {
-    console.log("Unable to unlist Banner");
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -73,8 +73,7 @@ const listBannerFn = async (req,res)=>{
     res.json({ message: "Banner listed successfully" });
 
   } catch (error) {
-    console.log("Unable to list Banner");
-  }
+    res.status(500).render('error', { error: error.message });  }
 }
 
 //delete banner 
@@ -85,7 +84,7 @@ const deleteBannerFn = async(req,res)=>{
     res.json({message:'Banner deleted successfully'})
 
   } catch (error) {
-    console.log('Unable to delete banner');
+    res.status(500).render('error', { error: error.message });
   }
 }
 

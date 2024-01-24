@@ -11,6 +11,7 @@ const loadOfferPage = async (req, res) => {
     res.render("admin/offers", { offers });
   } catch (error) {
     console.log("unable to load offer page");
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -49,8 +50,8 @@ const addNewOffer = async (req, res) => {
     await newOffer.save();
     res.json({ message: "New offer added successfully" ,offerId });
   } catch (error) {
-    console.log("Unable to add offer ");
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -78,6 +79,7 @@ const applyOfferToProduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -94,7 +96,7 @@ const removeProdOfferFn = async (req, res) => {
     res.json({ message: "Product offer removed" });
   } catch (error) {
     console.log(error.message);
-    console.log("Unable to remove offer");
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -130,6 +132,7 @@ const applyOfferToCategory = async (req, res) => {
 
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -156,7 +159,7 @@ const removeCategoryOfferFn = async (req, res) => {
     res.json({ message: "Category offer removed" });
   } catch (error) {
     console.log(error.message);
-    console.log("Unable to remove offer");
+    res.status(500).render('error', { error: error.message });
   }
 };
 

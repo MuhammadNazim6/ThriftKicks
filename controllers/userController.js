@@ -5,7 +5,6 @@ const mailer = require("../services/mail");
 const BannerModel = require('../models/bannerModel')
 const bcrypt = require("bcrypt");
 const otplib = require("otplib");
-
 const uuid = require('uuid');
 const User = UserAddressModel.User;
 const Address = UserAddressModel.Address;
@@ -26,6 +25,7 @@ const generateOtp = async (req,res) => {
     console.log(`OTP: ${req.session.otp}`);
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -36,6 +36,7 @@ const securePassword = async (password) => {
     return passwordHash;
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -48,6 +49,7 @@ const loadRegister = async (req, res) => {
     res.render("users/registration");
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -66,6 +68,7 @@ const verifyEmail = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -77,6 +80,7 @@ const loadVerifyOtp = async (req, res) => {
     res.render("users/enterOtp", { email: email });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -159,6 +163,7 @@ const verifyOtp = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -171,23 +176,19 @@ const resendOtp = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
 //insert user
 const insertUser = async (req, res) => {
   try {
-  
-
-
     const email = req.body.email;
     const mail = await User.findOne({ email: req.body.email });
     const currentValue = req.body;
-    
 
     if (currentValue.password == currentValue.cpassword) {
       const spassword = await securePassword(req.body.password);
-
       const refCode = await generateReferralCode()
 
       req.session.userData = {
@@ -216,6 +217,7 @@ const insertUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -279,15 +281,14 @@ const verifyLogin = async (req, res) => {
   
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
 // loading home
 const loadHome = async (req, res) => {
   try {
-    
     const user_id = req.session.user_id;
-    
     var search = "";
     if (req.query.search) {
       search = req.query.search;
@@ -482,7 +483,6 @@ const loadShop = async (req, res) => {
         sortOrder,
         categoryFilter
 
-
       });
     }
   } catch (error) {
@@ -675,6 +675,7 @@ const addtoCart = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
 
   }
 };
@@ -695,7 +696,7 @@ const cartIncreaseDecrease = async (req, res) => {
     res.json({ message: "Changed quantity successfully" });
   } catch (error) {
     console.log(error.message);
-
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -722,6 +723,7 @@ const deleteCartProduct = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
 
   }
 };
@@ -796,6 +798,7 @@ const updateAddress = async (req, res) => {
     res.json({ message: "Address Addes Successfully" });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -822,6 +825,7 @@ const updateEditedAddress = async (req, res) => {
     res.json({ message: "Address Added Successfully" });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -838,6 +842,7 @@ const checkCurrPass = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -862,6 +867,7 @@ const changePass = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -890,6 +896,7 @@ const addAddress = async (req, res) => {
 
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -901,6 +908,7 @@ const forgotPassword = async (req,res)=>{
     res.render('users/forgotPass')
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -921,6 +929,7 @@ const forgotPassEmail = async (req,res)=>{
 
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -937,6 +946,7 @@ const forgetPassCheckOtp = async (req,res)=>{
 
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -949,6 +959,7 @@ const loadOtpchangepass = async (req,res)=>{
 
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 }
 

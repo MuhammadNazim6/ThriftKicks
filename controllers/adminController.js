@@ -25,9 +25,10 @@ const securePassword = async (password) => {
 //loading admin login
 const loadAdminLogin = async (req, res) => {
   try {
-    res.render("admin/loginAdmin");
+    res. render("admin/loginAdmin");
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -62,6 +63,7 @@ const verifyLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -71,6 +73,7 @@ const loadDashboard = async (req, res) => {
     res.render("admin/dashboard");
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -81,6 +84,7 @@ const logout = async (req, res) => {
     res.redirect("/admin");
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -104,6 +108,7 @@ const admDashboard = async (req, res) => {
     res.render("admin/users", { users: fullUserdata });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -119,6 +124,7 @@ const editUserload = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -139,6 +145,7 @@ const updateUsers = async (req, res) => {
     res.redirect("/admin/users");
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -157,6 +164,7 @@ const blockUser = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -176,6 +184,7 @@ const unblockUser = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -205,6 +214,7 @@ const loadProducts = async (req, res) => {
     res.render("admin/products", { products: fullProducts ,offers});
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -217,6 +227,7 @@ const loadAddProduct = async (req, res) => {
     res.render("admin/addProduct", { category: fullCategory });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
     
@@ -263,6 +274,7 @@ const addProduct = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -279,6 +291,7 @@ const loadCategories = async (req, res) => {
     res.render("admin/categories", { category: categories ,offers});
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -288,6 +301,7 @@ const loadAddCategory = async (req, res) => {
     res.render("admin/addCategory");
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -317,9 +331,7 @@ const addCategory = async (req, res) => {
       const newCategory = await category.save();
 
       if (newCategory) {
-        // res.render("admin/addCategory", {
-        //   smessage: "Category Added Successfully.",
-        // });
+      
         res.redirect('/admin/categories')
       } else {
         res.render("admin/addCategory", {
@@ -333,6 +345,7 @@ const addCategory = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -344,6 +357,7 @@ const loadEditProduct = async (req, res) => {
     res.render("admin/editProduct", { products: products });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -396,6 +410,7 @@ const updateProduct = async (req, res) => {
     res.redirect("/admin/products");
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -414,6 +429,7 @@ const unlistProduct = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -433,6 +449,7 @@ const listProduct = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -446,6 +463,7 @@ const unlistCategory = async (req, res) => {
     res.json({ message: "Category Unlisted successfully" });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -459,6 +477,7 @@ const listCategory = async (req, res, next) => {
     res.json({ message: "Category Listted successfully" });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -470,6 +489,7 @@ const loadEditCategory = async (req, res) => {
     res.render("admin/editCategory", { category: category });
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -510,6 +530,7 @@ const updateCategory = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 };
 
@@ -527,6 +548,7 @@ const loadOrdersAdmin = async (req,res)=>{
     res.render('admin/ordersAdmin',{orders,orderDate,updatedDate})
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -541,6 +563,7 @@ const loadManageOrder = async (req,res)=>{
     res.render('admin/manageOrders',{currentOrder : currentOrder})
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -584,6 +607,7 @@ const changeOrderStatus = async (req,res)=>{
 
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -601,6 +625,7 @@ const cancelOrder = async (req,res)=>{
 
   } catch (error) {
     console.log(error.message);
+    res.status(500).render('error', { error: error.message });
   }
 }
 

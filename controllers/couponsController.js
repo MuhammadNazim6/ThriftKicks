@@ -74,6 +74,7 @@ const deleteCoupon = async (req,res)=>{
     res.json({ message: "Coupon Deleted Successfully" });
   } catch (error) {
     res.json({ fmessage: "Unable to delete the coupon" });
+    res.status(500).render('error', { error: error.message });
   }
 }
 
@@ -108,6 +109,7 @@ const applyCoupon = async (req,res)=>{
     res.json({discount_amount , reductionAmount ,couponId})
   } catch (error) {
     console.log("Unable to apply coupon");
+    res.status(500).render('error', { error: error.message });
   }
 }
 
