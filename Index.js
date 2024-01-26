@@ -30,7 +30,6 @@ app.use(
   })
 );
 app.use(nocache());
-// app.use(morgan('tiny'))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
