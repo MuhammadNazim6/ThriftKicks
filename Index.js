@@ -10,6 +10,9 @@ const config = require("./config/config")
 const user_route = require("./routes/userRoute")
 const admin_route = require("./routes/adminRoute")
 const blocked = require('./middleware/blocked')
+const cron = require('node-cron');
+const axios = require('axios')
+const SERVER = 'https://thriftkicks.onrender.com'
 
 const path = require("path")
 const morgan = require("morgan")
@@ -50,4 +53,14 @@ app.listen(process.env.PORT || 3000, () => {
   console.log(`server is Running at port ${process.env.PORT}`);
 });
 
+cron.schedule("*/10 * * * *", () => {
+  axios
+      .get(SERVER)
+      .then((response) => {
+          console.log(`Request sent successfully at ${new Date()}`);
+      })
+      .catch((error) => {
+          console.error(`Error sending request: ${error.message}`);
+      });
+});
 
